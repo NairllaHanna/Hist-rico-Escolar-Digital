@@ -2,6 +2,7 @@
   "cleanUrls": false,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/prototipo", "destination": "/Historico-Escolar-Digital.dc.html" }
+    { "source": "/", "destination": "/historico-escolar-digital-standalone.html" },
+    { "source": "/prototipo", "destination": "/historico-escolar-digital-standalone.html" }
   ]
 }
