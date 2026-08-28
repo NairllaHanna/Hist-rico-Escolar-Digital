@@ -144,9 +144,33 @@
                   <input value="{{ dig }}" onChange="{{ onDig }}" style="height:34px;width:48px;padding:6px 8px;border:1px solid #ccc;border-radius:4px;font:12.5px Arial,Verdana,sans-serif;text-align:center" style-focus="border-color:#459ad6;box-shadow:0 0 0 2px rgba(69,154,214,.15);outline:none"/>
                   <span style="color:#555">/</span>
                   <select value="{{ ufRa }}" onChange="{{ onUfRa }}" style="height:34px;padding:2px 4px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#fff;width:62px">
-                    <option value="SP">SP</option>
-                    <option value="MG">MG</option>
+                    <option value="AC">AC</option>
+                    <option value="AL">AL</option>
+                    <option value="AP">AP</option>
+                    <option value="AM">AM</option>
+                    <option value="BA">BA</option>
+                    <option value="CE">CE</option>
+                    <option value="DF">DF</option>
+                    <option value="ES">ES</option>
+                    <option value="GO">GO</option>
                     <option value="MA">MA</option>
+                    <option value="MT">MT</option>
+                    <option value="MS">MS</option>
+                    <option value="MG">MG</option>
+                    <option value="PA">PA</option>
+                    <option value="PB">PB</option>
+                    <option value="PR">PR</option>
+                    <option value="PE">PE</option>
+                    <option value="PI">PI</option>
+                    <option value="RJ">RJ</option>
+                    <option value="RN">RN</option>
+                    <option value="RS">RS</option>
+                    <option value="RO">RO</option>
+                    <option value="RR">RR</option>
+                    <option value="SC">SC</option>
+                    <option value="SP">SP</option>
+                    <option value="SE">SE</option>
+                    <option value="TO">TO</option>
                   </select>
                 </div>
               </sc-if>
@@ -213,6 +237,7 @@
                   <option value="Emitido">Emitido</option>
                   <option value="Aprovar Retificação">Aprovar Retificação</option>
                   <option value="Sem Efeito">Sem Efeito</option>
+                  <option value="Retificação Reprovada">Retificação Reprovada</option>
                 </select>
               </sc-if>
             </div>
@@ -263,7 +288,7 @@
                     <th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Díg. RA</th>
                     <th onClick="{{ onColSortNasc }}" style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4;cursor:pointer;white-space:nowrap">Data de Nascimento<span style="opacity:{{ colSortNascOpacity }};font-size:9px;margin-left:4px">{{ colSortNascArrow }}</span></th>
                     <th onClick="{{ onColSortTipo }}" style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4;cursor:pointer;white-space:nowrap">Tipo de Ensino<span style="opacity:{{ colSortTipoOpacity }};font-size:9px;margin-left:4px">{{ colSortTipoArrow }}</span></th>
-                    <sc-if value="{{ colEmissao }}" hint-placeholder-val="{{ true }}"><th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Emissão</th></sc-if>
+                    <sc-if value="{{ colEmissao }}" hint-placeholder-val="{{ true }}"><th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Emitir</th></sc-if>
                     <th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">{{ colConsultaLabel }}</th>
                     <sc-if value="{{ colAprovar }}" hint-placeholder-val="{{ true }}"><th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Aprovar Emissão</th></sc-if>
                     <sc-if value="{{ colValidar }}" hint-placeholder-val="{{ true }}"><th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Validar Emissão</th></sc-if>
@@ -315,7 +340,7 @@
                       </sc-if>
                       <sc-if value="{{ colRetificar }}" hint-placeholder-val="{{ true }}">
                         <td style="padding:6px 8px;border:1px solid #e6e6e6;text-align:center">
-                          <span onClick="{{ row.onRetificar }}" title="{{ row.retificarTitle }}" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;flex:0 0 32px;border-radius:50%;border:1px solid {{ row.retificarBorder }};background:{{ row.retificarBg }};cursor:{{ row.retificarCursor }}"><svg viewBox="0 0 24 24" width="16" height="16" fill="{{ row.retificarFill }}"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg></span>
+                          <span onClick="{{ row.onRetificar }}" title="{{ row.retificarTitle }}" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;flex:0 0 32px;border-radius:50%;border:1px solid {{ row.retificarBorder }};background:{{ row.retificarBg }};cursor:{{ row.retificarCursor }};position:relative"><svg viewBox="0 0 24 24" width="16" height="16" fill="{{ row.retificarFill }}"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04a1 1 0 000-1.41l-2.34-2.34a1 1 0 00-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg><sc-if value="{{ row.retificarReprovada }}" hint-placeholder-val="{{ false }}"><span style="position:absolute;top:-3px;right:-3px;width:10px;height:10px;border-radius:50%;background:#c0392b;border:1px solid #fff"></span></sc-if></span>
                         </td>
                       </sc-if>
                     </tr>
@@ -471,7 +496,7 @@
             <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:18px">
               <button onClick="{{ onRelPesquisar }}" style="display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer"><svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>Pesquisar</button>
               <button onClick="{{ onRelLimpar }}" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:#fff;color:#2e6da4;border:1px solid #a8c9e4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer"><svg viewBox="0 0 24 24" width="12" height="12" fill="#2e6da4"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>Limpar</button>
-              <button onClick="{{ onRelExportar }}" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:#2e8b47;color:#fff;border:1px solid #256e39;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer"><svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Exportar</button>
+              <button onClick="{{ onRelExportar }}" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer"><svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Exportar</button>
             </div>
           </div>
 
@@ -539,10 +564,33 @@
                   <span style="align-self:center;color:#555">-</span>
                   <input value="{{ cpDocDig }}" onChange="{{ onCpDocDig }}" placeholder="Díg." maxlength="1" style="height:34px;width:48px;padding:3px 8px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif"/>
                   <select value="{{ cpDocUf }}" onChange="{{ onCpDocUf }}" style="height:34px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#fff;width:70px">
-                    <option value="SP">SP</option>
+                    <option value="AC">AC</option>
+                    <option value="AL">AL</option>
+                    <option value="AP">AP</option>
+                    <option value="AM">AM</option>
+                    <option value="BA">BA</option>
+                    <option value="CE">CE</option>
+                    <option value="DF">DF</option>
+                    <option value="ES">ES</option>
+                    <option value="GO">GO</option>
+                    <option value="MA">MA</option>
+                    <option value="MT">MT</option>
+                    <option value="MS">MS</option>
                     <option value="MG">MG</option>
-                    <option value="RJ">RJ</option>
+                    <option value="PA">PA</option>
+                    <option value="PB">PB</option>
                     <option value="PR">PR</option>
+                    <option value="PE">PE</option>
+                    <option value="PI">PI</option>
+                    <option value="RJ">RJ</option>
+                    <option value="RN">RN</option>
+                    <option value="RS">RS</option>
+                    <option value="RO">RO</option>
+                    <option value="RR">RR</option>
+                    <option value="SC">SC</option>
+                    <option value="SP">SP</option>
+                    <option value="SE">SE</option>
+                    <option value="TO">TO</option>
                   </select>
                 </div>
               </sc-if>
@@ -640,6 +688,15 @@
             <span style="position:absolute;top:8px;right:10px;color:#7d8a95">📌</span>
           </div>
         </div>
+        <sc-if value="{{ emDevolMotivo }}" hint-placeholder-val="{{ false }}">
+          <div style="margin:0 20px 16px;background:#fbe0df;border:1px solid #e3a6a3;border-radius:3px;padding:10px 14px;display:flex;gap:10px;align-items:flex-start">
+            <span style="font-size:16px;line-height:1.3">⚠</span>
+            <div style="font:11.5px/1.5 Verdana,Arial,sans-serif;color:#7a2825">
+              <div style="font-weight:700;margin-bottom:2px">Documento devolvido para correção — {{ emDevolPor }} em {{ emDevolData }}</div>
+              <div>{{ emDevolMotivo }}</div>
+            </div>
+          </div>
+        </sc-if>
 
         <div style="padding:0 20px 20px">
           <div style="display:flex;align-items:flex-end;gap:6px;flex-wrap:wrap">
@@ -657,7 +714,7 @@
           </div>
 
           <sc-if value="{{ showReclass }}" hint-placeholder-val="{{ false }}">
-            <div style="margin-top:10px;background:#fcd94a;border:1px solid #e6bf1f;padding:9px 12px;font:11.5px/1.5 Verdana,Arial,sans-serif;color:#3a2f00">{{ reclassMsg }} <a href="#" onClick="{{ onAddEstudos }}"><strong>clique aqui</strong></a> para adicionar os estudos realizados. Caso esteja incorreta, <a href="#" onClick="{{ onFichaAluno }}"><strong>clique aqui</strong></a> para corrigir na Ficha do Aluno.</div>
+            <div style="margin-top:10px;background:#fcd94a;border:1px solid #e6bf1f;padding:9px 12px;font:11.5px/1.5 Verdana,Arial,sans-serif;color:#3a2f00">{{ reclassMsg }} Caso esteja incorreta, adicione os estudos realizados <a href="#" onClick="{{ onAddEstudos }}"><strong>clique aqui</strong></a>. Caso esteja correta, siga com a emissão.</div>
           </sc-if>
           <sc-if value="{{ showBloqueio }}" hint-placeholder-val="{{ false }}">
             <div style="margin-top:10px;background:#fcd94a;border:1px solid #e6bf1f;padding:9px 12px;font:11.5px/1.5 Verdana,Arial,sans-serif;color:#3a2f00"><strong>Este histórico não pode ser enviado para aprovação:</strong> o aluno não possui rendimento aprovado. Corrija o rendimento ou contate a Unidade Regional de Ensino.</div>
@@ -816,9 +873,33 @@
           <div class="filter-grid" style="display:grid;grid-template-columns:210px auto;gap:12px;align-items:center;justify-content:center">
             <label style="font:700 13px Arial,Verdana,sans-serif;color:#333;text-align:right">UF:</label>
             <select value="{{ aeUf }}" onChange="{{ onAeUf }}" style="height:34px;width:150px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#fff">
-              <option value="SP">SP</option>
+              <option value="SÃO PAULO">SÃO PAULO</option>
+              <option value="ACRE">ACRE</option>
+              <option value="ALAGOAS">ALAGOAS</option>
+              <option value="AMAPÁ">AMAPÁ</option>
+              <option value="AMAZONAS">AMAZONAS</option>
+              <option value="BAHIA">BAHIA</option>
+              <option value="CEARÁ">CEARÁ</option>
+              <option value="DISTRITO FEDERAL">DISTRITO FEDERAL</option>
+              <option value="ESPÍRITO SANTO">ESPÍRITO SANTO</option>
+              <option value="GOIÁS">GOIÁS</option>
               <option value="MARANHÃO">MARANHÃO</option>
+              <option value="MATO GROSSO">MATO GROSSO</option>
+              <option value="MATO GROSSO DO SUL">MATO GROSSO DO SUL</option>
               <option value="MINAS GERAIS">MINAS GERAIS</option>
+              <option value="PARÁ">PARÁ</option>
+              <option value="PARAÍBA">PARAÍBA</option>
+              <option value="PARANÁ">PARANÁ</option>
+              <option value="PERNAMBUCO">PERNAMBUCO</option>
+              <option value="PIAUÍ">PIAUÍ</option>
+              <option value="RIO DE JANEIRO">RIO DE JANEIRO</option>
+              <option value="RIO GRANDE DO NORTE">RIO GRANDE DO NORTE</option>
+              <option value="RIO GRANDE DO SUL">RIO GRANDE DO SUL</option>
+              <option value="RONDÔNIA">RONDÔNIA</option>
+              <option value="RORAIMA">RORAIMA</option>
+              <option value="SANTA CATARINA">SANTA CATARINA</option>
+              <option value="SERGIPE">SERGIPE</option>
+              <option value="TOCANTINS">TOCANTINS</option>
             </select>
             <label style="font:700 13px Arial,Verdana,sans-serif;color:#333;text-align:right">Município:</label>
             <select value="{{ aeMun }}" onChange="{{ onAeMun }}" style="height:34px;width:220px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#fff">
@@ -963,7 +1044,7 @@
               <tbody>
                 <tr><td style="border:1px solid #333;padding:2px 5px">Endereço: Rua Inácio Monteiro</td><td style="border:1px solid #333;padding:2px 5px">Nº 1281</td><td style="border:1px solid #333;padding:2px 5px">Bairro: Jardim São Paulo</td><td style="border:1px solid #333;padding:2px 5px">Cep: 08490-000</td></tr>
                 <tr><td style="border:1px solid #333;padding:2px 5px">Município: São Paulo</td><td style="border:1px solid #333;padding:2px 5px">Telefone: (11) 3456-7890</td><td style="border:1px solid #333;padding:2px 5px" colspan="2">Endereço eletrônico: e000079@educacao.sp.gov.br</td></tr>
-                <tr><td colspan="4" style="border:1px solid #333;padding:3px 5px;text-align:center;font-weight:700;background:#e9e9e9">HISTÓRICO ESCOLAR - ENSINO FUNDAMENTAL</td></tr>
+                <tr><td colspan="4" style="border:1px solid #333;padding:3px 5px;text-align:center;font-weight:700;background:#e9e9e9">HISTÓRICO ESCOLAR - {{ docTipoEnsinoLabel }}</td></tr>
                 <tr><td colspan="4" style="border:1px solid #333;padding:2px 5px">Nome: {{ docNome }}</td></tr>
               </tbody>
             </table>
@@ -1052,7 +1133,7 @@
               </tbody>
             </table>
             <div style="border:1px solid #333;border-top:0;padding:4px 5px;font:7px/1.35 Arial,Verdana,sans-serif;color:#222">Escala de Avaliação: A partir de 2007 - Escala numérica de notas de 0 (zero) a 10 (dez) com patamar indicativo de desempenho escolar satisfatório, a nota igual ou superior a 5 (cinco). Ensino Fundamental de 9 (nove) anos, implantado a partir de 2009, nos termos da Resolução SE 98/2008 e Deliberação CEE/SP nº 73/2008.</div>
-            <div style="border:1px solid #333;border-top:0;padding:5px;font:8.5px Arial,Verdana,sans-serif;min-height:46px"><strong>OBSERVAÇÕES:</strong> {{ docObs }}</div>
+            <div style="border:1px solid #333;border-top:0;padding:5px;font:8.5px Arial,Verdana,sans-serif;min-height:46px;background:{{ docObsBg }}"><strong>OBSERVAÇÕES:</strong> {{ docObs }}</div>
             <div style="border:1px solid #333;border-top:0;padding:3px;text-align:center;font:700 9px Arial,Verdana,sans-serif;background:#e9e9e9">CERTIFICADO</div>
             <div style="border:1px solid #333;border-top:0;padding:6px;font:8.5px/1.6 Arial,Verdana,sans-serif">O Diretor da EE CESAR DONATO CALABREZ , CERTIFICA, nos termos do Inciso VII, Artigo 24 da Lei Federal 9394/96, que <strong>{{ docNome }}</strong>, {{ docDocLabel }} <strong>{{ docDoc }}</strong>, concluiu o Ensino Fundamental, no ano de <strong>2022</strong>.<div>Número de publicação de concluinte (Resolução SE 61/2019): <strong>{{ docPublicacao }}</strong></div></div>
             <sc-if value="{{ docAssinado }}" hint-placeholder-val="{{ false }}">
@@ -1094,10 +1175,10 @@
 
           <sc-if value="{{ docShowDecision }}" hint-placeholder-val="{{ false }}">
             <div style="max-width:760px;margin:12px auto 0">
-              <textarea value="{{ docDevol }}" onChange="{{ onDocDevol }}" placeholder="Justificativa de devolução" style="width:100%;height:74px;border:1px solid #b9c6d1;border-radius:3px;padding:8px;font:11.5px Arial,Verdana,sans-serif;color:#333;resize:vertical"></textarea>
+              <textarea value="{{ docDevol }}" onChange="{{ onDocDevol }}" placeholder="{{ docDevolPlaceholder }}" style="width:100%;height:74px;border:1px solid #b9c6d1;border-radius:3px;padding:8px;font:11.5px Arial,Verdana,sans-serif;color:#333;resize:vertical"></textarea>
               <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
                 <button onClick="{{ onDocAprovar }}" disabled="{{ docAprovarDisabled }}" style="padding:6px 14px;background:{{ docAprovarBg }};color:#fff;border:1px solid #2e6da4;border-radius:4px;font:11.5px Verdana,Arial,sans-serif;cursor:pointer">✔ {{ docAprovarLabel }}</button>
-                <button onClick="{{ onDocDevolver }}" style="padding:6px 14px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:4px;font:11.5px Verdana,Arial,sans-serif;cursor:pointer">↵ Devolver</button>
+                <button onClick="{{ onDocDevolver }}" style="padding:6px 14px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:4px;font:11.5px Verdana,Arial,sans-serif;cursor:pointer">↵ {{ docDevolverLabel }}</button>
               </div>
             </div>
           </sc-if>
@@ -1138,13 +1219,15 @@
   </sc-if>
 
   <sc-if value="{{ termOpen }}" hint-placeholder-val="{{ false }}">
-    <div style="position:fixed;inset:0;background:rgba(0,0,0,.25);z-index:110">
-      <div style="width:100%;background:#fdc300;padding:24px 40px 20px;box-sizing:border-box">
-        <div style="font:700 21px Arial,Helvetica,sans-serif;color:#1c1c1c;margin-bottom:14px">{{ termTitle }}</div>
-        <div style="font:700 13.5px/1.65 Arial,Helvetica,sans-serif;color:#1c1c1c;max-width:1100px">{{ termText }}</div>
-        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:18px">
-          <button onClick="{{ onTermSim }}" style="padding:3px 14px;background:#fdc300;border:1px solid #7a6300;border-radius:2px;font:700 12px Verdana,Arial,sans-serif;color:#1c1c1c;cursor:pointer">Sim</button>
-          <button onClick="{{ onTermNao }}" style="padding:3px 14px;background:#fdc300;border:1px solid #7a6300;border-radius:2px;font:700 12px Verdana,Arial,sans-serif;color:#1c1c1c;cursor:pointer">Não</button>
+    <div style="position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:110;display:flex;align-items:center;justify-content:center;padding:18px">
+      <div style="max-width:640px;width:100%;background:#fff;border:1px solid #cfd8e0;border-radius:4px;box-shadow:0 6px 26px rgba(0,0,0,.3)">
+        <div style="padding:12px 18px;background:#fdc300">
+          <span style="font:700 16px Arial,Helvetica,sans-serif;color:#1c1c1c">{{ termTitle }}</span>
+        </div>
+        <div style="padding:18px 20px;font:13px/1.6 Arial,Helvetica,sans-serif;color:#1c1c1c">{{ termText }}</div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;padding:0 20px 18px">
+          <button onClick="{{ onTermSim }}" style="padding:6px 16px;background:#fdc300;border:1px solid #7a6300;border-radius:3px;font:700 12px Verdana,Arial,sans-serif;color:#1c1c1c;cursor:pointer">Sim</button>
+          <button onClick="{{ onTermNao }}" style="padding:6px 16px;background:#fff;border:1px solid #999;border-radius:3px;font:700 12px Verdana,Arial,sans-serif;color:#333;cursor:pointer">Não</button>
         </div>
       </div>
     </div>
@@ -1165,6 +1248,15 @@
             <div>RA: {{ retRa }}</div>
           </div>
         </div>
+        <sc-if value="{{ retReprovada }}" hint-placeholder-val="{{ false }}">
+          <div style="margin:0 24px 16px;background:#fbe0df;border:1px solid #e3a6a3;border-radius:3px;padding:10px 14px;display:flex;gap:10px;align-items:flex-start">
+            <span style="font-size:16px;line-height:1.3">⚠</span>
+            <div style="font:11.5px/1.5 Verdana,Arial,sans-serif;color:#7a2825">
+              <div style="font-weight:700;margin-bottom:2px">A retificação anterior foi reprovada por {{ retReprovadaPor }} em {{ retReprovadaData }}</div>
+              <div>{{ retReprovadaMotivo }}</div>
+            </div>
+          </div>
+        </sc-if>
         <div style="padding:18px 24px">
           <div style="font:700 14px Arial,Verdana,sans-serif;color:#222;margin-bottom:12px">O QUE DESEJA RETIFICAR?</div>
           <div style="display:flex;gap:8px;margin-bottom:18px">
@@ -1235,7 +1327,6 @@
                 <option value="">SELECIONE...</option>
                 <option value="Erro de lançamento/digitação da nota (Convalidação)">Erro de lançamento/digitação da nota (Convalidação)</option>
                 <option value="Reavaliação de rendimento escolar">Reavaliação de rendimento escolar</option>
-                <option value="Correção de dado cadastral">Correção de dado cadastral</option>
               </select>
               <div style="margin-top:6px;display:flex;align-items:center;gap:8px">
                 <label style="border:1px solid #b5b5b5;background:#eee;padding:3px 8px;font:10.5px Verdana,Arial,sans-serif;color:#333;cursor:pointer;white-space:nowrap">Escolher arquivo<input type="file" onChange="{{ onRetArq }}" style="display:none"></input></label>
@@ -1276,10 +1367,10 @@
           <div style="display:flex;flex-direction:column;gap:7px;font:12px Arial,Verdana,sans-serif;color:#222">
             <div>Unidade Regional de Ensino: Leste 3</div>
             <div>Escola: CESAR DONATO CALABREZ - 902627</div>
-            <div>Tipo de Ensino: ENSINO FUNDAMENTAL DE 9 ANOS</div>
+            <div>Tipo de Ensino: {{ seTipoEnsino }}</div>
             <div>Número da Classe: 280762741</div>
             <div>Número da Chamada: 1</div>
-            <div>Ano de Conclusão: 2022</div>
+            <div>Ano de Conclusão: {{ seAnoConclusao }}</div>
             <div>Número de publicação de Concluinte: {{ sePublicacao }}</div>
           </div>
           <div class="filter-grid" style="display:grid;grid-template-columns:90px auto;gap:12px;align-items:center;margin-top:16px">
@@ -1311,7 +1402,15 @@
   </sc-if>
 
   <sc-if value="{{ toastMsg }}" hint-placeholder-val="{{ false }}">
-    <div style="position:fixed;top:16px;left:50%;transform:translateX(-50%);z-index:200;background:#dff0d8;border:1px solid #b2d8a6;color:#2f6b2a;padding:11px 18px;border-radius:4px;font:12px/1.5 Verdana,Arial,sans-serif;max-width:760px;box-shadow:0 4px 14px rgba(0,0,0,.15)">{{ toastMsg }}</div>
+    <div style="position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:200;display:flex;align-items:center;justify-content:center;padding:18px">
+      <div style="max-width:520px;width:100%;background:#fff;border:1px solid #cfd8e0;border-radius:4px;box-shadow:0 6px 26px rgba(0,0,0,.3)">
+        <div style="display:flex;align-items:center;gap:8px;padding:11px 18px;background:#2e8b47">
+          <span style="display:inline-flex;width:18px;height:18px;border-radius:50%;background:#fff;color:#2e8b47;align-items:center;justify-content:center;font:700 12px Verdana">✓</span>
+          <span style="font:700 14px Verdana,Arial,sans-serif;color:#fff">Sucesso</span>
+        </div>
+        <div style="padding:16px 18px;font:12.5px/1.6 Verdana,Arial,sans-serif;color:#333">{{ toastMsg }}</div>
+      </div>
+    </div>
   </sc-if>
 
 </div>
@@ -1340,7 +1439,8 @@ class Component extends DCLogic {
     'Aguardando Validação': '#fdf1d8',
     'Emitido': '#d9f2e3',
     'Aprovar Retificação': '#e6e3fb',
-    'Sem Efeito': '#fbe0df'
+    'Sem Efeito': '#fbe0df',
+    'Retificação Reprovada': '#fbe0df'
   };
   STATUS_FG = {
     'Não Emitido': '#4a5666',
@@ -1350,7 +1450,8 @@ class Component extends DCLogic {
     'Aguardando Validação': '#8a5d0b',
     'Emitido': '#1f7a45',
     'Aprovar Retificação': '#4a3ea8',
-    'Sem Efeito': '#a32f2b'
+    'Sem Efeito': '#a32f2b',
+    'Retificação Reprovada': '#a32f2b'
   };
   ANOS = [
     ['2014','1º ANO'],['2015','2º ANO'],['2016','3º ANO'],['2017','4º ANO'],['2018','5º ANO'],
@@ -1439,7 +1540,7 @@ class Component extends DCLogic {
     }, extra || {});
     return [
       mk('YASMIN THAYLLA NASCIMENTO ALVES','000287451960','2','02/12/2007','Não Emitido',{ turma:'9º ANO A' }),
-      mk('ANA OLIVIA MOREIRA DE SOUZA FAGUNDES','000287463217','5','03/10/2007','Em elaboração',{ reclass:true, reclassDe:'5º ANO', reclassPara:'7º ANO', reclassAno:'2024', doc:'53025111-2', turma:'9º ANO A' }),
+      mk('ANA OLIVIA MOREIRA DE SOUZA FAGUNDES','000287463217','5','03/10/2007','Em elaboração',{ reclass:true, reclassDe:'5º ANO', reclassPara:'7º ANO', reclassAno:'2019', doc:'53025111-2', turma:'9º ANO A' }),
       mk('ANNA BEATRIZ RODRIGUES MELLO','000287470512','9','10/12/2007','Emitido',{ publicacao:'202625698741', doc:'53489865-6', cin:'55896314589', turma:'9º ANO B', dataEmissao:'14/03/2026' }),
       mk('BIANCA NASCIMENTO ROMA DA SILVA','000287488634','7','05/08/2007','Aguardando Aprovação',{ doc:'53480021-9', turma:'9º ANO B' }),
       mk('BARBARA OLIVEIRA DA SILVA','000287492105','3','15/06/2007','Aguardando Aprovação',{ doc:'53470022-1', turma:'9º ANO C' }),
@@ -1827,22 +1928,28 @@ class Component extends DCLogic {
     const docs = this.state.docs;
     if (!docs[id]) {
       const st = this.state.students.find(s => s.id === id);
+      const anoConclusao = Number(st && st.dataEmissao ? st.dataEmissao.slice(-4) : this.ANOS[this.ANOS.length - 1][0]);
+      const offset = anoConclusao - Number(this.ANOS[this.ANOS.length - 1][0]);
       docs[id] = {
         estudos: this.ANOS.map(([ano, serie], i) => ({
-          serie, ano, estab: 'EE CESAR DONATO CALABREZ', rede: 'Estadual - SE',
+          serie, ano: String(Number(ano) + offset), estab: 'EE CESAR DONATO CALABREZ', rede: 'Estadual - SE',
           municipio: 'SÃO PAULO', uf: 'SP', bncc: '30', pd: '10', ch: i === 0 ? '1400' : '2400'
         })),
-        notas: this.COMPS.map(([area, comp, classif]) => ({ area, comp, classif, vals: this.ANOS.map(() => '') })),
+        notas: this.COMPS.map(([area, comp, classif]) => ({ area, comp, classif, vals: this.ANOS.map(() => (st && (st.status === 'Emitido' || st.status === 'Sem Efeito' || st.status === 'Aprovar Retificação' || st.status === 'Retificação Reprovada')) ? String(6 + Math.floor(Math.random() * 4)) : '') })),
         obs: '', mods: [], versoes: [], estSaved: false, estDirty: false, notasSaved: false, obsSaved: false,
         estJust: '', estArq: 'Nenhum arquivo escolhido', notasJust: '', notasArq: 'Nenhum arquivo escolhido',
-        notasDirty: false
+        notasDirty: false, devolMotivo: '', touchedNotas: {}, touchedEst: {}, obsTouched: false,
+        personalSnapshot: st ? { nome: st.nome, doc: st.doc, cin: st.cin, docLabel: st.docLabel } : null, retPendente: null
       };
       if (st && st.reclass) {
-        docs[id].estudos = docs[id].estudos.filter(e => e.serie !== '6º ANO');
+        const deIdx = this.ANOS.findIndex(a => a[1] === st.reclassDe);
+        const paraIdx = this.ANOS.findIndex(a => a[1] === st.reclassPara);
+        const skip = paraIdx - deIdx - 1;
+        docs[id].estudos = docs[id].estudos.slice(0, this.ANOS.length - skip).map((e, i) => i > deIdx ? Object.assign({}, e, { serie: this.ANOS[i + skip][1] }) : e);
         docs[id].obs = 'O(a) aluno(a) foi reclassificado(a) do ' + st.reclassDe + ' para o ' + st.reclassPara + ' em ' + st.reclassAno + '.';
         docs[id].obsSaved = true;
       }
-      if (st && (st.status === 'Emitido' || st.status === 'Sem Efeito' || st.status === 'Aprovar Retificação')) {
+      if (st && (st.status === 'Emitido' || st.status === 'Sem Efeito' || st.status === 'Aprovar Retificação' || st.status === 'Retificação Reprovada')) {
         docs[id].notasSaved = true; docs[id].notasSavedOnce = true; docs[id].estSaved = true;
         docs[id].assinaturaFinal = { id: 'GOV.BR-' + Math.random().toString(36).slice(2, 10).toUpperCase(), data: st.ultima + ' às 09:14' };
         docs[id].versoes.push({ publicacao: st.publicacao, status: st.status === 'Sem Efeito' ? 'Sem Efeito' : 'Emitido', data: docs[id].assinaturaFinal.data });
@@ -1866,7 +1973,8 @@ class Component extends DCLogic {
     const n = Number(String(v).replace(',', '.'));
     return !isNaN(n) && n >= 5 && n <= 10;
   }
-  now() { return '14/07/2026 às 14:25'; }
+  today() { const d = new Date(); return String(d.getDate()).padStart(2, '0') + '/' + String(d.getMonth() + 1).padStart(2, '0') + '/' + d.getFullYear(); }
+  now() { return this.today() + ' às ' + new Date().toTimeString().slice(0, 5); }
   toast(msg) { this.setState({ toast: msg }); clearTimeout(this._t); const dur = Math.max(4000, Math.min(9000, msg.length * 60)); this._t = setTimeout(() => this.setState({ toast: '' }), dur); }
   audit(acao, extra) {
     this.state.audit.unshift(Object.assign({
@@ -1876,7 +1984,7 @@ class Component extends DCLogic {
   }
   setStudent(id, patch) {
     const s = this.state.students.find(x => x.id === id);
-    if (s) Object.assign(s, patch, { ultima: '01/06/2026' });
+    if (s) Object.assign(s, patch, { ultima: this.today() });
     this.forceUpdate();
   }
   fld(k) { return e => this.setState({ [k]: e.target.value }); }
@@ -1892,6 +2000,10 @@ class Component extends DCLogic {
       if (st.statusF !== 'Todos') list = list.filter(s => s.status === st.statusF);
       if (st.tipoEnsino) list = list.filter(s => s.tipoEnsino === st.tipoEnsino);
       if (st.turma) list = list.filter(s => s.turma === st.turma);
+    }
+    if (st.ano) {
+      const ano = String(st.ano).trim();
+      list = list.filter(s => this.getDoc(s.id).estudos.some(e => e.ano === ano));
     }
     const f = st.filtro.trim().toLowerCase();
     if (f) list = list.filter(s => (s.nome + ' ' + s.ra).toLowerCase().indexOf(f) >= 0);
@@ -1917,15 +2029,16 @@ class Component extends DCLogic {
     this.audit('Emissão - início de elaboração', { aluno: s.nome });
     this.setState({ em: { id: s.id, tab: 'est', editRow: -1, yearOpen: -1 } });
   }
-  totalsRow(d, kind) {
+  totalsRow(d, kind, showAlteracao) {
     return this.ANOS.map((a, i) => {
       const e = d.estudos[i];
       if (!e) return { v: '-' };
-      if (kind === 'bncc') return { v: e.bncc || '-' };
-      if (kind === 'pd') return { v: e.pd || '-' };
-      if (kind === 'ch') return { v: e.ch || '-' };
+      const t = d.touchedEst || {};
+      if (kind === 'bncc') return { v: e.bncc || '-', bg: (t[i + '|bncc'] && showAlteracao) ? '#fff9c4' : 'transparent' };
+      if (kind === 'pd') return { v: e.pd || '-', bg: (t[i + '|pd'] && showAlteracao) ? '#fff9c4' : 'transparent' };
+      if (kind === 'ch') return { v: e.ch || '-', bg: (t[i + '|ch'] && showAlteracao) ? '#fff9c4' : 'transparent' };
       const b = Number(e.bncc) || 0, p = Number(e.pd) || 0;
-      return { v: (b || p) ? String(b + p) : '-' };
+      return { v: (b || p) ? String(b + p) : '-', bg: ((t[i + '|bncc'] || t[i + '|pd']) && showAlteracao) ? '#fff9c4' : 'transparent' };
     });
   }
   buildDocGrid(d, showAlteracao) {
@@ -1950,7 +2063,7 @@ class Component extends DCLogic {
         g.items.forEach((n, idx) => {
           rows.push({
             notTotal: true, isTotal: false, comp: n.comp,
-            cells: n.vals.map(x => ({ v: x || '-', bg: (x && showAlteracao) ? '#fff9c4' : 'transparent' })),
+            cells: n.vals.map((x, c) => ({ v: x || '-', bg: (d.touchedNotas[n.comp + '|' + c] && showAlteracao) ? '#fff9c4' : 'transparent' })),
             showLegal: !legalDone, legalRowspan: legalTotalRows,
             showClassif: !classifDone, classifLabel, classifRowspan,
             showArea: idx === 0, areaLabel: g.value === 'PARTE DIVERSIFICADA' ? 'ELETIVAS' : g.value, areaRowspan: g.items.length
@@ -1960,11 +2073,11 @@ class Component extends DCLogic {
       });
     };
     pushRows(base, 'BASE NACIONAL COMUM CURRICULAR', 1);
-    rows.push({ isTotal: true, notTotal: false, label: 'TOTAL DE AULAS DA BASE NACIONAL COMUM CURRICULAR', cells: this.totalsRow(d, 'bncc') });
+    rows.push({ isTotal: true, notTotal: false, label: 'TOTAL DE AULAS DA BASE NACIONAL COMUM CURRICULAR', cells: this.totalsRow(d, 'bncc', showAlteracao) });
     pushRows(pd, 'PARTE DIVERSIFICADA', 3);
-    rows.push({ isTotal: true, notTotal: false, label: 'TOTAL DE AULAS DA PARTE DIVERSIFICADA', cells: this.totalsRow(d, 'pd') });
-    rows.push({ isTotal: true, notTotal: false, label: 'TOTAL DE AULAS ANUAIS (Aulas)', cells: this.totalsRow(d, 'aulas') });
-    rows.push({ isTotal: true, notTotal: false, label: 'TOTAL DA CARGA HORÁRIA ANUAL (Horas)', cells: this.totalsRow(d, 'ch') });
+    rows.push({ isTotal: true, notTotal: false, label: 'TOTAL DE AULAS DA PARTE DIVERSIFICADA', cells: this.totalsRow(d, 'pd', showAlteracao) });
+    rows.push({ isTotal: true, notTotal: false, label: 'TOTAL DE AULAS ANUAIS (Aulas)', cells: this.totalsRow(d, 'aulas', showAlteracao) });
+    rows.push({ isTotal: true, notTotal: false, label: 'TOTAL DA CARGA HORÁRIA ANUAL (Horas)', cells: this.totalsRow(d, 'ch', showAlteracao) });
     return rows;
   }
   tabDirty(d, em) {
@@ -2051,6 +2164,7 @@ class Component extends DCLogic {
       return;
     }
     this.setStudent(em.id, { status: 'Aguardando Aprovação' });
+    d.devolMotivo = '';
     this.audit('Enviar para aprovação (assinatura GOV.BR)', { aluno: s.nome });
     this.toast('Histórico assinado digitalmente via GOV.BR e enviado para aprovação com sucesso.');
     this.setState({ em: null });
@@ -2075,9 +2189,22 @@ class Component extends DCLogic {
   devolver() {
     const d = this.state.doc;
     if (!d.devol.trim()) { this.toast('Informe a justificativa para devolver o documento.'); return; }
+    const doc = this.getDoc(d.id);
+    doc.devolMotivo = d.devol; doc.devolData = this.now(); doc.devolPor = this.perfilNome();
     this.setStudent(d.id, { status: 'Devolvido' });
     this.audit('Devolução', { justificativa: d.devol });
     this.toast('Histórico devolvido para correção com sucesso. Justificativa registrada em auditoria.');
+    this.setState({ doc: null });
+  }
+  reprovarRetificacao() {
+    const d = this.state.doc;
+    if (!d.devol.trim()) { this.toast('Informe a justificativa para reprovar a retificação.'); return; }
+    const doc = this.getDoc(d.id);
+    doc.reprovacaoMotivo = d.devol; doc.reprovacaoData = this.now(); doc.reprovacaoPor = this.perfilNome();
+    doc.retPendente = null;
+    this.setStudent(d.id, { status: 'Retificação Reprovada' });
+    this.audit('Retificação reprovada', { justificativa: d.devol });
+    this.toast('Retificação reprovada. O GOE deverá iniciar uma nova retificação para corrigir o histórico.');
     this.setState({ doc: null });
   }
   novaPublicacao() { return '2026' + String(Math.floor(10000000 + Math.random() * 89999999)); }
@@ -2098,9 +2225,21 @@ class Component extends DCLogic {
       this.toast('Histórico assinado digitalmente via GOV.BR e validado com sucesso. Status alterado para Emitido. Nº de publicação: ' + pub + '.');
       this.setState({ term: null, doc: null });
     } else if (t.kind === 'aprovarRet') {
+      const d = this.getDoc(t.id), pend = d.retPendente;
+      if (pend) {
+        if (pend.tipo === 'nota') {
+          const n = d.notas.find(x => x.comp === pend.comp);
+          n.vals[pend.ano] = pend.novaNota;
+          d.touchedNotas[pend.comp + '|' + pend.ano] = true;
+        } else {
+          const s = this.state.students.find(x => x.id === t.id);
+          d.personalSnapshot = { nome: s.nome, doc: s.doc, cin: s.cin, docLabel: s.docLabel };
+        }
+        d.retPendente = null;
+      }
       this.setStudent(t.id, { status: 'Emitido' });
       this.audit('Aprovação de retificação (assinatura GOV.BR)');
-      this.toast('Retificação aprovada e assinada digitalmente via GOV.BR. Número de publicação mantido.');
+      this.toast('Retificação aprovada, publicada e assinada digitalmente via GOV.BR. Número de publicação mantido.');
       this.setState({ term: null, doc: null });
     } else if (t.kind === 'loteAprovar') {
       this.state.selected.forEach(id => this.setStudent(id, { status: 'Aguardando Validação' }));
@@ -2124,17 +2263,18 @@ class Component extends DCLogic {
       if (p.tipo === 'nota') {
         const n = d.notas.find(x => x.comp === p.comp);
         const de = n.vals[p.ano] || '-';
-        n.vals[p.ano] = p.novaNota;
         descricao = 'Nota de ' + p.comp + ' (' + this.ANOS[p.ano][0] + ') alterada de ' + de + ' para ' + p.novaNota + '.';
         d.mods.push({ secao: 'Notas', descricao, justificativa: p.just, arq: p.arq, arqFile: p.arqFile, usuario: 'Maria Aparecida Santos', login: 'rg520356586sp', perfil: this.perfilNome(), data: this.now() });
+        d.retPendente = { tipo: 'nota', comp: p.comp, ano: p.ano, de, novaNota: p.novaNota };
       } else {
         descricao = p.diffs.map(df => df.label + ' alterado de ' + df.de + ' para ' + df.para + '.').join(' ');
-        d.mods.push({ secao: 'Dados Pessoais', descricao, justificativa: 'Correção de dado cadastral', arq: 'Nenhum arquivo escolhido', arqFile: null, usuario: 'Maria Aparecida Santos', login: 'rg520356586sp', perfil: this.perfilNome(), data: this.now() });
-        d.personalSnapshot = { nome: s.nome, doc: s.doc, cin: s.cin };
+        d.mods.push({ secao: 'Dados Pessoais', descricao, justificativa: 'Corrigido na Ficha do Aluno', arq: 'Nenhum arquivo escolhido', arqFile: null, usuario: 'Maria Aparecida Santos', login: 'rg520356586sp', perfil: this.perfilNome(), data: this.now() });
+        d.retPendente = { tipo: 'pessoal', diffs: p.diffs };
       }
       this.setStudent(t.id, { status: 'Aprovar Retificação' });
+      d.reprovacaoMotivo = ''; d.reprovacaoData = ''; d.reprovacaoPor = '';
       this.audit('Envio de retificação (assinatura GOV.BR)', { descricao });
-      this.toast('Retificação assinada digitalmente via GOV.BR e enviada para aprovação do Supervisor.');
+      this.toast('Retificação assinada digitalmente via GOV.BR e enviada para aprovação do Supervisor. Nada é publicado até a aprovação.');
       this.setState({ term: null, ret: null });
     } else if (t.kind === 'fecharEmSemSalvar') {
       this.setState({ term: null, em: null });
@@ -2165,6 +2305,13 @@ class Component extends DCLogic {
   }
 
   parseBrDate(s) { if (!s) return null; const [d, m, y] = s.split('/'); return new Date(Number(y), Number(m) - 1, Number(d)); }
+  escopoFiltro(s) {
+    const st = this.state;
+    const escolaAtual = this.ESCOLAS[0].escola, ureAtual = this.ESCOLAS[0].ure;
+    if (st.perfil === 'SUPLAN_DIMAV_COVESC') return (!st.relUre || s.ure === st.relUre) && (!st.relEscola || s.escola === st.relEscola);
+    if (st.perfil === 'URE') return s.ure === ureAtual && (!st.relEscola || s.escola === st.relEscola);
+    return s.escola === escolaAtual;
+  }
 
   relatorio() {
     const st = this.state;
@@ -2181,12 +2328,7 @@ class Component extends DCLogic {
     };
     const inTurma = s => !st.relTurma || s.turma === st.relTurma;
     const inTipoEnsino = s => !st.relTipoEnsino || s.tipoEnsino === st.relTipoEnsino;
-    const escolaAtual = this.ESCOLAS[0].escola, ureAtual = this.ESCOLAS[0].ure;
-    const inEscopo = s => {
-      if (st.perfil === 'SUPLAN_DIMAV_COVESC') return (!st.relUre || s.ure === st.relUre) && (!st.relEscola || s.escola === st.relEscola);
-      if (st.perfil === 'URE') return s.ure === ureAtual && (!st.relEscola || s.escola === st.relEscola);
-      return s.escola === escolaAtual;
-    };
+    const inEscopo = s => this.escopoFiltro(s);
     const showEscolaCol = st.perfil === 'URE' || st.perfil === 'SUPLAN_DIMAV_COVESC';
     if (t === 'emitidos') {
       const cols = ['Nome do Aluno','RA','Tipo de Ensino','Nº de Publicação','Data de Emissão','Status'];
@@ -2216,7 +2358,7 @@ class Component extends DCLogic {
       const cols = ['Aluno / RA','Ano','Tipo de Ensino','Nº de Publicação','Data de Emissão','Vínculo'];
       if (showEscolaCol) cols.splice(2, 0, 'Escola');
       return { cols, rows: st.students.filter(s => s.publicacao && inRange(s) && inTurma(s) && inTipoEnsino(s) && inEscopo(s)).map(s => {
-        const r = [s.nome + ' - ' + s.ra, '2022', s.tipoEnsino, s.publicacao, s.dataEmissao || '-', 'Vinculada ao Histórico Escolar'];
+        const r = [s.nome + ' - ' + s.ra, s.dataEmissao ? s.dataEmissao.slice(-4) : '-', s.tipoEnsino, s.publicacao, s.dataEmissao || '-', 'Vinculada ao Histórico Escolar'];
         if (showEscolaCol) r.splice(2, 0, s.escola); return r;
       }) };
     }
@@ -2234,6 +2376,8 @@ class Component extends DCLogic {
     const bg = i => (i % 2 ? '#eef4fb' : '#ffffff');
 
     v.perfil = st.perfil;
+    v.ano = st.ano; v.onAno = e => this.setState({ ano: e.target.value });
+    v.filtro = st.filtro; v.onFiltro = e => this.setState({ filtro: e.target.value });
     v.onPerfil = e => this.setState({ perfil: e.target.value, batch: false, selected: [], em: null, doc: null, ret: null, se: null });
     v.crumb = st.screen === 'publica' ? 'Consulta Pública' : (st.screen === 'parametro' ? 'Parâmetro do Histórico Escolar' : (st.screen === 'relatorio' ? 'Relatório - Histórico Escolar' : 'Histórico Escolar'));
     v.isHistorico = st.screen === 'historico';
@@ -2335,8 +2479,9 @@ class Component extends DCLogic {
         sel: st.selected.indexOf(s.id) >= 0, onSel: () => this.toggleSel(s.id),
         onConsulta: () => this.openDoc(s, 'consulta')
       };
-      act(r, 'emissao', s.status !== 'Emitido' && this.can('Emitir/Iniciar Elaboração'),
-        'Emissão', s.status === 'Emitido' ? 'documento emitido — use Retificar para alterar' : 'ação não parametrizada para o seu perfil',
+      const emBlocked = ['Emitido', 'Retificação Reprovada', 'Aprovar Retificação', 'Aguardando Aprovação', 'Aguardando Validação'].indexOf(s.status) >= 0;
+      act(r, 'emissao', !emBlocked && this.can('Emitir/Iniciar Elaboração'),
+        'Emissão', emBlocked ? 'documento em ' + s.status + ' — indisponível para edição direta' : 'ação não parametrizada para o seu perfil',
         () => this.openEmissao(s));
       act(r, 'aprovar', isDir && s.status === 'Aguardando Aprovação' && this.can('Aprovar Emissão'),
         'Aprovar Emissão', s.status === 'Emitido' ? 'documento já emitido' : 'status atual é ' + s.status,
@@ -2349,9 +2494,12 @@ class Component extends DCLogic {
         () => this.setState({ se: { id: s.id, just: '', arq: 'Nenhum arquivo escolhido' } }), '#d9534f');
       act(r, 'aprovarRet', isSup && s.status === 'Aprovar Retificação' && this.can('Aprovar Retificação'),
         'Aprovar Retificação', 'não há retificação pendente', () => this.openDoc(s, 'retificacao'));
-      act(r, 'retificar', isGOE && s.status === 'Emitido' && this.can('Retificar Histórico'),
+      act(r, 'retificar', isGOE && (s.status === 'Emitido' || s.status === 'Retificação Reprovada') && this.can('Retificar Histórico'),
         'Retificar', 'disponível apenas para documento Emitido',
         () => this.setState({ ret: { id: s.id, tipo: 'nota', comp: '', ano: 0, novaNota: '', just: '', arq: 'Nenhum arquivo escolhido', arqFile: null } }));
+      const docRet = this.getDoc(s.id);
+      r.retificarReprovada = s.status === 'Retificação Reprovada';
+      if (r.retificarReprovada && r.retificarTitle) r.retificarTitle = 'Retificação anterior reprovada em ' + docRet.reprovacaoData + ' — ' + docRet.reprovacaoMotivo;
       return r;
     });
     v.pageRows = v.rows.slice((curPage - 1) * pageSize, (curPage - 1) * pageSize + pageSize);
@@ -2367,11 +2515,16 @@ class Component extends DCLogic {
 
     // emissão
     v.emOpen = !!st.em;
-    v.anos = this.ANOS.map(([ano, serie], i) => ({ ano, serie, onPencil: () => { const isOpen = st.em.yearOpen === i; const closing = isOpen && !st.em._notasYearDirty; this.setState({ em: Object.assign({}, st.em, { yearOpen: closing ? -1 : i, _notasYearDirty: false }) }); } }));
+    {
+      const openId = (st.em && st.em.id) || (st.doc && st.doc.id);
+      const anosSrc = openId ? this.getDoc(openId).estudos.map(e => [e.ano, e.serie]) : this.ANOS;
+      v.anos = anosSrc.map(([ano, serie], i) => ({ ano, serie, onPencil: () => { const isOpen = st.em.yearOpen === i; const closing = isOpen && !st.em._notasYearDirty; this.setState({ em: Object.assign({}, st.em, { yearOpen: closing ? -1 : i, _notasYearDirty: false }) }); } }));
+    }
     if (st.em) {
       const s = st.students.find(x => x.id === st.em.id), d = this.getDoc(st.em.id);
       v.emNome = s.nome; v.emNomeSocial = ''; v.emRa = s.ra + ' -' + s.dig + ' SP';
       v.emNasc = s.nasc; v.emDocLabel = s.docLabel; v.emDoc = s.doc;
+      v.emDevolMotivo = d.devolMotivo || ''; v.emDevolPor = d.devolPor || ''; v.emDevolData = d.devolData || '';
       v.tabEstDone = !!d.estSaved; v.tabNotasDone = !!d.notasSaved; v.tabObsDone = !!d.obsSaved;
       v.closeEm = () => this.closeEmissao();
       v.onFichaAluno = e => { e.preventDefault(); this.toast('Redirecionando para a Ficha do Aluno para correção dos dados pessoais.'); };
@@ -2383,9 +2536,9 @@ class Component extends DCLogic {
       v.onTabNotas = () => this.changeTab('notas');
       v.onTabObs = () => this.changeTab('obs');
       v.showReclass = !!s.reclass && v.tabEst;
-      v.reclassMsg = 'O aluno foi reclassificado do ' + s.reclassDe + ' para o ' + s.reclassPara + ' em ' + s.reclassAno + '. Caso a reclassificação esteja correta,';
+      v.reclassMsg = 'O aluno foi reclassificado do ' + s.reclassDe + ' para o ' + s.reclassPara + ' em ' + s.reclassAno + '.';
       v.showBloqueio = !s.rendimento && !this.can('Enviar sem rendimento aprovado');
-      v.showAddEstudos = v.tabEst && s.reclass && this.can('Adicionar Estudos Realizados');
+      v.showAddEstudos = v.tabEst && !s.reclass && d.estudos.length < this.ANOS.length && this.can('Adicionar Estudos Realizados');
       v.onAddEstudos = e => { if (e && e.preventDefault) e.preventDefault(); this.setState({ ae: { uf: 'SP', mun: '', ano: '', serie: '', rede: '', estab: '', bncc: '', pd: '', ch: '', just: '', arq: 'Nenhum arquivo escolhido' } }); };
       v.showAddDisc = v.tabNotas && this.can('Adicionar Disciplina');
       v.onAddDisc = () => this.setState({ ad: { area: '', comp: '', classif: '' } });
@@ -2402,9 +2555,9 @@ class Component extends DCLogic {
           this.setState({ em: Object.assign({}, st.em, { editRow: (isOpen && !d.estDirty) ? -1 : i }) });
         },
         onDelete: () => { d.estudos.splice(i, 1); d.estDirty = true; d.lastEstChange = 'Exclusão do estudo realizado ' + e.serie + ' (' + e.ano + ').'; this.forceUpdate(); },
-        onBncc: ev => { d.lastEstChange = 'Correção do total de aulas da BNCC no ' + e.serie + ' (' + e.ano + '): de ' + e.bncc + ' para ' + ev.target.value + '.'; e.bncc = ev.target.value; d.estDirty = true; this.forceUpdate(); },
-        onPd: ev => { d.lastEstChange = 'Correção do total de aulas da parte diversificada no ' + e.serie + ' (' + e.ano + '): de ' + e.pd + ' para ' + ev.target.value + '.'; e.pd = ev.target.value; d.estDirty = true; this.forceUpdate(); },
-        onCh: ev => { d.lastEstChange = 'Correção de carga horária no ' + e.serie + ' (' + e.ano + '): de ' + e.ch + ' para ' + ev.target.value + '.'; e.ch = ev.target.value; d.estDirty = true; this.forceUpdate(); }
+        onBncc: ev => { d.lastEstChange = 'Correção do total de aulas da BNCC no ' + e.serie + ' (' + e.ano + '): de ' + e.bncc + ' para ' + ev.target.value + '.'; e.bncc = ev.target.value; d.touchedEst[i + '|bncc'] = true; d.estDirty = true; this.forceUpdate(); },
+        onPd: ev => { d.lastEstChange = 'Correção do total de aulas da parte diversificada no ' + e.serie + ' (' + e.ano + '): de ' + e.pd + ' para ' + ev.target.value + '.'; e.pd = ev.target.value; d.touchedEst[i + '|pd'] = true; d.estDirty = true; this.forceUpdate(); },
+        onCh: ev => { d.lastEstChange = 'Correção de carga horária no ' + e.serie + ' (' + e.ano + '): de ' + e.ch + ' para ' + ev.target.value + '.'; e.ch = ev.target.value; d.touchedEst[i + '|ch'] = true; d.estDirty = true; this.forceUpdate(); }
       }));
       v.showEstJust = d.estDirty;
       v.estJust = d.estJust; v.estSaved = d.estSaved;
@@ -2421,7 +2574,7 @@ class Component extends DCLogic {
         onDelete: () => { d.notas.splice(r, 1); this.audit('Exclusão de disciplina', { justificativa: 'Exige justificativa e anexo conforme parâmetro' }); this.forceUpdate(); },
         cells: n.vals.map((val, c) => ({
           v: val, locked: st.em.yearOpen !== c,
-          onChange: ev => { const val = ev.target.value; if (d.notasSaved) { d.notasDirty = true; d.notasSaved = false; } st.em._notasYearDirty = true; n.vals[c] = val; this.forceUpdate(); }
+          onChange: ev => { const val = ev.target.value; if (d.notasSaved) { d.notasDirty = true; d.notasSaved = false; } st.em._notasYearDirty = true; n.vals[c] = val; d.touchedNotas[n.comp + '|' + c] = true; this.forceUpdate(); }
         }))
       }));
       v.showNotasJust = !!d.notasSavedOnce && d.notasDirty;
@@ -2431,7 +2584,7 @@ class Component extends DCLogic {
       v.onNotasPrimary = () => this.saveNotas();
 
       v.obs = d.obs;
-      v.onObs = ev => { d.obs = ev.target.value; d.obsSaved = false; this.forceUpdate(); };
+      v.onObs = ev => { d.obs = ev.target.value; d.obsSaved = false; d.obsTouched = true; this.forceUpdate(); };
       v.showObsLimpar = !!(d.obs && d.obs.trim());
       v.showObsSalvar = !!(d.obs && d.obs.trim()) && !d.obsSaved;
       v.onObsSalvar = () => { d.obsSaved = true; this.marcarEmElaboracao(st.em.id); this.audit('Salvar observação (Em Elaboração)'); this.toast('Observação salva com sucesso. Documento em status Em elaboração.'); };
@@ -2516,12 +2669,15 @@ class Component extends DCLogic {
       const s = st.students.find(x => x.id === st.doc.id), d = this.getDoc(st.doc.id);
       const titles = { aprovar: 'Aprovar - Histórico Escolar', validar: 'Validar - Histórico Escolar', consulta: 'Consulta - Histórico Escolar', retificacao: 'Aprovar Retificação - Histórico Escolar' };
       v.docTitle = titles[st.doc.mode];
-      v.docNome = s.nome; v.docNasc = s.nasc; v.docRa = s.ra + '-' + s.dig;
-      v.docDocLabel = s.docLabel; v.docDoc = s.doc;
+      v.docNome = (d.personalSnapshot || s).nome; v.docNasc = s.nasc; v.docRa = s.ra + '-' + s.dig;
+      v.docTipoEnsinoLabel = s.tipoEnsino === 'ENSINO MÉDIO' ? 'ENSINO MÉDIO' : 'ENSINO FUNDAMENTAL';
+      v.docDocLabel = (d.personalSnapshot || s).docLabel; v.docDoc = (d.personalSnapshot || s).doc;
       v.docPublicacao = s.publicacao || '____________';
       v.docObs = d.obs;
-      v.docWatermark = s.status !== 'Emitido';
-      v.docAssinado = s.status === 'Emitido' && !!d.assinaturaFinal;
+      const showAlteracaoVal = st.doc.mode !== 'consulta';
+      v.docObsBg = (d.obsTouched && showAlteracaoVal) ? '#fff9c4' : 'transparent';
+      v.docWatermark = s.status !== 'Emitido' && s.status !== 'Retificação Reprovada';
+      v.docAssinado = (s.status === 'Emitido' || s.status === 'Retificação Reprovada') && !!d.assinaturaFinal;
       v.docNaoAssinado = !v.docAssinado;
       v.docAssinaturaId = d.assinaturaFinal ? d.assinaturaFinal.id : '';
       v.docAssinaturaData = d.assinaturaFinal ? d.assinaturaFinal.data : '';
@@ -2536,12 +2692,14 @@ class Component extends DCLogic {
       v.docHasVersoes = v.docVersoes.length > 0;
       v.docShowDecision = st.doc.mode !== 'consulta';
       v.docDevol = st.doc.devol;
+      v.docDevolPlaceholder = st.doc.mode === 'retificacao' ? 'Justificativa de reprovação' : 'Justificativa de devolução';
       v.onDocDevol = e => this.setState({ doc: Object.assign({}, st.doc, { devol: e.target.value }) });
       v.docAprovarLabel = st.doc.mode === 'validar' ? 'Validar' : 'Aprovar';
       v.docAprovarDisabled = !!st.doc.devol.trim();
       v.docAprovarBg = st.doc.devol.trim() ? '#a9c9e3' : '#459ad6';
       v.onDocAprovar = () => { if (!st.doc.devol.trim()) this.docDecision(); };
-      v.onDocDevolver = () => this.devolver();
+      v.onDocDevolver = () => { if (st.doc.mode === 'retificacao') this.reprovarRetificacao(); else this.devolver(); };
+      v.docDevolverLabel = st.doc.mode === 'retificacao' ? 'Reprovar' : 'Devolver';
       v.closeDoc = () => this.setState({ doc: null, mods: false });
       v.mods = d.mods.map(m => ({ secao: m.secao, usuario: m.usuario, login: m.login, perfil: m.perfil, descricao: m.descricao, justificativa: m.justificativa, data: m.data, arq: m.arq, hasArq: !!(m.arq && m.arq !== 'Nenhum arquivo escolhido'), onDownload: e => { e.preventDefault(); this.downloadArq(m); } }));
       v.modsEmpty = d.mods.length === 0;
@@ -2563,6 +2721,7 @@ class Component extends DCLogic {
       const s = st.students.find(x => x.id === st.ret.id), d = this.getDoc(st.ret.id);
       const ret = st.ret;
       v.retNome = s.nome; v.retNasc = s.nasc; v.retRa = s.ra + '-' + s.dig;
+      v.retReprovada = !!d.reprovacaoMotivo; v.retReprovadaMotivo = d.reprovacaoMotivo || ''; v.retReprovadaData = d.reprovacaoData || ''; v.retReprovadaPor = d.reprovacaoPor || '';
       v.closeRet = () => this.setState({ ret: null });
       const set = patch => this.setState({ ret: Object.assign({}, ret, patch) });
       v.retIsNota = ret.tipo === 'nota'; v.retIsPessoal = ret.tipo === 'pessoal';
@@ -2584,7 +2743,7 @@ class Component extends DCLogic {
       };
       v.retComps = d.notas.map(n => ({ v: n.comp }));
       v.retComp = ret.comp; v.onRetComp = e => set({ comp: e.target.value });
-      v.retAnos = this.ANOS.map(([ano], i) => ({ v: i, ano }));
+      v.retAnos = d.estudos.map((e, i) => ({ v: i, ano: e.ano }));
       v.retAno = ret.ano; v.onRetAno = e => set({ ano: Number(e.target.value) });
       const notaSel = d.notas.find(x => x.comp === ret.comp);
       v.retNotaAtual = notaSel ? (notaSel.vals[ret.ano] || '-') : '-';
@@ -2615,6 +2774,8 @@ class Component extends DCLogic {
       const s = st.students.find(x => x.id === st.se.id);
       v.seNome = s.nome; v.seNasc = s.nasc; v.seDocLabel = s.docLabel; v.seDoc = s.doc;
       v.seRa = s.ra + '-' + s.dig; v.sePublicacao = s.publicacao;
+      v.seTipoEnsino = s.tipoEnsino;
+      v.seAnoConclusao = s.dataEmissao ? s.dataEmissao.slice(-4) : '-';
       v.seJust = st.se.just; v.onSeJust = e => { st.se.just = e.target.value; this.forceUpdate(); };
       v.seArq = st.se.arq; v.onSeArq = e => { st.se.arq = (e.target.files && e.target.files[0]) ? e.target.files[0].name : 'anexo.pdf'; this.forceUpdate(); };
       v.closeSe = () => this.setState({ se: null });
@@ -2707,11 +2868,11 @@ class Component extends DCLogic {
     v.relEmpty = rel.rows.length === 0;
     v.relCount = rel.rows.length;
     v.relUsuario = this.perfilNome();
-    v.relGeradoEm = '27/08/2026 às ' + new Date().toTimeString().slice(0, 5);
-    const emitidosCount = st.students.filter(s => s.status === 'Emitido').length;
-    const retCount = st.students.filter(s => s.status === 'Aprovar Retificação' || s.docLabel === 'CIN').length;
-    const semEfeitoCount = st.students.filter(s => s.status === 'Sem Efeito').length;
-    const pendCount = st.students.filter(s => ['Aguardando Aprovação', 'Aguardando Validação'].indexOf(s.status) >= 0).length;
+    v.relGeradoEm = this.now();
+    const emitidosCount = st.students.filter(s => s.status === 'Emitido' && this.escopoFiltro(s)).length;
+    const retCount = st.students.filter(s => (s.status === 'Aprovar Retificação' || s.docLabel === 'CIN') && this.escopoFiltro(s)).length;
+    const semEfeitoCount = st.students.filter(s => s.status === 'Sem Efeito' && this.escopoFiltro(s)).length;
+    const pendCount = st.students.filter(s => ['Aguardando Aprovação', 'Aguardando Validação'].indexOf(s.status) >= 0 && this.escopoFiltro(s)).length;
     v.relCards = [
       { label: 'Emitidos', value: emitidosCount, color: '#2e8b47' },
       { label: 'Retificados', value: retCount, color: '#c98a1e' },
@@ -2742,7 +2903,7 @@ class Component extends DCLogic {
     v.onCpClear = () => { cp.doc = ''; cp.docDig = ''; cp.docUf = 'SP'; cp.cin = ''; cp.ra = ''; cp.nasc = ''; cp.tipoEnsino = ''; cp.cod = ''; cp.searched = false; this.forceUpdate(); };
     v.cpSearched = cp.searched;
     const pubList = st.students.filter(s => {
-      if (s.status !== 'Emitido' && s.status !== 'Sem Efeito') return false;
+      if (s.status !== 'Emitido' && s.status !== 'Sem Efeito' && s.status !== 'Retificação Reprovada') return false;
       if (!cp.searched) return false;
       if (cp.buscar === 'RG') return s.docLabel === 'RG' && s.doc === (cp.doc.trim() + '-' + (cp.docDig || '').trim());
       if (cp.buscar === 'CIN') return s.docLabel === 'CIN' && s.doc.replace(/\D/g, '') === cp.cin.trim();
