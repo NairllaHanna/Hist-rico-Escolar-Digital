@@ -19,6 +19,9 @@
 <body>
 <x-dc>
 <helmet>
+<script src="./sed-perfis.js"></script>
+<script src="./sed-escolas.js"></script>
+<script src="./sed-mass-students.js"></script>
 <style>
   *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
   body{background:#fff;font-family:Verdana,Arial,sans-serif;color:#222}
@@ -48,6 +51,11 @@
   input,select,textarea,button{font-family:Verdana,Arial,sans-serif}
   input:disabled{background:#eee;color:#555}
   ::placeholder{color:#9a9a9a}
+  @media print {
+    body *{visibility:hidden}
+    #doc-paper,#doc-paper *{visibility:visible}
+    #doc-paper{position:fixed;inset:0;margin:0;box-shadow:none;border:none;max-width:none}
+  }
 </style>
 </helmet>
 
@@ -68,6 +76,8 @@
           <option value="GOE">Gerente de Organização Escolar</option>
           <option value="DIRETOR">Diretor de Escola</option>
           <option value="SUPERVISOR">Supervisor de Ensino</option>
+          <option value="URE">URE - Dirigente de Ensino</option>
+          <option value="SUPLAN_DIMAV_COVESC">SUPLAN - DIMAV - COVESC</option>
         </select>
       </div>
     </div>
@@ -154,8 +164,9 @@
               </sc-if>
               <sc-if value="{{ isFiltros }}" hint-placeholder-val="{{ true }}">
                 <select value="{{ ure }}" onChange="{{ onUre }}" style="height:34px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#fff;width:130px">
-                  <option value="LESTE 3">LESTE 3</option>
-                  <option value="CENTRO">CENTRO</option>
+                  <sc-for list="{{ ureOptions }}" as="u" hint-placeholder-count="3">
+                    <option value="{{ u.v }}">{{ u.v }}</option>
+                  </sc-for>
                 </select>
               </sc-if>
               <sc-if value="{{ isFiltros }}" hint-placeholder-val="{{ true }}">
@@ -163,7 +174,9 @@
               </sc-if>
               <sc-if value="{{ isFiltros }}" hint-placeholder-val="{{ true }}">
                 <select value="{{ escola }}" onChange="{{ onEscola }}" style="height:34px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#fff;width:290px">
-                  <option value="CESAR DONATO CALABREZ - 902627">CESAR DONATO CALABREZ - 902627</option>
+                  <sc-for list="{{ escolaOptions }}" as="e" hint-placeholder-count="3">
+                    <option value="{{ e.v }}">{{ e.v }}</option>
+                  </sc-for>
                 </select>
               </sc-if>
               <sc-if value="{{ isFiltros }}" hint-placeholder-val="{{ true }}">
@@ -206,7 +219,7 @@
 
             <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:18px">
               <button onClick="{{ doSearch }}" style="display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer" style-hover="background:#3a88c0"><svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>Pesquisar</button>
-              <button onClick="{{ doClear }}" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:#fff;color:#2e6da4;border:1px solid #a8c9e4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer" style-hover="background:#eff7fd;border-color:#459ad6"><svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>Limpar</button>
+              <button onClick="{{ doClear }}" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:#fff;color:#2e6da4;border:1px solid #a8c9e4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer" style-hover="background:#eff7fd;border-color:#459ad6"><svg viewBox="0 0 24 24" width="12" height="12" fill="#2e6da4"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>Limpar</button>
             </div>
           </div>
 
@@ -245,17 +258,16 @@
                 <thead>
                   <tr>
                     <sc-if value="{{ colSel }}" hint-placeholder-val="{{ true }}"><th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Selecionar</th></sc-if>
-                    <th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Nome do Aluno</th>
-                    <th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">RA</th>
+                    <th onClick="{{ onColSortNome }}" style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4;position:sticky;left:0;z-index:2;cursor:pointer;white-space:nowrap">Nome do Aluno<span style="opacity:{{ colSortNomeOpacity }};font-size:9px;margin-left:4px">{{ colSortNomeArrow }}</span></th>
+                    <th onClick="{{ onColSortRa }}" style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4;cursor:pointer;white-space:nowrap">RA<span style="opacity:{{ colSortRaOpacity }};font-size:9px;margin-left:4px">{{ colSortRaArrow }}</span></th>
                     <th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Díg. RA</th>
-                    <th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Data de Nacimento</th>
-                    <th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Tipo de Ensino</th>
+                    <th onClick="{{ onColSortNasc }}" style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4;cursor:pointer;white-space:nowrap">Data de Nascimento<span style="opacity:{{ colSortNascOpacity }};font-size:9px;margin-left:4px">{{ colSortNascArrow }}</span></th>
+                    <th onClick="{{ onColSortTipo }}" style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4;cursor:pointer;white-space:nowrap">Tipo de Ensino<span style="opacity:{{ colSortTipoOpacity }};font-size:9px;margin-left:4px">{{ colSortTipoArrow }}</span></th>
                     <sc-if value="{{ colEmissao }}" hint-placeholder-val="{{ true }}"><th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Emissão</th></sc-if>
                     <th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">{{ colConsultaLabel }}</th>
                     <sc-if value="{{ colAprovar }}" hint-placeholder-val="{{ true }}"><th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Aprovar Emissão</th></sc-if>
                     <sc-if value="{{ colValidar }}" hint-placeholder-val="{{ true }}"><th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Validar Emissão</th></sc-if>
-                    <th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Status</th>
-                    <sc-if value="{{ colUltima }}" hint-placeholder-val="{{ true }}"><th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Última Movimentação</th></sc-if>
+                    <th onClick="{{ onColSortStatus }}" style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4;cursor:pointer;white-space:nowrap">Status<span style="opacity:{{ colSortStatusOpacity }};font-size:9px;margin-left:4px">{{ colSortStatusArrow }}</span></th>
                     <sc-if value="{{ colTornar }}" hint-placeholder-val="{{ true }}"><th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Tornar Sem Efeito</th></sc-if>
                     <sc-if value="{{ colAprovarRet }}" hint-placeholder-val="{{ true }}"><th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Aprovar Retificação</th></sc-if>
                     <sc-if value="{{ colRetificar }}" hint-placeholder-val="{{ true }}"><th style="padding:9px 8px;background:#4a9ad6;color:#fff;font:700 10.5px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Retificar</th></sc-if>
@@ -265,7 +277,7 @@
                   <sc-for list="{{ pageRows }}" as="row" hint-placeholder-count="4">
                     <tr style="background:{{ row.bg }}">
                       <sc-if value="{{ colSel }}" hint-placeholder-val="{{ true }}"><td style="padding:5px 6px;font:11px Verdana,Arial,sans-serif;border:1px solid #ddd;text-align:center"><input type="checkbox" checked="{{ row.sel }}" onChange="{{ row.onSel }}" style="cursor:pointer"/></td></sc-if>
-                      <td style="padding:5px 8px;font:11px Verdana,Arial,sans-serif;border:1px solid #ddd;text-align:center;color:#333">{{ row.nome }}</td>
+                      <td style="padding:5px 8px;font:11px Verdana,Arial,sans-serif;border:1px solid #ddd;text-align:center;color:#333;position:sticky;left:0;z-index:1;background:{{ row.bg }}">{{ row.nome }}</td>
                       <td style="padding:8px 8px;font:11.5px Verdana,Arial,sans-serif;border:1px solid #e6e6e6;text-align:center;color:#333">{{ row.ra }}</td>
                       <td style="padding:8px 8px;font:11.5px Verdana,Arial,sans-serif;border:1px solid #e6e6e6;text-align:center;color:#333">{{ row.dig }}</td>
                       <td style="padding:8px 8px;font:11.5px Verdana,Arial,sans-serif;border:1px solid #e6e6e6;text-align:center;color:#333">{{ row.nasc }}</td>
@@ -291,7 +303,6 @@
                       <td style="padding:6px 8px;border:1px solid #e6e6e6;text-align:center">
                         <span style="display:inline-block;padding:4px 11px;border-radius:11px;white-space:nowrap;font:600 10.5px Verdana,Arial,sans-serif;letter-spacing:.01em;background:{{ row.statusBg }};color:{{ row.statusFg }}">{{ row.status }}</span>
                       </td>
-                      <sc-if value="{{ colUltima }}" hint-placeholder-val="{{ true }}"><td style="padding:5px 6px;font:11px Verdana,Arial,sans-serif;border:1px solid #ddd;text-align:center;color:#3f8ecb">{{ row.ultima }}</td></sc-if>
                       <sc-if value="{{ colTornar }}" hint-placeholder-val="{{ true }}">
                         <td style="padding:6px 8px;border:1px solid #e6e6e6;text-align:center">
                           <span onClick="{{ row.onTornar }}" title="{{ row.tornarTitle }}" style="display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;flex:0 0 32px;border-radius:50%;border:1px solid {{ row.tornarBorder }};background:{{ row.tornarBg }};cursor:{{ row.tornarCursor }}"><svg viewBox="0 0 24 24" width="15" height="15" fill="{{ row.tornarFill }}"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 13.59L15.59 17 12 13.41 8.41 17 7 15.59 10.59 12 7 8.41 8.41 7 12 10.59 15.59 7 17 8.41 13.41 12 17 15.59z"/></svg></span>
@@ -344,33 +355,49 @@
         <div>
           <h1 style="font:700 30px/1.2 Arial,Helvetica,sans-serif;color:#3f8ecb;margin:6px 0 8px">Parâmetro do Histórico Escolar</h1>
           <p style="font:12px/1.5 Verdana,Arial,sans-serif;color:#555;margin-bottom:16px;max-width:900px">Gestão do Sistema &gt; Configurações &amp; Parâmetros &gt; Parâmetros de Sistema - SCA &gt; Configuração de Funcionalidade x Perfil. As chaves marcadas liberam a ação para o perfil correspondente.</p>
-          <table style="width:100%;border-collapse:collapse;background:#fff">
-            <thead>
-              <tr>
-                <th style="padding:6px 8px;background:#4a9ad6;color:#fff;font:700 11px Verdana,Arial,sans-serif;border:1px solid #3f8cc4;text-align:left">Chave / Ação parametrizável</th>
-                <th style="padding:6px 8px;background:#4a9ad6;color:#fff;font:700 11px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">GOE / AOE / Secretário</th>
-                <th style="padding:6px 8px;background:#4a9ad6;color:#fff;font:700 11px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Diretor de Escola</th>
-                <th style="padding:6px 8px;background:#4a9ad6;color:#fff;font:700 11px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">Supervisor de Ensino</th>
-              </tr>
-            </thead>
-            <tbody>
-              <sc-for list="{{ paramRows }}" as="p" hint-placeholder-count="6">
-                <tr style="background:{{ p.bg }}">
-                  <td style="padding:6px 8px;font:11.5px Verdana,Arial,sans-serif;border:1px solid #ddd;color:#333">{{ p.key }}</td>
-                  <td style="padding:6px 8px;border:1px solid #ddd;text-align:center"><input type="checkbox" checked="{{ p.goe }}" onChange="{{ p.onGoe }}" style="cursor:pointer"/></td>
-                  <td style="padding:6px 8px;border:1px solid #ddd;text-align:center"><input type="checkbox" checked="{{ p.dir }}" onChange="{{ p.onDir }}" style="cursor:pointer"/></td>
-                  <td style="padding:6px 8px;border:1px solid #ddd;text-align:center"><input type="checkbox" checked="{{ p.sup }}" onChange="{{ p.onSup }}" style="cursor:pointer"/></td>
-                </tr>
+          <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:16px">
+            <sc-for list="{{ paramProfiles }}" as="pf" hint-placeholder-count="3">
+              <span onClick="{{ pf.onSelect }}" style="display:inline-flex;align-items:center;gap:8px;padding:9px 16px;border-radius:20px;font:700 12px Verdana,Arial,sans-serif;cursor:pointer;background:{{ pf.tabBg }};color:{{ pf.tabFg }};border:1px solid {{ pf.tabBorder }};white-space:nowrap">{{ pf.label }}<sc-if value="{{ pf.custom }}" hint-placeholder-val="{{ false }}"><span onClick="{{ pf.onRemove }}" title="Remover perfil" style="opacity:.7">✕</span></sc-if></span>
+            </sc-for>
+            <div style="display:flex;align-items:center;gap:8px;margin-left:auto">
+              <input value="{{ novoPerfilNome }}" onChange="{{ onNovoPerfilNome }}" list="sed-perfis-list" placeholder="Nome do perfil (perfis da SED)" style="height:34px;width:260px;padding:4px 10px;border:1px solid #ccc;border-radius:4px;font:12px Arial,Verdana,sans-serif"></input>
+              <datalist id="sed-perfis-list">
+                <sc-for list="{{ sedPerfisOptions }}" as="op" hint-placeholder-count="0">
+                  <option value="{{ op.v }}"></option>
+                </sc-for>
+              </datalist>
+              <button onClick="{{ onAddPerfil }}" style="padding:7px 14px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer;white-space:nowrap">+ Adicionar Perfil</button>
+            </div>
+          </div>
+
+          <div style="border:1px solid #e6e6e6;border-radius:4px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.06);overflow:hidden">
+            <div style="display:grid;grid-template-columns:1fr 110px 150px 110px;background:#eef4fa;border-bottom:1px solid #dbe4ec;padding:10px 18px;font:700 11px Verdana,Arial,sans-serif;color:#2e6da4">
+              <span>Ação — perfil selecionado: {{ paramPerfilLabel }}</span>
+              <span style="text-align:center">Visualizar</span>
+              <span style="text-align:center">Editar / Adicionar</span>
+              <span style="text-align:center">Excluir</span>
+            </div>
+            <sc-for list="{{ paramSections }}" as="sec" hint-placeholder-count="3">
+              <div style="padding:8px 18px;background:#f8fafb;font:700 10.5px Verdana,Arial,sans-serif;color:#777;letter-spacing:.03em;border-bottom:1px solid #eee;border-top:1px solid #eee">{{ sec.nome }}</div>
+              <sc-for list="{{ sec.rows }}" as="p" hint-placeholder-count="3">
+                <div style="display:grid;grid-template-columns:1fr 110px 150px 110px;align-items:center;padding:9px 18px;border-bottom:1px solid #f0f0f0;font:12px Arial,Verdana,sans-serif;color:#333" style-hover="background:#fafcfe">
+                  <span>{{ p.key }}</span>
+                  <span style="text-align:center"><input type="checkbox" checked="{{ p.view }}" onChange="{{ p.onView }}" style="cursor:pointer;width:16px;height:16px"/></span>
+                  <span style="text-align:center"><input type="checkbox" checked="{{ p.edit }}" onChange="{{ p.onEdit }}" style="cursor:pointer;width:16px;height:16px"/></span>
+                  <span style="text-align:center"><input type="checkbox" checked="{{ p.del }}" onChange="{{ p.onDel }}" style="cursor:pointer;width:16px;height:16px"/></span>
+                </div>
               </sc-for>
-            </tbody>
-          </table>
+            </sc-for>
+          </div>
         </div>
       </sc-if>
 
       <sc-if value="{{ isRelatorio }}" hint-placeholder-val="{{ false }}">
         <div>
           <h1 style="font:700 30px/1.2 Arial,Helvetica,sans-serif;color:#3f8ecb;margin:6px 0 18px">Relatório - Histórico Escolar</h1>
-          <div style="border:1px solid #e6e6e6;border-radius:4px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.06);padding:20px 24px">
+          <div style="background:#eef4fa;border:1px solid #cfe0ee;border-radius:4px;padding:8px 14px;margin-bottom:14px;font:12px Verdana,Arial,sans-serif;color:#2e6da4">Nível de visão: <strong>{{ relNivelLabel }}</strong></div>
+
+          <div style="border:1px solid #e6e6e6;border-radius:4px;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.06);padding:22px 26px">
             <div class="filter-grid" style="display:grid;grid-template-columns:230px auto;gap:11px 12px;align-items:center;justify-content:center">
               <label style="font:700 13px Arial,Verdana,sans-serif;color:#333;text-align:right">Relatório:</label>
               <select value="{{ relTipo }}" onChange="{{ onRelTipo }}" style="height:34px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#fff;width:330px">
@@ -381,30 +408,109 @@
                 <option value="acoes">Ações por usuário</option>
                 <option value="assinaturas">Assinaturas GOV.BR</option>
               </select>
-              <label style="font:700 13px Arial,Verdana,sans-serif;color:#333;text-align:right">Ano Letivo:</label>
-              <input value="{{ ano }}" onChange="{{ onAno }}" style="height:34px;width:80px;padding:6px 10px;border:1px solid #ccc;border-radius:4px;font:12.5px Arial,Verdana,sans-serif" style-focus="border-color:#459ad6;box-shadow:0 0 0 2px rgba(69,154,214,.15);outline:none"/>
+              <label style="font:700 13px Arial,Verdana,sans-serif;color:#333;text-align:right">Emissão de:</label>
+              <input type="date" value="{{ relDe }}" onChange="{{ onRelDe }}" style="height:34px;width:150px;padding:4px 8px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif"></input>
+              <label style="font:700 13px Arial,Verdana,sans-serif;color:#333;text-align:right">até:</label>
+              <input type="date" value="{{ relAte }}" onChange="{{ onRelAte }}" style="height:34px;width:150px;padding:4px 8px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif"></input>
+              <sc-if value="{{ relShowUre }}" hint-placeholder-val="{{ false }}">
+                <label style="font:700 13px Arial,Verdana,sans-serif;color:#333;text-align:right">Diretoria de Ensino (URE):</label>
+              </sc-if>
+              <sc-if value="{{ relShowUre }}" hint-placeholder-val="{{ false }}">
+                <div style="position:relative;width:330px">
+                  <button onClick="{{ onRelUreToggle }}" style="height:34px;width:100%;padding:2px 10px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#fff;color:#333;display:flex;align-items:center;justify-content:space-between;cursor:pointer;text-align:left">
+                    <span>{{ relUreLabel }}</span><span style="color:#777">▾</span>
+                  </button>
+                  <sc-if value="{{ relUreOpen }}" hint-placeholder-val="{{ false }}">
+                    <div style="position:absolute;top:36px;left:0;width:100%;background:#fff;border:1px solid #bbb;border-radius:3px;box-shadow:0 4px 12px rgba(0,0,0,.15);z-index:50">
+                      <input value="{{ relUreSearch }}" onChange="{{ onRelUreSearch }}" placeholder="Buscar..." style="width:100%;height:32px;padding:4px 8px;border:0;border-bottom:1px solid #ddd;font:12px Arial,Verdana,sans-serif;box-sizing:border-box"></input>
+                      <div style="max-height:230px;overflow-y:auto">
+                        <div onClick="{{ onRelUreClear }}" style="padding:7px 10px;background:#2e6da4;color:#fff;font:700 12px Arial,Verdana,sans-serif;cursor:pointer">SELECIONE...</div>
+                        <sc-for list="{{ relUreOptions }}" as="u" hint-placeholder-count="6">
+                          <div onClick="{{ u.onPick }}" style="padding:6px 10px;font:12px Arial,Verdana,sans-serif;color:#2e6da4;cursor:pointer" style-hover="background:#eef4fa">{{ u.v }}</div>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-if>
+              <sc-if value="{{ relShowEscola }}" hint-placeholder-val="{{ false }}">
+                <label style="font:700 13px Arial,Verdana,sans-serif;color:#333;text-align:right">Escola:</label>
+              </sc-if>
+              <sc-if value="{{ relShowEscola }}" hint-placeholder-val="{{ false }}">
+                <div style="position:relative;width:330px">
+                  <button onClick="{{ onRelEscolaToggle }}" style="height:34px;width:100%;padding:2px 10px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#fff;color:#333;display:flex;align-items:center;justify-content:space-between;cursor:pointer;text-align:left">
+                    <span>{{ relEscolaLabel }}</span><span style="color:#777">▾</span>
+                  </button>
+                  <sc-if value="{{ relEscolaOpen }}" hint-placeholder-val="{{ false }}">
+                    <div style="position:absolute;top:36px;left:0;width:100%;background:#fff;border:1px solid #bbb;border-radius:3px;box-shadow:0 4px 12px rgba(0,0,0,.15);z-index:50">
+                      <input value="{{ relEscolaSearch }}" onChange="{{ onRelEscolaSearch }}" placeholder="{{ relEscolasPlaceholder }}" style="width:100%;height:32px;padding:4px 8px;border:0;border-bottom:1px solid #ddd;font:12px Arial,Verdana,sans-serif;box-sizing:border-box"></input>
+                      <div style="max-height:230px;overflow-y:auto">
+                        <div onClick="{{ onRelEscolaClear }}" style="padding:7px 10px;background:#2e6da4;color:#fff;font:700 12px Arial,Verdana,sans-serif;cursor:pointer">SELECIONE...</div>
+                        <sc-for list="{{ relEscolaOptions }}" as="e" hint-placeholder-count="6">
+                          <div onClick="{{ e.onPick }}" style="padding:6px 10px;font:12px Arial,Verdana,sans-serif;color:#2e6da4;cursor:pointer" style-hover="background:#eef4fa">{{ e.v }}</div>
+                        </sc-for>
+                      </div>
+                    </div>
+                  </sc-if>
+                </div>
+              </sc-if>
+              <label style="font:700 13px Arial,Verdana,sans-serif;color:#333;text-align:right">Tipo de Ensino:</label>
+              <select value="{{ relTipoEnsino }}" onChange="{{ onRelTipoEnsino }}" style="height:34px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#fff;width:330px">
+                <option value="">Todos</option>
+                <option value="ENSINO FUNDAMENTAL DE 9 ANOS">ENSINO FUNDAMENTAL DE 9 ANOS</option>
+                <option value="ENSINO MÉDIO">ENSINO MÉDIO</option>
+              </select>
+              <label style="font:700 13px Arial,Verdana,sans-serif;color:#333;text-align:right">Turma:</label>
+              <select value="{{ relTurma }}" onChange="{{ onRelTurma }}" style="height:34px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#fff;width:330px">
+                <option value="">SELECIONE...</option>
+                <sc-for list="{{ relTurmas }}" as="t" hint-placeholder-count="4">
+                  <option value="{{ t.v }}">{{ t.v }}</option>
+                </sc-for>
+              </select>
+            </div>
+            <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:18px">
+              <button onClick="{{ onRelPesquisar }}" style="display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer"><svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>Pesquisar</button>
+              <button onClick="{{ onRelLimpar }}" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:#fff;color:#2e6da4;border:1px solid #a8c9e4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer"><svg viewBox="0 0 24 24" width="12" height="12" fill="#2e6da4"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>Limpar</button>
+              <button onClick="{{ onRelExportar }}" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:#2e8b47;color:#fff;border:1px solid #256e39;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer"><svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>Exportar</button>
             </div>
           </div>
-          <table style="width:100%;border-collapse:collapse;background:#fff;margin-top:16px">
-            <thead>
-              <tr>
-                <sc-for list="{{ relCols }}" as="c" hint-placeholder-count="4">
-                  <th style="padding:6px 8px;background:#4a9ad6;color:#fff;font:700 11px Verdana,Arial,sans-serif;border:1px solid #3f8cc4">{{ c.v }}</th>
-                </sc-for>
-              </tr>
-            </thead>
-            <tbody>
-              <sc-for list="{{ relRows }}" as="r" hint-placeholder-count="4">
-                <tr style="background:{{ r.bg }}">
-                  <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="4">
-                    <td style="padding:6px 8px;font:11px Verdana,Arial,sans-serif;border:1px solid #ddd;text-align:center;color:#333">{{ c.v }}</td>
+
+          <sc-if value="{{ relSearched }}" hint-placeholder-val="{{ false }}">
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:20px 0">
+              <sc-for list="{{ relCards }}" as="card" hint-placeholder-count="4">
+                <div style="background:#fff;border:1px solid #e6e6e6;border-left:4px solid {{ card.color }};border-radius:4px;padding:14px 16px;box-shadow:0 1px 4px rgba(0,0,0,.05)">
+                  <div style="font:700 26px Arial,sans-serif;color:{{ card.color }}">{{ card.value }}</div>
+                  <div style="font:11.5px Verdana,Arial,sans-serif;color:#666;margin-top:2px">{{ card.label }}</div>
+                </div>
+              </sc-for>
+            </div>
+            <div style="overflow-x:auto">
+            <table style="width:100%;border-collapse:collapse;background:#fff;min-width:640px">
+              <thead>
+                <tr>
+                  <sc-for list="{{ relCols }}" as="c" hint-placeholder-count="4">
+                    <th onClick="{{ c.onSort }}" style="padding:6px 8px;background:#4a9ad6;color:#fff;font:700 11px Verdana,Arial,sans-serif;border:1px solid #3f8cc4;cursor:pointer;white-space:nowrap">{{ c.v }}<span style="opacity:{{ c.opacity }};font-size:9px;margin-left:4px">{{ c.arrow }}</span></th>
                   </sc-for>
                 </tr>
-              </sc-for>
-            </tbody>
-          </table>
-          <sc-if value="{{ relEmpty }}" hint-placeholder-val="{{ false }}">
-            <div style="padding:14px;border:1px solid #ddd;border-top:0;font:12px Verdana,Arial,sans-serif;color:#777;text-align:center">Nenhum registro para este relatório.</div>
+              </thead>
+              <tbody>
+                <sc-for list="{{ relRows }}" as="r" hint-placeholder-count="4">
+                  <tr style="background:{{ r.bg }}">
+                    <sc-for list="{{ r.cells }}" as="c" hint-placeholder-count="4">
+                      <td style="padding:6px 8px;font:11px Verdana,Arial,sans-serif;border:1px solid #ddd;text-align:center;color:#333">{{ c.v }}</td>
+                    </sc-for>
+                  </tr>
+                </sc-for>
+              </tbody>
+            </table>
+            </div>
+            <sc-if value="{{ relEmpty }}" hint-placeholder-val="{{ false }}">
+              <div style="padding:14px;border:1px solid #ddd;border-top:0;font:12px Verdana,Arial,sans-serif;color:#777;text-align:center">Nenhum registro para este relatório.</div>
+            </sc-if>
+            <div style="display:flex;justify-content:space-between;padding:10px 2px;font:11px Verdana,Arial,sans-serif;color:#888">
+              <span>{{ relCount }} registro(s) encontrado(s)</span>
+              <span>Gerado por {{ relUsuario }} em {{ relGeradoEm }}</span>
+            </div>
           </sc-if>
         </div>
       </sc-if>
@@ -429,7 +535,9 @@
               </sc-if>
               <sc-if value="{{ cpIsRG }}" hint-placeholder-val="{{ true }}">
                 <div style="display:flex;gap:8px">
-                  <input value="{{ cpDoc }}" onChange="{{ onCpDoc }}" placeholder="Número do RG" style="height:34px;width:160px;padding:3px 8px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif"/>
+                  <input value="{{ cpDoc }}" onChange="{{ onCpDoc }}" placeholder="Número do RG" style="height:34px;width:160px;padding:3px 8px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif"></input>
+                  <span style="align-self:center;color:#555">-</span>
+                  <input value="{{ cpDocDig }}" onChange="{{ onCpDocDig }}" placeholder="Díg." maxlength="1" style="height:34px;width:48px;padding:3px 8px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif"/>
                   <select value="{{ cpDocUf }}" onChange="{{ onCpDocUf }}" style="height:34px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#fff;width:70px">
                     <option value="SP">SP</option>
                     <option value="MG">MG</option>
@@ -464,8 +572,8 @@
               </div>
             </div>
             <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:18px">
-              <button onClick="{{ onCpSearch }}" style="display:inline-flex;align-items:center;gap:6px;padding:7px 16px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer">Pesquisar</button>
-              <button onClick="{{ onCpClear }}" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:#fff;color:#2e6da4;border:1px solid #a8c9e4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer" style-hover="background:#eff7fd;border-color:#459ad6">Limpar</button>
+              <button onClick="{{ onCpSearch }}" style="display:inline-flex;align-items:center;gap:6px;padding:8px 20px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer"><svg viewBox="0 0 24 24" width="12" height="12" fill="#fff"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>Pesquisar</button>
+              <button onClick="{{ onCpClear }}" style="display:inline-flex;align-items:center;gap:6px;padding:8px 18px;background:#fff;color:#2e6da4;border:1px solid #a8c9e4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer" style-hover="background:#eff7fd;border-color:#459ad6"><svg viewBox="0 0 24 24" width="12" height="12" fill="#2e6da4"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>Limpar</button>
             </div>
           </div>
           <sc-if value="{{ cpSearched }}" hint-placeholder-val="{{ false }}">
@@ -535,9 +643,9 @@
 
         <div style="padding:0 20px 20px">
           <div style="display:flex;align-items:flex-end;gap:6px;flex-wrap:wrap">
-            <div onClick="{{ onTabEst }}" style="padding:9px 20px;border:1px solid #bcd8ee;border-bottom:0;border-radius:3px 3px 0 0;font:12.5px Verdana,Arial,sans-serif;color:#333;cursor:pointer;background:{{ tabEstBg }}">Estudos Realizados</div>
-            <div onClick="{{ onTabNotas }}" style="padding:9px 20px;border:1px solid #bcd8ee;border-bottom:0;border-radius:3px 3px 0 0;font:12.5px Verdana,Arial,sans-serif;color:#333;cursor:pointer;background:{{ tabNotasBg }}">Notas</div>
-            <div onClick="{{ onTabObs }}" style="padding:9px 20px;border:1px solid #bcd8ee;border-bottom:0;border-radius:3px 3px 0 0;font:12.5px Verdana,Arial,sans-serif;color:#333;cursor:pointer;background:{{ tabObsBg }}">Observação</div>
+            <div onClick="{{ onTabEst }}" style="padding:9px 20px;border:1px solid #bcd8ee;border-bottom:0;border-radius:3px 3px 0 0;font:12.5px Verdana,Arial,sans-serif;color:#333;cursor:pointer;background:{{ tabEstBg }};display:flex;align-items:center;gap:6px">Estudos Realizados<sc-if value="{{ tabEstDone }}" hint-placeholder-val="{{ false }}"><span style="color:#2e8b47;font-weight:700">✓</span></sc-if></div>
+            <div onClick="{{ onTabNotas }}" style="padding:9px 20px;border:1px solid #bcd8ee;border-bottom:0;border-radius:3px 3px 0 0;font:12.5px Verdana,Arial,sans-serif;color:#333;cursor:pointer;background:{{ tabNotasBg }};display:flex;align-items:center;gap:6px">Notas<sc-if value="{{ tabNotasDone }}" hint-placeholder-val="{{ false }}"><span style="color:#2e8b47;font-weight:700">✓</span></sc-if></div>
+            <div onClick="{{ onTabObs }}" style="padding:9px 20px;border:1px solid #bcd8ee;border-bottom:0;border-radius:3px 3px 0 0;font:12.5px Verdana,Arial,sans-serif;color:#333;cursor:pointer;background:{{ tabObsBg }};display:flex;align-items:center;gap:6px">Observação<sc-if value="{{ tabObsDone }}" hint-placeholder-val="{{ false }}"><span style="color:#2e8b47;font-weight:700">✓</span></sc-if></div>
             <div style="margin-left:auto;display:flex;gap:8px">
               <sc-if value="{{ showAddEstudos }}" hint-placeholder-val="{{ false }}">
                 <button onClick="{{ onAddEstudos }}" style="padding:6px 13px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:4px;font:11.5px Verdana,Arial,sans-serif;cursor:pointer">+ Adicionar Estudos Realizados</button>
@@ -549,7 +657,7 @@
           </div>
 
           <sc-if value="{{ showReclass }}" hint-placeholder-val="{{ false }}">
-            <div style="margin-top:10px;background:#fcd94a;border:1px solid #e6bf1f;padding:9px 12px;font:11.5px/1.5 Verdana,Arial,sans-serif;color:#3a2f00">{{ reclassMsg }} <a href="#" onClick="{{ onAddEstudos }}"><strong>clique aqui</strong></a> para adicionar os estudos realizados.</div>
+            <div style="margin-top:10px;background:#fcd94a;border:1px solid #e6bf1f;padding:9px 12px;font:11.5px/1.5 Verdana,Arial,sans-serif;color:#3a2f00">{{ reclassMsg }} <a href="#" onClick="{{ onAddEstudos }}"><strong>clique aqui</strong></a> para adicionar os estudos realizados. Caso esteja incorreta, <a href="#" onClick="{{ onFichaAluno }}"><strong>clique aqui</strong></a> para corrigir na Ficha do Aluno.</div>
           </sc-if>
           <sc-if value="{{ showBloqueio }}" hint-placeholder-val="{{ false }}">
             <div style="margin-top:10px;background:#fcd94a;border:1px solid #e6bf1f;padding:9px 12px;font:11.5px/1.5 Verdana,Arial,sans-serif;color:#3a2f00"><strong>Este histórico não pode ser enviado para aprovação:</strong> o aluno não possui rendimento aprovado. Corrija o rendimento ou contate a Unidade Regional de Ensino.</div>
@@ -683,7 +791,9 @@
                 <sc-if value="{{ showObsLimpar }}" hint-placeholder-val="{{ false }}">
                   <button onClick="{{ onObsLimpar }}" style="display:inline-flex;align-items:center;gap:6px;padding:7px 15px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer">Limpar</button>
                 </sc-if>
+                <sc-if value="{{ showObsSalvar }}" hint-placeholder-val="{{ false }}">
                 <button onClick="{{ onObsSalvar }}" style="display:inline-flex;align-items:center;gap:6px;padding:7px 15px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer">Salvar</button>
+                </sc-if>
                 <sc-if value="{{ showEnviar }}" hint-placeholder-val="{{ false }}">
                   <button onClick="{{ onEnviar }}" disabled="{{ enviarDisabled }}" title="{{ enviarTitle }}" style="{{ enviarStyle }}">Enviar para Aprovação</button>
                 </sc-if>
@@ -788,7 +898,7 @@
         <div style="padding:24px 28px">
           <div class="filter-grid" style="display:grid;grid-template-columns:200px auto;gap:14px;align-items:center">
             <label style="font:700 13px Arial,Verdana,sans-serif;color:#333;text-align:right">Area de Conhecimento:</label>
-            <select value="{{ adArea }}" onChange="{{ onAdArea }}" style="height:30px;width:230px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12.5px Arial,Verdana,sans-serif;background:#fff">
+            <select value="{{ adArea }}" onChange="{{ onAdArea }}" style="height:34px;width:230px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#fff">
               <option value="">SELECIONE...</option>
               <option value="LINGUAGENS">LINGUAGENS</option>
               <option value="MATEMÁTICA">MATEMÁTICA</option>
@@ -797,14 +907,14 @@
               <option value="PARTE DIVERSIFICADA">PARTE DIVERSIFICADA</option>
             </select>
             <label style="font:700 13px Arial,Verdana,sans-serif;color:#333;text-align:right">Componente Curricular:</label>
-            <select value="{{ adComp }}" onChange="{{ onAdComp }}" style="height:30px;width:230px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12.5px Arial,Verdana,sans-serif;background:#fff">
+            <select value="{{ adComp }}" onChange="{{ onAdComp }}" style="height:34px;width:230px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#fff">
               <option value="">SELECIONE...</option>
               <sc-for list="{{ adComps }}" as="c" hint-placeholder-count="3">
                 <option value="{{ c.v }}">{{ c.v }}</option>
               </sc-for>
             </select>
             <label style="font:700 13px Arial,Verdana,sans-serif;color:#333;text-align:right">Classificação:</label>
-            <select value="{{ adClass }}" onChange="{{ onAdClass }}" style="height:30px;width:230px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12.5px Arial,Verdana,sans-serif;background:#fff">
+            <select value="{{ adClass }}" onChange="{{ onAdClass }}" style="height:34px;width:230px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#fff">
               <option value="">SELECIONE...</option>
               <option value="Base Comum Curricular">Base Comum Curricular</option>
               <option value="Parte Diversificada">Parte Diversificada</option>
@@ -828,9 +938,12 @@
           <span onClick="{{ closeDoc }}" style="margin-left:auto;color:#fff;font-size:18px;cursor:pointer;line-height:1">×</span>
         </div>
         <div style="padding:22px;background:#f7f7f7">
-          <div style="position:relative;max-width:760px;margin:0 auto;background:#fff;border:1px solid #bbb;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,.12)">
+          <div style="max-width:760px;margin:0 auto 12px;display:flex;justify-content:flex-end">
+            <button onClick="{{ onDocBaixarPdf }}" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer">⬇ Baixar PDF</button>
+          </div>
+          <div id="doc-paper" style="position:relative;max-width:760px;margin:0 auto;background:#fff;border:1px solid #bbb;padding:14px 16px;box-shadow:0 2px 8px rgba(0,0,0,.12)">
             <sc-if value="{{ docWatermark }}" hint-placeholder-val="{{ false }}">
-              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:2"><span style="transform:rotate(-28deg);font:700 34px Arial,Helvetica,sans-serif;color:rgba(217,83,79,.28);text-align:center">Histórico tornado sem efeito</span></div>
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none;z-index:2"><span style="transform:rotate(-28deg);font:700 30px Arial,Helvetica,sans-serif;color:rgba(217,83,79,.28);text-align:center">{{ docWatermarkText }}</span></div>
             </sc-if>
             <table style="width:100%;border-collapse:collapse;font:8.5px/1.35 Arial,Verdana,sans-serif;color:#111">
               <tbody>
@@ -852,53 +965,70 @@
                 <tr><td style="border:1px solid #333;padding:2px 5px">Município: São Paulo</td><td style="border:1px solid #333;padding:2px 5px">Telefone: (11) 3456-7890</td><td style="border:1px solid #333;padding:2px 5px" colspan="2">Endereço eletrônico: e000079@educacao.sp.gov.br</td></tr>
                 <tr><td colspan="4" style="border:1px solid #333;padding:3px 5px;text-align:center;font-weight:700;background:#e9e9e9">HISTÓRICO ESCOLAR - ENSINO FUNDAMENTAL</td></tr>
                 <tr><td colspan="4" style="border:1px solid #333;padding:2px 5px">Nome: {{ docNome }}</td></tr>
-                <tr><td style="border:1px solid #333;padding:2px 5px">Nascimento: {{ docNasc }}</td><td style="border:1px solid #333;padding:2px 5px">Município: São Paulo</td><td style="border:1px solid #333;padding:2px 5px">{{ docDocLabel }}: {{ docDoc }}</td><td style="border:1px solid #333;padding:2px 5px">RA: {{ docRa }}</td></tr>
+              </tbody>
+            </table>
+            <table style="width:100%;border-collapse:collapse;font:8.5px/1.35 Arial,Verdana,sans-serif;color:#111">
+              <tbody>
+                <tr>
+                  <td rowSpan="2" style="border:1px solid #333;padding:2px 5px;width:60px;text-align:center;vertical-align:middle">Nascimento</td>
+                  <td colSpan="2" style="border:1px solid #333;padding:2px 5px">{{ docDocLabel }}/RNM/CIN: {{ docDoc }}</td>
+                  <td colSpan="2" style="border:1px solid #333;padding:2px 5px">RA: {{ docRa }}</td>
+                </tr>
+                <tr>
+                  <td style="border:1px solid #333;padding:2px 5px">Data: {{ docNasc }}</td>
+                  <td style="border:1px solid #333;padding:2px 5px">Município: São Paulo</td>
+                  <td style="border:1px solid #333;padding:2px 5px">Estado: São Paulo</td>
+                  <td style="border:1px solid #333;padding:2px 5px">País: Brasil</td>
+                </tr>
               </tbody>
             </table>
             <table style="width:100%;border-collapse:collapse;font:8px/1.3 Arial,Verdana,sans-serif;color:#111;margin-top:2px">
               <thead>
                 <tr>
-                  <th style="border:1px solid #333;padding:2px;width:110px">ÁREAS DE CONHECIMENTO</th>
-                  <th style="border:1px solid #333;padding:2px;width:120px">COMPONENTES CURRICULARES</th>
+                  <th colspan="2" rowSpan="3" style="border:1px solid #333;width:14px"></th>
+                  <th rowSpan="3" style="border:1px solid #333;padding:2px;width:90px">ÁREAS DE CONHECIMENTO</th>
+                  <th rowSpan="3" style="border:1px solid #333;padding:2px;width:120px">COMPONENTES CURRICULARES</th>
+                  <th colspan="9" style="border:1px solid #333;padding:2px">ANO / PERÍODO LETIVO</th>
+                </tr>
+                <tr>
+                  <th colspan="5" style="border:1px solid #333;padding:2px">ANOS INICIAIS</th>
+                  <th colspan="4" style="border:1px solid #333;padding:2px">ANOS FINAIS</th>
+                </tr>
+                <tr>
                   <sc-for list="{{ anos }}" as="a" hint-placeholder-count="9">
                     <th style="border:1px solid #333;padding:2px">{{ a.ano }}<div style="font-weight:400">{{ a.serie }}</div></th>
                   </sc-for>
                 </tr>
               </thead>
               <tbody>
-                <sc-for list="{{ docNotas }}" as="n" hint-placeholder-count="11">
+                <sc-for list="{{ docGrid }}" as="row" hint-placeholder-count="15">
                   <tr>
-                    <td style="border:1px solid #333;padding:2px;text-align:center">{{ n.area }}</td>
-                    <td style="border:1px solid #333;padding:2px">{{ n.comp }}</td>
-                    <sc-for list="{{ n.cells }}" as="c" hint-placeholder-count="9">
+                    <sc-if value="{{ row.showLegal }}" hint-placeholder-val="{{ false }}">
+                      <td rowSpan="{{ row.legalRowspan }}" style="border:1px solid #333;width:14px;text-align:center;vertical-align:middle;writing-mode:vertical-rl;transform:rotate(180deg);font:700 8px Arial,Verdana,sans-serif;padding:2px">Fundamento Legal: Lei Federal 9394/96</td>
+                    </sc-if>
+                    <sc-if value="{{ row.showClassif }}" hint-placeholder-val="{{ false }}">
+                      <td rowSpan="{{ row.classifRowspan }}" style="border:1px solid #333;width:14px;text-align:center;vertical-align:middle;writing-mode:vertical-rl;transform:rotate(180deg);font:700 8px Arial,Verdana,sans-serif;padding:2px">{{ row.classifLabel }}</td>
+                    </sc-if>
+                    <sc-if value="{{ row.isTotal }}" hint-placeholder-val="{{ false }}">
+                      <td colSpan="2" style="border:1px solid #333;padding:2px;font-weight:700">{{ row.label }}</td>
+                    </sc-if>
+                    <sc-if value="{{ row.notTotal }}" hint-placeholder-val="{{ true }}">
+                      <sc-if value="{{ row.showArea }}" hint-placeholder-val="{{ false }}">
+                        <td rowSpan="{{ row.areaRowspan }}" style="border:1px solid #333;width:90px;text-align:center;vertical-align:middle;font:700 8px Arial,Verdana,sans-serif;padding:2px">{{ row.areaLabel }}</td>
+                      </sc-if>
+                      <td style="border:1px solid #333;padding:2px;width:120px">{{ row.comp }}</td>
+                    </sc-if>
+                    <sc-for list="{{ row.cells }}" as="c" hint-placeholder-count="9">
                       <td style="border:1px solid #333;padding:2px;text-align:center;background:{{ c.bg }}">{{ c.v }}</td>
                     </sc-for>
                   </tr>
                 </sc-for>
-                <tr>
-                  <td colspan="2" style="border:1px solid #333;padding:2px;font-weight:700">TOTAL DE AULAS DA BASE NACIONAL COMUM CURRICULAR</td>
-                  <sc-for list="{{ docTotBncc }}" as="t" hint-placeholder-count="9">
-                    <td style="border:1px solid #333;padding:2px;text-align:center">{{ t.v }}</td>
-                  </sc-for>
-                </tr>
-                <tr>
-                  <td colspan="2" style="border:1px solid #333;padding:2px;font-weight:700">TOTAL DE AULAS DA PARTE DIVERSIFICADA</td>
-                  <sc-for list="{{ docTotPd }}" as="t" hint-placeholder-count="9">
-                    <td style="border:1px solid #333;padding:2px;text-align:center">{{ t.v }}</td>
-                  </sc-for>
-                </tr>
-                <tr>
-                  <td colspan="2" style="border:1px solid #333;padding:2px;font-weight:700">TOTAL DA CARGA HORÁRIA ANUAL (Horas)</td>
-                  <sc-for list="{{ docTotCh }}" as="t" hint-placeholder-count="9">
-                    <td style="border:1px solid #333;padding:2px;text-align:center">{{ t.v }}</td>
-                  </sc-for>
-                </tr>
               </tbody>
             </table>
             <table style="width:100%;border-collapse:collapse;font:8px/1.3 Arial,Verdana,sans-serif;color:#111;margin-top:2px">
               <thead>
                 <tr>
-                  <th style="border:1px solid #333;padding:2px;width:110px">ESTUDOS REALIZADOS</th>
+                  <th style="border:1px solid #333;padding:2px;width:16px"></th>
                   <th style="border:1px solid #333;padding:2px">Série/Ano</th>
                   <th style="border:1px solid #333;padding:2px">ANO</th>
                   <th style="border:1px solid #333;padding:2px">ESTABELECIMENTO DE ENSINO</th>
@@ -909,7 +1039,9 @@
               <tbody>
                 <sc-for list="{{ docEstudos }}" as="e" hint-placeholder-count="9">
                   <tr>
-                    <td style="border:1px solid #333;padding:2px"></td>
+                    <sc-if value="{{ e.showLabel }}" hint-placeholder-val="{{ false }}">
+                      <td rowSpan="{{ e.labelRowspan }}" style="border:1px solid #333;width:16px;text-align:center;vertical-align:middle;writing-mode:vertical-rl;transform:rotate(180deg);font:700 8px Arial,Verdana,sans-serif;padding:2px">ESTUDOS REALIZADOS</td>
+                    </sc-if>
                     <td style="border:1px solid #333;padding:2px;text-align:center">{{ e.serie }}</td>
                     <td style="border:1px solid #333;padding:2px;text-align:center">{{ e.ano }}</td>
                     <td style="border:1px solid #333;padding:2px;text-align:center">{{ e.estab }}</td>
@@ -923,22 +1055,49 @@
             <div style="border:1px solid #333;border-top:0;padding:5px;font:8.5px Arial,Verdana,sans-serif;min-height:46px"><strong>OBSERVAÇÕES:</strong> {{ docObs }}</div>
             <div style="border:1px solid #333;border-top:0;padding:3px;text-align:center;font:700 9px Arial,Verdana,sans-serif;background:#e9e9e9">CERTIFICADO</div>
             <div style="border:1px solid #333;border-top:0;padding:6px;font:8.5px/1.6 Arial,Verdana,sans-serif">O Diretor da EE CESAR DONATO CALABREZ , CERTIFICA, nos termos do Inciso VII, Artigo 24 da Lei Federal 9394/96, que <strong>{{ docNome }}</strong>, {{ docDocLabel }} <strong>{{ docDoc }}</strong>, concluiu o Ensino Fundamental, no ano de <strong>2022</strong>.<div>Número de publicação de concluinte (Resolução SE 61/2019): <strong>{{ docPublicacao }}</strong></div></div>
-            <div style="border:1px solid #333;border-top:0;padding:16px 6px 8px;display:flex;gap:18px;font:8px Arial,Verdana,sans-serif;text-align:center">
-              <div style="flex:1"><div style="border-top:1px solid #333;padding-top:3px">Nome<br/>RG<br/><strong>Gerente de Organização Escolar</strong></div></div>
-              <div style="flex:1"><div style="border-top:1px solid #333;padding-top:3px">Nome<br/>RG<br/><strong>Diretor de Escola</strong></div></div>
-            </div>
+            <sc-if value="{{ docAssinado }}" hint-placeholder-val="{{ false }}">
+              <div style="border:1px solid #333;border-top:0;padding:10px 8px;display:flex;gap:24px;font:8px/1.35 Arial,Verdana,sans-serif;background:#fafafa">
+                <div style="flex:1;display:flex;gap:8px;align-items:flex-start">
+                  <div style="font:900 15px Arial,Helvetica,sans-serif;letter-spacing:-0.5px;white-space:nowrap"><span style="color:#1351b4">gov</span><span style="color:#168821">.br</span></div>
+                  <div style="color:#333">Documento assinado digitalmente<br/><strong>MARIA APARECIDA SANTOS</strong> — Gerente de Organização Escolar<br/>Data: {{ docAssinaturaData }}<br/>Verifique em https://verificador.iti.br — {{ docAssinaturaId }}</div>
+                </div>
+                <div style="flex:1;display:flex;gap:8px;align-items:flex-start">
+                  <div style="font:900 15px Arial,Helvetica,sans-serif;letter-spacing:-0.5px;white-space:nowrap"><span style="color:#1351b4">gov</span><span style="color:#168821">.br</span></div>
+                  <div style="color:#333">Documento assinado digitalmente<br/><strong>CARLOS EDUARDO LIMA</strong> — Diretor de Escola<br/>Data: {{ docAssinaturaData }}<br/>Verifique em https://verificador.iti.br — {{ docAssinaturaId }}</div>
+                </div>
+              </div>
+            </sc-if>
+            <sc-if value="{{ docNaoAssinado }}" hint-placeholder-val="{{ false }}">
+              <div style="border:1px solid #333;border-top:0;padding:16px 6px 8px;display:flex;gap:18px;font:8px Arial,Verdana,sans-serif;text-align:center">
+                <div style="flex:1"><div style="border-top:1px solid #333;padding-top:3px">Nome<br/>RG<br/><strong>Gerente de Organização Escolar</strong></div></div>
+                <div style="flex:1"><div style="border-top:1px solid #333;padding-top:3px">Nome<br/>RG<br/><strong>Diretor de Escola</strong></div></div>
+              </div>
+            </sc-if>
           </div>
 
           <sc-if value="{{ docHasMods }}" hint-placeholder-val="{{ false }}">
             <div onClick="{{ onShowMods }}" style="max-width:760px;margin:14px auto 0;background:#fcf3b0;border:1px solid #e6d76a;padding:8px 12px;font:11.5px Verdana,Arial,sans-serif;color:#3a3400;cursor:pointer;display:flex;align-items:center;gap:8px"><span style="display:inline-flex;width:15px;height:15px;border-radius:50%;background:#5a5a5a;color:#fff;align-items:center;justify-content:center;font:700 10px Verdana">i</span>Informações modificadas, clique para visualizar.</div>
           </sc-if>
 
+          <sc-if value="{{ docHasVersoes }}" hint-placeholder-val="{{ false }}">
+            <div style="max-width:760px;margin:14px auto 0;border:1px solid #dfe4e8;border-radius:4px;padding:10px 14px">
+              <div style="font:700 11.5px Verdana,Arial,sans-serif;color:#444;margin-bottom:8px">VERSÕES ANTERIORES DE PUBLICAÇÃO</div>
+              <sc-for list="{{ docVersoes }}" as="vs" hint-placeholder-count="1">
+                <div style="display:flex;gap:10px;align-items:center;padding:5px 0;border-top:1px solid #eee;font:11.5px Verdana,Arial,sans-serif;color:#555">
+                  <span style="padding:2px 8px;border-radius:10px;background:{{ vs.bg }};color:{{ vs.fg }};font:700 10px Verdana">{{ vs.status }}</span>
+                  <span>Publicação: <strong>{{ vs.publicacao }}</strong></span>
+                  <span>{{ vs.data }}</span>
+                </div>
+              </sc-for>
+            </div>
+          </sc-if>
+
           <sc-if value="{{ docShowDecision }}" hint-placeholder-val="{{ false }}">
             <div style="max-width:760px;margin:12px auto 0">
               <textarea value="{{ docDevol }}" onChange="{{ onDocDevol }}" placeholder="Justificativa de devolução" style="width:100%;height:74px;border:1px solid #b9c6d1;border-radius:3px;padding:8px;font:11.5px Arial,Verdana,sans-serif;color:#333;resize:vertical"></textarea>
               <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:10px">
-                <button onClick="{{ onDocAprovar }}" disabled="{{ docAprovarDisabled }}" style="padding:6px 14px;background:{{ docAprovarBg }};color:#fff;border:1px solid #2e6da4;border-radius:3px;font:11.5px Verdana,Arial,sans-serif;cursor:pointer">✔ {{ docAprovarLabel }}</button>
-                <button onClick="{{ onDocDevolver }}" style="padding:6px 14px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:3px;font:11.5px Verdana,Arial,sans-serif;cursor:pointer">↵ Devolver</button>
+                <button onClick="{{ onDocAprovar }}" disabled="{{ docAprovarDisabled }}" style="padding:6px 14px;background:{{ docAprovarBg }};color:#fff;border:1px solid #2e6da4;border-radius:4px;font:11.5px Verdana,Arial,sans-serif;cursor:pointer">✔ {{ docAprovarLabel }}</button>
+                <button onClick="{{ onDocDevolver }}" style="padding:6px 14px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:4px;font:11.5px Verdana,Arial,sans-serif;cursor:pointer">↵ Devolver</button>
               </div>
             </div>
           </sc-if>
@@ -958,11 +1117,16 @@
           <sc-for list="{{ mods }}" as="m" hint-placeholder-count="2">
             <div style="background:#fff;border:1px solid #e2e2e2;border-radius:3px;padding:14px">
               <div style="display:inline-block;padding:6px 14px;border:1px solid #bcd8ee;background:#eaf4fc;border-radius:3px;font:11.5px Verdana,Arial,sans-serif;color:#333;margin-bottom:12px">{{ m.secao }}</div>
-              <div style="font:700 12px Verdana,Arial,sans-serif;color:#222">{{ m.usuario }} - Login: {{ m.login }}</div>
+              <div style="font:700 12px Verdana,Arial,sans-serif;color:#222">{{ m.usuario }}</div>
               <div style="font:11px Verdana,Arial,sans-serif;color:#7a7a7a">{{ m.perfil }}</div>
               <div style="font:11.5px Verdana,Arial,sans-serif;color:#333;margin:6px 0">"{{ m.descricao }}"</div>
               <div style="font:11.5px Verdana,Arial,sans-serif;color:#333"><strong>Justificativa selecionada:</strong> {{ m.justificativa }}</div>
               <div style="font:11.5px Verdana,Arial,sans-serif;color:#333;margin-top:6px"><strong>Data e hora:</strong> {{ m.data }}</div>
+              <sc-if value="{{ m.hasArq }}" hint-placeholder-val="{{ false }}">
+                <div style="margin-top:8px">
+                  <a href="#" onClick="{{ m.onDownload }}" style="font:11.5px Verdana,Arial,sans-serif;color:#2e6da4;text-decoration:underline">⬇ Baixar anexo ({{ m.arq }})</a>
+                </div>
+              </sc-if>
             </div>
           </sc-for>
           <sc-if value="{{ modsEmpty }}" hint-placeholder-val="{{ false }}">
@@ -974,13 +1138,13 @@
   </sc-if>
 
   <sc-if value="{{ termOpen }}" hint-placeholder-val="{{ false }}">
-    <div style="position:fixed;inset:0;background:rgba(0,0,0,.3);z-index:110;display:flex;align-items:center;justify-content:center;padding:20px">
-      <div style="width:100%;max-width:1180px;background:#f5c400;padding:34px 44px">
-        <div style="font:700 19px Arial,Helvetica,sans-serif;color:#1c1c1c;margin-bottom:14px">{{ termTitle }}</div>
-        <div style="font:700 13.5px/1.65 Arial,Helvetica,sans-serif;color:#1c1c1c;max-width:900px">{{ termText }}</div>
-        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:22px">
-          <button onClick="{{ onTermSim }}" style="padding:5px 16px;background:#f5c400;border:1px solid #6b5900;border-radius:3px;font:12px Verdana,Arial,sans-serif;color:#1c1c1c;cursor:pointer">Sim</button>
-          <button onClick="{{ onTermNao }}" style="padding:5px 16px;background:#f5c400;border:1px solid #6b5900;border-radius:3px;font:12px Verdana,Arial,sans-serif;color:#1c1c1c;cursor:pointer">Não</button>
+    <div style="position:fixed;inset:0;background:rgba(0,0,0,.25);z-index:110">
+      <div style="width:100%;background:#fdc300;padding:24px 40px 20px;box-sizing:border-box">
+        <div style="font:700 21px Arial,Helvetica,sans-serif;color:#1c1c1c;margin-bottom:14px">{{ termTitle }}</div>
+        <div style="font:700 13.5px/1.65 Arial,Helvetica,sans-serif;color:#1c1c1c;max-width:1100px">{{ termText }}</div>
+        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:18px">
+          <button onClick="{{ onTermSim }}" style="padding:3px 14px;background:#fdc300;border:1px solid #7a6300;border-radius:2px;font:700 12px Verdana,Arial,sans-serif;color:#1c1c1c;cursor:pointer">Sim</button>
+          <button onClick="{{ onTermNao }}" style="padding:3px 14px;background:#fdc300;border:1px solid #7a6300;border-radius:2px;font:700 12px Verdana,Arial,sans-serif;color:#1c1c1c;cursor:pointer">Não</button>
         </div>
       </div>
     </div>
@@ -998,23 +1162,92 @@
           <div style="display:flex;flex-direction:column;gap:9px;font:13px Arial,Verdana,sans-serif;color:#222">
             <div>Nome do Aluno: {{ retNome }}</div>
             <div>Data de Nascimento: {{ retNasc }}</div>
-            <div>RG: {{ retRg }}</div>
             <div>RA: {{ retRa }}</div>
-            <div style="display:flex;gap:44px;flex-wrap:wrap"><span>Nacionalidade: Brasileira</span><span>Local de Nascimento: São Paulo</span><span>UF de Nascimento: SP</span></div>
           </div>
         </div>
         <div style="padding:18px 24px">
-          <div style="font:700 14px Arial,Verdana,sans-serif;color:#222;margin-bottom:12px">DADOS RETIFICADOS</div>
-          <div style="display:flex;flex-direction:column;gap:9px;font:13px Arial,Verdana,sans-serif;color:#222">
-            <div>Nome do Aluno: {{ retNome }}</div>
-            <div>Data de Nascimento: {{ retNasc }}</div>
-            <div style="color:#e00000">CIN: {{ retCin }}</div>
-            <div>RA: {{ retRa }}</div>
-            <div style="display:flex;gap:44px;flex-wrap:wrap"><span>Nacionalidade: Brasileira</span><span>Local de Nascimento: São Paulo</span><span>UF de Nascimento: SP</span></div>
+          <div style="font:700 14px Arial,Verdana,sans-serif;color:#222;margin-bottom:12px">O QUE DESEJA RETIFICAR?</div>
+          <div style="display:flex;gap:8px;margin-bottom:18px">
+            <button onClick="{{ onRetTipoNota }}" style="padding:8px 18px;background:{{ retTipoNotaBg }};color:{{ retTipoNotaFg }};border:1px solid #2e6da4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer">Nota</button>
+            <button onClick="{{ onRetTipoPessoal }}" style="padding:8px 18px;background:{{ retTipoPessoalBg }};color:{{ retTipoPessoalFg }};border:1px solid #2e6da4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer;white-space:nowrap">Dado Pessoal</button>
           </div>
-          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:34px">
-            <button onClick="{{ onRetConfirmar }}" style="padding:7px 16px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:3px;font:12px Verdana,Arial,sans-serif;cursor:pointer">Confirmar</button>
-            <button onClick="{{ closeRet }}" style="padding:7px 16px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:3px;font:12px Verdana,Arial,sans-serif;cursor:pointer">Fechar</button>
+
+          <sc-if value="{{ retIsNota }}" hint-placeholder-val="{{ true }}">
+            <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px">
+              <div>
+                <div style="font:11px Verdana,Arial,sans-serif;color:#555;margin-bottom:4px">Componente Curricular</div>
+                <select value="{{ retComp }}" onChange="{{ onRetComp }}" style="height:34px;width:260px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#fff">
+                  <option value="">SELECIONE...</option>
+                  <sc-for list="{{ retComps }}" as="c" hint-placeholder-count="4">
+                    <option value="{{ c.v }}">{{ c.v }}</option>
+                  </sc-for>
+                </select>
+              </div>
+              <div>
+                <div style="font:11px Verdana,Arial,sans-serif;color:#555;margin-bottom:4px">Ano</div>
+                <select value="{{ retAno }}" onChange="{{ onRetAno }}" style="height:34px;width:90px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#fff">
+                  <sc-for list="{{ retAnos }}" as="a" hint-placeholder-count="9">
+                    <option value="{{ a.v }}">{{ a.ano }}</option>
+                  </sc-for>
+                </select>
+              </div>
+              <div>
+                <div style="font:11px Verdana,Arial,sans-serif;color:#555;margin-bottom:4px">Nota Atual</div>
+                <input value="{{ retNotaAtual }}" disabled="{{ true }}" style="height:30px;width:80px;padding:2px 6px;border:1px solid #ddd;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#eee;color:#666"></input>
+              </div>
+              <div>
+                <div style="font:11px Verdana,Arial,sans-serif;color:#555;margin-bottom:4px">Nova Nota</div>
+                <input value="{{ retNovaNota }}" onChange="{{ onRetNovaNota }}" placeholder="5-10, N/A, ET, ES, EP" style="height:30px;width:150px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif"></input>
+              </div>
+            </div>
+          </sc-if>
+          <sc-if value="{{ retIsPessoal }}" hint-placeholder-val="{{ false }}">
+            <div style="background:#eef4fa;border:1px solid #bcd8ee;padding:8px 12px;border-radius:3px;font:11.5px/1.5 Verdana,Arial,sans-serif;color:#333;margin-bottom:14px">A correção de dado pessoal deve ser feita na Ficha do Aluno. Assim que o dado for corrigido lá, a alteração aparece automaticamente aqui para retificação.</div>
+            <sc-if value="{{ retSemDiffPessoal }}" hint-placeholder-val="{{ false }}">
+              <div style="font:italic 12.5px Verdana,Arial,sans-serif;color:#777;margin-bottom:14px">Nenhuma alteração de dado pessoal detectada ainda.</div>
+              <a href="#" onClick="{{ onRetIrFicha }}" style="font:12px Verdana,Arial,sans-serif;color:#2e6da4">Ir para a Ficha do Aluno</a>
+            </sc-if>
+            <sc-if value="{{ retTemDiffPessoal }}" hint-placeholder-val="{{ false }}">
+              <div style="margin-bottom:14px">
+                <sc-for list="{{ retDiffPessoal }}" as="df" hint-placeholder-count="1">
+                  <div style="display:flex;gap:10px;align-items:baseline;padding:6px 0;border-bottom:1px solid #e6e6e6;font:13px Arial,Verdana,sans-serif">
+                    <span style="flex:0 0 60px;font-weight:700;color:#555">{{ df.label }}</span>
+                    <span>Publicado: <strong>{{ df.de }}</strong></span>
+                    <span style="color:#e00000">Atual: <strong>{{ df.para }}</strong></span>
+                  </div>
+                </sc-for>
+              </div>
+            </sc-if>
+          </sc-if>
+
+          <sc-if value="{{ retIsNota }}" hint-placeholder-val="{{ true }}">
+            <sc-if value="{{ retShowPreview }}" hint-placeholder-val="{{ false }}">
+              <div style="background:#fff9c4;border:1px solid #e6d97f;padding:8px 12px;border-radius:3px;font:12.5px Verdana,Arial,sans-serif;color:#3a2f00;margin-bottom:14px">De <strong>{{ retPreviewDe }}</strong> para <strong>{{ retPreviewPara }}</strong></div>
+            </sc-if>
+          </sc-if>
+
+
+          <div style="display:flex;align-items:flex-end;gap:20px;flex-wrap:wrap">
+            <sc-if value="{{ retIsNota }}" hint-placeholder-val="{{ true }}">
+            <div>
+              <div style="font:italic 10.5px Verdana,Arial,sans-serif;color:#555;margin-bottom:3px">Justificativa:</div>
+              <select value="{{ retJust }}" onChange="{{ onRetJust }}" style="height:34px;width:300px;padding:2px 6px;border:1px solid #ccc;border-radius:3px;font:12px Arial,Verdana,sans-serif;background:#fff">
+                <option value="">SELECIONE...</option>
+                <option value="Erro de lançamento/digitação da nota (Convalidação)">Erro de lançamento/digitação da nota (Convalidação)</option>
+                <option value="Reavaliação de rendimento escolar">Reavaliação de rendimento escolar</option>
+                <option value="Correção de dado cadastral">Correção de dado cadastral</option>
+              </select>
+              <div style="margin-top:6px;display:flex;align-items:center;gap:8px">
+                <label style="border:1px solid #b5b5b5;background:#eee;padding:3px 8px;font:10.5px Verdana,Arial,sans-serif;color:#333;cursor:pointer;white-space:nowrap">Escolher arquivo<input type="file" onChange="{{ onRetArq }}" style="display:none"></input></label>
+                <span style="font:10.5px Verdana,Arial,sans-serif;color:#555">{{ retArq }}</span>
+              </div>
+            </div>
+            </sc-if>
+          </div>
+
+          <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:24px">
+            <button onClick="{{ onRetEnviar }}" disabled="{{ retEnviarDisabled }}" style="padding:7px 16px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer;opacity:{{ retEnviarOpacity }};white-space:nowrap">Enviar para Aprovação</button>
+            <button onClick="{{ closeRet }}" style="padding:7px 16px;background:#fff;color:#333;border:1px solid #999;border-radius:4px;font:12px Verdana,Arial,sans-serif;cursor:pointer">Cancelar</button>
           </div>
         </div>
       </div>
@@ -1069,8 +1302,8 @@
             </div>
           </div>
           <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:22px">
-            <button onClick="{{ onSeSalvar }}" style="padding:6px 15px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:3px;font:11.5px Verdana,Arial,sans-serif;cursor:pointer">✔ Salvar</button>
-            <button onClick="{{ closeSe }}" style="padding:6px 15px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:3px;font:11.5px Verdana,Arial,sans-serif;cursor:pointer">Fechar</button>
+            <button onClick="{{ onSeSalvar }}" style="padding:6px 15px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:4px;font:11.5px Verdana,Arial,sans-serif;cursor:pointer">✔ Salvar</button>
+            <button onClick="{{ closeSe }}" style="padding:6px 15px;background:#459ad6;color:#fff;border:1px solid #2e6da4;border-radius:4px;font:11.5px Verdana,Arial,sans-serif;cursor:pointer">Fechar</button>
           </div>
         </div>
       </div>
@@ -1086,6 +1319,19 @@
 </x-dc>
 <script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1440,&quot;height&quot;:900}}">
 class Component extends DCLogic {
+  componentDidMount() {
+    this._beforeUnload = e => {
+      const em = this.state.em;
+      if (!em) return;
+      const d = this.getDoc(em.id);
+      const dirty = this.tabDirty(d, em);
+      if (dirty[em.tab]) { e.preventDefault(); e.returnValue = ''; }
+    };
+    window.addEventListener('beforeunload', this._beforeUnload);
+  }
+  componentWillUnmount() {
+    window.removeEventListener('beforeunload', this._beforeUnload);
+  }
   STATUS = {
     'Não Emitido': '#eef1f5',
     'Em elaboração': '#e3f0fb',
@@ -1146,6 +1392,23 @@ class Component extends DCLogic {
     ['Gerar PDF / Imprimir / Gerar Excel',[1,1,1]]
   ];
 
+  ESCOLAS = [
+    { escola: 'CESAR DONATO CALABREZ - 902627', ure: 'LESTE 3' },
+    { escola: 'DECIO FERRAZ ALVIM PROFESSOR DOUTOR - 3128', ure: 'LESTE 3' },
+    { escola: 'AYRES DE MOURA PROFESSOR - 12', ure: 'NORTE 1' },
+    { escola: 'GAVIAO PEIXOTO BRIGADEIRO - 24', ure: 'NORTE 1' }
+  ];
+  applyRede(students) {
+    return students.map((s, i) => Object.assign(s, i % 5 === 0 ? this.ESCOLAS[1 + (i % 3)] : this.ESCOLAS[0]));
+  }
+  PARAM_SECTIONS = [
+    ['Geral', ['Consultar Histórico Escolar', 'Gerar PDF / Imprimir / Gerar Excel']],
+    ['Elaboração', ['Emitir/Iniciar Elaboração', 'Editar Estudos Realizados', 'Adicionar Estudos Realizados', 'Excluir Estudos Realizados', 'Editar Notas', 'Adicionar Disciplina', 'Excluir Disciplina', 'Enviar para Aprovação', 'Enviar sem rendimento aprovado']],
+    ['Aprovação', ['Aprovar Emissão', 'Aprovar em Lote', 'Devolver']],
+    ['Validação', ['Validar Emissão', 'Validar em Lote']],
+    ['Retificação', ['Retificar Histórico', 'Aprovar Retificação']],
+    ['Encerramento e Auditoria', ['Tornar Sem Efeito', 'Consultar Modificações']]
+  ];
   state = {
     screen: 'historico', perfil: 'GOE',
     sPor: 'RA', ano: '2026', tipoDoc: 'Histórico de Conclusão',
@@ -1153,11 +1416,16 @@ class Component extends DCLogic {
     rede: 'ESTADUAL- SE', ure: 'LESTE 3', escola: 'CESAR DONATO CALABREZ - 902627',
     tipoEnsino: 'ENSINO FUNDAMENTAL DE 9 ANOS', turma: '', statusF: 'Todos',
     filtro: '', searched: false, pageSize: 10, page: 1,
-    students: this.seed(), docs: {},
+    colSortKey: '', colSortDir: 1,
+    relTipo: 'emitidos', relDe: '', relAte: '', relTurma: '', relUre: '', relEscola: '', relSortCol: -1, relSortDir: 1, relSearched: false,
+    relUreOpen: false, relUreSearch: '', relEscolaOpen: false, relEscolaSearch: '', relTipoEnsino: '',
+    students: this.applyRede(this.seed()).concat(window.SED_MASS_STUDENTS || []), docs: {},
     batch: false, selected: [],
     em: null, ae: null, ad: null, doc: null, mods: false, term: null,
     ret: null, se: null, toast: '',
     params: this.seedParams(), audit: [],
+    paramProfiles: [{ key: 'GOE', label: 'GOE / AOE / Secretário' }, { key: 'DIRETOR', label: 'Diretor de Escola' }, { key: 'SUPERVISOR', label: 'Supervisor de Ensino' }, { key: 'URE', label: 'URE - Dirigente de Ensino' }, { key: 'SUPLAN_DIMAV_COVESC', label: 'SUPLAN - DIMAV - COVESC' }],
+    novoPerfilNome: '',
     relTipo: 'emitidos',
     cp: { tipoDoc: 'Histórico Escolar', buscar: 'RG', doc: '', docUf: 'SP', cin: '', ra: '', nasc: '', tipoEnsino: '', cod: '', searched: false }
   };
@@ -1166,20 +1434,23 @@ class Component extends DCLogic {
     const mk = (nome, ra, dig, nasc, status, extra) => Object.assign({
       id: ra + dig, nome, ra, dig, nasc, tipoEnsino: 'ENSINO FUNDAMENTAL DE 9 ANOS',
       status, ultima: '01/06/2026', docLabel: 'RG', doc: '53025036-6',
-      publicacao: '', rendimento: true, reclass: false, retElegivel: false
+      publicacao: '', rendimento: true, reclass: false, retElegivel: false,
+      dataEmissao: (status === 'Emitido' || status === 'Sem Efeito' || status === 'Aprovar Retificação') ? '01/06/2026' : ''
     }, extra || {});
     return [
       mk('YASMIN THAYLLA NASCIMENTO ALVES','000287451960','2','02/12/2007','Não Emitido',{ turma:'9º ANO A' }),
-      mk('ANA OLIVIA MOREIRA DE SOUZA FAGUNDES','000287463217','5','03/10/2007','Em elaboração',{ reclass:true, doc:'53025111-2', turma:'9º ANO A' }),
-      mk('ANNA BEATRIZ RODRIGUES MELLO','000287470512','9','10/12/2007','Emitido',{ publicacao:'202625698741', retElegivel:true, doc:'53489865-6', cin:'55896314589', turma:'9º ANO B' }),
+      mk('ANA OLIVIA MOREIRA DE SOUZA FAGUNDES','000287463217','5','03/10/2007','Em elaboração',{ reclass:true, reclassDe:'5º ANO', reclassPara:'7º ANO', reclassAno:'2024', doc:'53025111-2', turma:'9º ANO A' }),
+      mk('ANNA BEATRIZ RODRIGUES MELLO','000287470512','9','10/12/2007','Emitido',{ publicacao:'202625698741', doc:'53489865-6', cin:'55896314589', turma:'9º ANO B', dataEmissao:'14/03/2026' }),
       mk('BIANCA NASCIMENTO ROMA DA SILVA','000287488634','7','05/08/2007','Aguardando Aprovação',{ doc:'53480021-9', turma:'9º ANO B' }),
       mk('BARBARA OLIVEIRA DA SILVA','000287492105','3','15/06/2007','Aguardando Aprovação',{ doc:'53470022-1', turma:'9º ANO C' }),
       mk('LUARA BOTELHO BARBOSA BIANCARELLI','000287509847','1','23/06/2007','Não Emitido',{ rendimento:false, doc:'53460033-4', turma:'9º ANO C' }),
       mk('ANNY KAROLINE SAMPAIO GONCALVES','000287516378','6','06/07/2007','Aguardando Validação',{ doc:'53450044-7', turma:'9º ANO D' }),
       mk('ARTHUR CORREIA SILVA','000287523940','4','29/07/2007','Aguardando Validação',{ doc:'53440055-0', turma:'9º ANO D' }),
       mk('CHRISTIAN PEREIRA BARBOSA','000287531682','8','25/02/2007','Aguardando Validação',{ doc:'53430066-3', turma:'3ª SÉRIE A', tipoEnsino:'ENSINO MÉDIO' }),
-      mk('EDUARDO SANTOS PEREIRA','000287548215','0','14/12/2007','Emitido',{ publicacao:'202625698722', doc:'53420077-6', turma:'3ª SÉRIE B', tipoEnsino:'ENSINO MÉDIO' }),
-      mk('DEIVIDE WILLIAM DOS SANTOS','000287555907','9','12/12/2007','Sem Efeito',{ publicacao:'202625698700', doc:'53410088-9', turma:'3ª SÉRIE C', tipoEnsino:'ENSINO MÉDIO' }),
+      mk('EDUARDO SANTOS PEREIRA','000287548215','0','14/12/2007','Emitido',{ publicacao:'202625698722', doc:'53420077-6', turma:'3ª SÉRIE B', tipoEnsino:'ENSINO MÉDIO', dataEmissao:'22/04/2026' }),
+      mk('DEIVIDE WILLIAM DOS SANTOS','000287555907','9','12/12/2007','Sem Efeito',{ publicacao:'202625698700', doc:'53410088-9', turma:'3ª SÉRIE C', tipoEnsino:'ENSINO MÉDIO', dataEmissao:'02/02/2026' }),
+      mk('MARIANA COUTO FERNANDES','000287560001','5','19/09/2007','Aprovar Retificação',{ publicacao:'202625698755', doc:'53400099-2', cin:'55896322001', turma:'3ª SÉRIE C', tipoEnsino:'ENSINO MÉDIO', dataEmissao:'10/05/2026' }),
+      mk('RODRIGO ALMEIDA TAVARES','000287560002','6','02/01/2008','Aprovar Retificação',{ publicacao:'202625698760', doc:'53400100-6', turma:'3ª SÉRIE A', tipoEnsino:'ENSINO MÉDIO', dataEmissao:'28/05/2026' }),
       // 9º ANO A
       mk('DANIELA PEREIRA SOARES','000287600000','3','04/06/2012','Não Emitido',{ turma: '9º ANO A' }),
       mk('GABRIELA ALMEIDA MELO','000287600001','4','07/11/2011','Não Emitido',{ turma: '9º ANO A' }),
@@ -1543,7 +1814,12 @@ class Component extends DCLogic {
 
   seedParams() {
     const o = {};
-    this.PARAM_KEYS.forEach(([k, v]) => { o[k] = { GOE: !!v[0], DIRETOR: !!v[1], SUPERVISOR: !!v[2] }; });
+    const levelOf = k => k.indexOf('Excluir') === 0 ? 'del' : (k.indexOf('Consultar') === 0 ? 'view' : 'edit');
+    this.PARAM_KEYS.forEach(([k, v]) => {
+      const lvl = levelOf(k);
+      const mk = on => ({ view: lvl === 'view' ? !!on : !!on, edit: lvl === 'edit' ? !!on : false, del: lvl === 'del' ? !!on : false });
+      o[k] = { GOE: mk(v[0]), DIRETOR: mk(v[1]), SUPERVISOR: mk(v[2]), URE: { view: true, edit: false, del: false }, SUPLAN_DIMAV_COVESC: { view: true, edit: true, del: true } };
+    });
     return o;
   }
 
@@ -1557,21 +1833,41 @@ class Component extends DCLogic {
           municipio: 'SÃO PAULO', uf: 'SP', bncc: '30', pd: '10', ch: i === 0 ? '1400' : '2400'
         })),
         notas: this.COMPS.map(([area, comp, classif]) => ({ area, comp, classif, vals: this.ANOS.map(() => '') })),
-        obs: '', mods: [], estSaved: false, estDirty: false, notasSaved: false, obsSaved: false,
+        obs: '', mods: [], versoes: [], estSaved: false, estDirty: false, notasSaved: false, obsSaved: false,
         estJust: '', estArq: 'Nenhum arquivo escolhido', notasJust: '', notasArq: 'Nenhum arquivo escolhido',
         notasDirty: false
       };
-      if (st && st.reclass) docs[id].estudos = docs[id].estudos.filter(e => e.serie !== '6º ANO');
+      if (st && st.reclass) {
+        docs[id].estudos = docs[id].estudos.filter(e => e.serie !== '6º ANO');
+        docs[id].obs = 'O(a) aluno(a) foi reclassificado(a) do ' + st.reclassDe + ' para o ' + st.reclassPara + ' em ' + st.reclassAno + '.';
+        docs[id].obsSaved = true;
+      }
+      if (st && (st.status === 'Emitido' || st.status === 'Sem Efeito' || st.status === 'Aprovar Retificação')) {
+        docs[id].notasSaved = true; docs[id].notasSavedOnce = true; docs[id].estSaved = true;
+        docs[id].assinaturaFinal = { id: 'GOV.BR-' + Math.random().toString(36).slice(2, 10).toUpperCase(), data: st.ultima + ' às 09:14' };
+        docs[id].versoes.push({ publicacao: st.publicacao, status: st.status === 'Sem Efeito' ? 'Sem Efeito' : 'Emitido', data: docs[id].assinaturaFinal.data });
+      }
     }
     return docs[id];
   }
 
   perfilNome() {
-    return { GOE: 'Gerente de Organização Escolar', DIRETOR: 'Diretor de Escola', SUPERVISOR: 'Supervisor de Ensino' }[this.state.perfil];
+    return { GOE: 'Gerente de Organização Escolar', DIRETOR: 'Diretor de Escola', SUPERVISOR: 'Supervisor de Ensino', URE: 'URE - Dirigente de Ensino', SUPLAN_DIMAV_COVESC: 'SUPLAN - DIMAV - COVESC' }[this.state.perfil];
   }
-  can(key) { const p = this.state.params[key]; return !!(p && p[this.state.perfil]); }
+  can(key) {
+    const lvl = key.indexOf('Excluir') === 0 ? 'del' : (key.indexOf('Consultar') === 0 ? 'view' : 'edit');
+    const p = this.state.params[key];
+    const perfilPerm = p && p[this.state.perfil];
+    return !!(perfilPerm && perfilPerm[lvl]);
+  }
+  isNotaValida(v) {
+    if (v === '' || v == null) return false;
+    if (['N/A', 'ET', 'ES', 'EP'].indexOf(String(v).toUpperCase()) >= 0) return true;
+    const n = Number(String(v).replace(',', '.'));
+    return !isNaN(n) && n >= 5 && n <= 10;
+  }
   now() { return '14/07/2026 às 14:25'; }
-  toast(msg) { this.setState({ toast: msg }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ toast: '' }), 5200); }
+  toast(msg) { this.setState({ toast: msg }); clearTimeout(this._t); const dur = Math.max(4000, Math.min(9000, msg.length * 60)); this._t = setTimeout(() => this.setState({ toast: '' }), dur); }
   audit(acao, extra) {
     this.state.audit.unshift(Object.assign({
       acao, usuario: 'Maria Aparecida Santos', login: 'rg520356586sp',
@@ -1592,12 +1888,21 @@ class Component extends DCLogic {
     if (st.sPor === 'RA') list = st.students.filter(s => s.ra === String(st.ra).trim());
     else {
       list = st.students.slice();
+      if (st.escola) list = list.filter(s => s.escola === st.escola);
       if (st.statusF !== 'Todos') list = list.filter(s => s.status === st.statusF);
       if (st.tipoEnsino) list = list.filter(s => s.tipoEnsino === st.tipoEnsino);
       if (st.turma) list = list.filter(s => s.turma === st.turma);
     }
     const f = st.filtro.trim().toLowerCase();
     if (f) list = list.filter(s => (s.nome + ' ' + s.ra).toLowerCase().indexOf(f) >= 0);
+    if (st.colSortKey) {
+      const k = st.colSortKey, dir = st.colSortDir;
+      if (k === 'nascSort') {
+        list = list.slice().sort((a, b) => ((this.parseBrDate(a.nasc) || 0) - (this.parseBrDate(b.nasc) || 0)) * dir);
+      } else {
+        list = list.slice().sort((a, b) => String(a[k]).localeCompare(String(b[k]), 'pt', { numeric: true }) * dir);
+      }
+    }
     return list;
   }
 
@@ -1605,17 +1910,114 @@ class Component extends DCLogic {
   openEmissao(s) {
     this.getDoc(s.id);
     if (s.status === 'Não Emitido' || s.status === 'Devolvido') this.setStudent(s.id, { status: 'Em elaboração' });
+    if (s.status === 'Sem Efeito') {
+      this.setStudent(s.id, { status: 'Em elaboração', publicacao: '' });
+      this.audit('Reemissão de histórico tornado sem efeito', { aluno: s.nome });
+    }
     this.audit('Emissão - início de elaboração', { aluno: s.nome });
     this.setState({ em: { id: s.id, tab: 'est', editRow: -1, yearOpen: -1 } });
   }
-  closeEmissao() { this.setState({ em: null }); }
+  totalsRow(d, kind) {
+    return this.ANOS.map((a, i) => {
+      const e = d.estudos[i];
+      if (!e) return { v: '-' };
+      if (kind === 'bncc') return { v: e.bncc || '-' };
+      if (kind === 'pd') return { v: e.pd || '-' };
+      if (kind === 'ch') return { v: e.ch || '-' };
+      const b = Number(e.bncc) || 0, p = Number(e.pd) || 0;
+      return { v: (b || p) ? String(b + p) : '-' };
+    });
+  }
+  buildDocGrid(d, showAlteracao) {
+    const groupBy = (arr, key) => {
+      const out = [];
+      arr.forEach(it => {
+        const last = out[out.length - 1];
+        if (last && last.value === it[key]) last.items.push(it); else out.push({ value: it[key], items: [it] });
+      });
+      return out;
+    };
+    const base = d.notas.filter(n => n.classif !== 'Parte Diversificada');
+    const pd = d.notas.filter(n => n.classif === 'Parte Diversificada');
+    const legalTotalRows = base.length + 1 + pd.length + 3;
+    const rows = [];
+    let legalDone = false;
+    const pushRows = (list, classifLabel, classifRowspanExtra) => {
+      const areaGroups = groupBy(list, 'area');
+      const classifRowspan = list.length + classifRowspanExtra;
+      let classifDone = false;
+      areaGroups.forEach(g => {
+        g.items.forEach((n, idx) => {
+          rows.push({
+            notTotal: true, isTotal: false, comp: n.comp,
+            cells: n.vals.map(x => ({ v: x || '-', bg: (x && showAlteracao) ? '#fff9c4' : 'transparent' })),
+            showLegal: !legalDone, legalRowspan: legalTotalRows,
+            showClassif: !classifDone, classifLabel, classifRowspan,
+            showArea: idx === 0, areaLabel: g.value === 'PARTE DIVERSIFICADA' ? 'ELETIVAS' : g.value, areaRowspan: g.items.length
+          });
+          legalDone = true; classifDone = true;
+        });
+      });
+    };
+    pushRows(base, 'BASE NACIONAL COMUM CURRICULAR', 1);
+    rows.push({ isTotal: true, notTotal: false, label: 'TOTAL DE AULAS DA BASE NACIONAL COMUM CURRICULAR', cells: this.totalsRow(d, 'bncc') });
+    pushRows(pd, 'PARTE DIVERSIFICADA', 3);
+    rows.push({ isTotal: true, notTotal: false, label: 'TOTAL DE AULAS DA PARTE DIVERSIFICADA', cells: this.totalsRow(d, 'pd') });
+    rows.push({ isTotal: true, notTotal: false, label: 'TOTAL DE AULAS ANUAIS (Aulas)', cells: this.totalsRow(d, 'aulas') });
+    rows.push({ isTotal: true, notTotal: false, label: 'TOTAL DA CARGA HORÁRIA ANUAL (Horas)', cells: this.totalsRow(d, 'ch') });
+    return rows;
+  }
+  tabDirty(d, em) {
+    return {
+      est: !!(d.estDirty && !d.estSaved),
+      notas: !!(em._notasYearDirty && !d.notasSaved),
+      obs: !!(d.obs && d.obs.trim() && !d.obsSaved)
+    };
+  }
+  marcarEmElaboracao(id) {
+    const s = this.state.students.find(x => x.id === id);
+    if (s && s.status === 'Não Emitido') this.setStudent(id, { status: 'Em elaboração' });
+  }
+  closeEmissao() {
+    const em = this.state.em;
+    if (em) {
+      const d = this.getDoc(em.id);
+      const dirty = this.tabDirty(d, em);
+      if (dirty[em.tab]) {
+        this.setState({ term: { kind: 'fecharEmSemSalvar', title: 'Sair sem salvar',
+          text: 'Há alterações nesta aba que ainda não foram salvas. Se você sair agora, essas alterações serão perdidas. Deseja continuar?' } });
+        return;
+      }
+    }
+    this.setState({ em: null });
+  }
+  changeTab(target) {
+    const em = this.state.em, d = this.getDoc(em.id);
+    if (em.tab === 'notas' && em.yearOpen >= 0) {
+      const invalida = d.notas.some(n => n.vals[em.yearOpen] && !this.isNotaValida(n.vals[em.yearOpen]));
+      if (invalida) { this.toast('Nota inválida na aba Notas. Use de 5 a 10 ou as siglas N/A, ET, ES, EP.'); return; }
+    }
+    const dirty = this.tabDirty(d, em);
+    if (dirty[em.tab]) {
+      this.setState({ term: { kind: 'trocarAba', target, title: 'Sair sem salvar',
+        text: 'Há alterações nesta aba que ainda não foram salvas. Se você mudar de aba agora, essas alterações serão perdidas. Deseja continuar?' } });
+      return;
+    }
+    this.setState({ em: Object.assign({}, em, { tab: target }) });
+  }
+  downloadArq(m) {
+    const url = m.arqFile ? URL.createObjectURL(m.arqFile) : URL.createObjectURL(new Blob(['Anexo simulado: ' + m.arq + '\nSeção: ' + m.secao + '\nJustificativa: ' + m.justificativa], { type: 'text/plain' }));
+    const a = document.createElement('a'); a.href = url; a.download = m.arq; a.click();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
 
   saveEstudos() {
     const em = this.state.em, d = this.getDoc(em.id);
     if (d.estDirty && !d.estSaved) {
       if (!d.estJust || d.estArq === 'Nenhum arquivo escolhido') { this.toast('Justificativa e anexo são obrigatórios para alteração de estudos realizados.'); return; }
       d.estSaved = true;
-      d.mods.push({ secao: 'Estudos Realizados', descricao: d.lastEstChange || 'Alteração em estudos realizados.', justificativa: d.estJust, usuario: 'Maria Aparecida Santos', login: 'rg520356586sp', perfil: this.perfilNome(), data: this.now() });
+      d.mods.push({ secao: 'Estudos Realizados', descricao: d.lastEstChange || 'Alteração em estudos realizados.', justificativa: d.estJust, arq: d.estArq, arqFile: d.estArqFile, usuario: 'Maria Aparecida Santos', login: 'rg520356586sp', perfil: this.perfilNome(), data: this.now() });
+      this.marcarEmElaboracao(em.id);
       this.audit('Edição de estudos realizados', { justificativa: d.estJust });
       this.toast('Informações de estudos realizados salvas com sucesso.');
       this.setState({ em: Object.assign({}, em, { editRow: -1 }) });
@@ -1624,10 +2026,13 @@ class Component extends DCLogic {
   saveNotas() {
     const em = this.state.em, d = this.getDoc(em.id);
     if (!d.notasSaved) {
+      const invalida = d.notas.some(n => n.vals[em.yearOpen] && !this.isNotaValida(n.vals[em.yearOpen]));
+      if (invalida) { this.toast('Nota inválida. Use de 5 a 10 ou as siglas N/A, ET, ES, EP.'); return; }
       if (d.notasDirty && d.notasSavedOnce) {
         if (!d.notasJust) { this.toast('Justificativa e anexo são obrigatórios para alterar nota já salva.'); return; }
       }
-      d.notasSaved = true; d.notasSavedOnce = true;
+      d.notasSaved = true; d.notasSavedOnce = true; em._notasYearDirty = false;
+      this.marcarEmElaboracao(em.id);
       this.audit('Preenchimento de notas');
       this.toast('Notas salvas com sucesso.');
       this.setState({ em: Object.assign({}, em, { yearOpen: -1 }) });
@@ -1636,7 +2041,11 @@ class Component extends DCLogic {
   enviarAprovacao() {
     const em = this.state.em, d = this.getDoc(em.id);
     const s = this.state.students.find(x => x.id === em.id);
-    if (!d.obsSaved) { this.toast('Salve para prosseguir.'); return; }
+    if (d.obs && d.obs.trim() && !d.obsSaved) { this.toast('Salve para prosseguir.'); return; }
+    const semNota = d.notas.some(n => n.vals.every(v => !v));
+    if (semNota) { this.toast('Não é permitido enviar para aprovação sem que todas as disciplinas tenham nota lançada.'); return; }
+    const semCH = d.estudos.some(e => !e.ch || !String(e.ch).trim());
+    if (semCH) { this.toast('Não é permitido enviar para aprovação sem as informações de Carga Horária (CH) preenchidas.'); return; }
     if (!s.rendimento && !this.can('Enviar sem rendimento aprovado')) {
       this.toast('Este histórico não pode ser enviado para aprovação: o aluno não possui rendimento aprovado.');
       return;
@@ -1680,9 +2089,11 @@ class Component extends DCLogic {
       this.toast('Histórico assinado digitalmente via GOV.BR e aprovado com sucesso. Status alterado para Aguardando Validação.');
       this.setState({ term: null, doc: null });
     } else if (t.kind === 'validar') {
-      const s = this.state.students.find(x => x.id === t.id);
+      const s = this.state.students.find(x => x.id === t.id), d = this.getDoc(t.id);
       const pub = s.publicacao || this.novaPublicacao();
       this.setStudent(t.id, { status: 'Emitido', publicacao: pub });
+      d.versoes.push({ publicacao: pub, status: 'Emitido', data: this.now() });
+      d.assinaturaFinal = { id: 'GOV.BR-' + Math.random().toString(36).slice(2, 10).toUpperCase(), data: this.now() };
       this.audit('Validação final (assinatura GOV.BR)', { publicacao: pub });
       this.toast('Histórico assinado digitalmente via GOV.BR e validado com sucesso. Status alterado para Emitido. Nº de publicação: ' + pub + '.');
       this.setState({ term: null, doc: null });
@@ -1698,20 +2109,41 @@ class Component extends DCLogic {
       this.setState({ term: null, batch: false, selected: [] });
     } else if (t.kind === 'loteValidar') {
       this.state.selected.forEach(id => {
-        const s = this.state.students.find(x => x.id === id);
-        this.setStudent(id, { status: 'Emitido', publicacao: s.publicacao || this.novaPublicacao() });
+        const s = this.state.students.find(x => x.id === id), d = this.getDoc(id);
+        const pub = s.publicacao || this.novaPublicacao();
+        this.setStudent(id, { status: 'Emitido', publicacao: pub });
+        d.versoes.push({ publicacao: pub, status: 'Emitido', data: this.now() });
+        d.assinaturaFinal = { id: 'GOV.BR-' + Math.random().toString(36).slice(2, 10).toUpperCase(), data: this.now() };
       });
       this.audit('Validação em lote (assinatura GOV.BR)', { quantidade: this.state.selected.length });
       this.toast('Históricos assinados digitalmente via GOV.BR e validados com sucesso. Publicações de concluinte geradas/vinculadas.');
       this.setState({ term: null, batch: false, selected: [] });
     } else if (t.kind === 'retificar') {
-      this.setStudent(t.id, { status: 'Aprovar Retificação', docLabel: 'CIN', doc: this.state.students.find(x => x.id === t.id).cin });
-      this.audit('Envio de retificação (assinatura GOV.BR)');
+      const s = this.state.students.find(x => x.id === t.id), d = this.getDoc(t.id), p = t.payload;
+      let descricao;
+      if (p.tipo === 'nota') {
+        const n = d.notas.find(x => x.comp === p.comp);
+        const de = n.vals[p.ano] || '-';
+        n.vals[p.ano] = p.novaNota;
+        descricao = 'Nota de ' + p.comp + ' (' + this.ANOS[p.ano][0] + ') alterada de ' + de + ' para ' + p.novaNota + '.';
+        d.mods.push({ secao: 'Notas', descricao, justificativa: p.just, arq: p.arq, arqFile: p.arqFile, usuario: 'Maria Aparecida Santos', login: 'rg520356586sp', perfil: this.perfilNome(), data: this.now() });
+      } else {
+        descricao = p.diffs.map(df => df.label + ' alterado de ' + df.de + ' para ' + df.para + '.').join(' ');
+        d.mods.push({ secao: 'Dados Pessoais', descricao, justificativa: 'Correção de dado cadastral', arq: 'Nenhum arquivo escolhido', arqFile: null, usuario: 'Maria Aparecida Santos', login: 'rg520356586sp', perfil: this.perfilNome(), data: this.now() });
+        d.personalSnapshot = { nome: s.nome, doc: s.doc, cin: s.cin };
+      }
+      this.setStudent(t.id, { status: 'Aprovar Retificação' });
+      this.audit('Envio de retificação (assinatura GOV.BR)', { descricao });
       this.toast('Retificação assinada digitalmente via GOV.BR e enviada para aprovação do Supervisor.');
       this.setState({ term: null, ret: null });
+    } else if (t.kind === 'fecharEmSemSalvar') {
+      this.setState({ term: null, em: null });
+    } else if (t.kind === 'trocarAba') {
+      this.setState({ term: null, em: Object.assign({}, this.state.em, { tab: t.target }) });
     } else if (t.kind === 'semEfeito') {
-      const se = this.state.se;
+      const se = this.state.se, s = this.state.students.find(x => x.id === t.id), d = this.getDoc(t.id);
       this.setStudent(t.id, { status: 'Sem Efeito' });
+      d.versoes.push({ publicacao: s.publicacao, status: 'Sem Efeito', data: this.now() });
       this.audit('Tornar sem efeito (assinatura GOV.BR)', { justificativa: se.just });
       this.toast('Histórico e publicação vinculada assinados digitalmente via GOV.BR e tornados sem efeito com sucesso.');
       this.setState({ term: null, se: null });
@@ -1732,24 +2164,61 @@ class Component extends DCLogic {
       text: 'Declaro que realizei a conferência dos registros escolares dos alunos selecionados para ' + (isDir ? 'aprovação' : 'validação') + ' em lote e que, com base nas informações constantes nos sistemas oficiais e nos critérios estabelecidos pela Secretaria da Educação do Estado de São Paulo, considero aptos os respectivos Históricos Escolares para validação. Estou ciente de que esta ação será aplicada a todos os alunos selecionados e assumo a responsabilidade pela validação das informações, para os fins legais e administrativos cabíveis.' } });
   }
 
+  parseBrDate(s) { if (!s) return null; const [d, m, y] = s.split('/'); return new Date(Number(y), Number(m) - 1, Number(d)); }
+
   relatorio() {
     const st = this.state;
     const t = st.relTipo;
+    const de = st.relDe ? new Date(st.relDe) : null;
+    const ate = st.relAte ? new Date(st.relAte) : null;
+    const inRange = s => {
+      if (!de && !ate) return true;
+      const dt = this.parseBrDate(s.dataEmissao);
+      if (!dt) return false;
+      if (de && dt < de) return false;
+      if (ate && dt > ate) return false;
+      return true;
+    };
+    const inTurma = s => !st.relTurma || s.turma === st.relTurma;
+    const inTipoEnsino = s => !st.relTipoEnsino || s.tipoEnsino === st.relTipoEnsino;
+    const escolaAtual = this.ESCOLAS[0].escola, ureAtual = this.ESCOLAS[0].ure;
+    const inEscopo = s => {
+      if (st.perfil === 'SUPLAN_DIMAV_COVESC') return (!st.relUre || s.ure === st.relUre) && (!st.relEscola || s.escola === st.relEscola);
+      if (st.perfil === 'URE') return s.ure === ureAtual && (!st.relEscola || s.escola === st.relEscola);
+      return s.escola === escolaAtual;
+    };
+    const showEscolaCol = st.perfil === 'URE' || st.perfil === 'SUPLAN_DIMAV_COVESC';
     if (t === 'emitidos') {
-      return { cols: ['Nome do Aluno','RA','Tipo de Ensino','Nº de Publicação','Status'],
-        rows: st.students.filter(s => s.status === 'Emitido').map(s => [s.nome, s.ra + '-' + s.dig, s.tipoEnsino, s.publicacao, s.status]) };
+      const cols = ['Nome do Aluno','RA','Tipo de Ensino','Nº de Publicação','Data de Emissão','Status'];
+      if (showEscolaCol) cols.splice(2, 0, 'Escola');
+      return { cols, rows: st.students.filter(s => s.status === 'Emitido' && inRange(s) && inTurma(s) && inTipoEnsino(s) && inEscopo(s)).map(s => {
+        const r = [s.nome, s.ra + '-' + s.dig, s.tipoEnsino, s.publicacao, s.dataEmissao || '-', s.status];
+        if (showEscolaCol) r.splice(2, 0, s.escola); return r;
+      }) };
     }
     if (t === 'retificados') {
-      return { cols: ['Nome do Aluno','RA','Campo alterado','Status','Nº de Publicação'],
-        rows: st.students.filter(s => s.docLabel === 'CIN' || s.status === 'Aprovar Retificação').map(s => [s.nome, s.ra + '-' + s.dig, 'Documento de identificação (RG → CIN)', s.status, s.publicacao]) };
+      const cols = ['Nome do Aluno','RA','Campo alterado','Data de Emissão original','Status','Nº de Publicação'];
+      if (showEscolaCol) cols.splice(2, 0, 'Escola');
+      return { cols, rows: st.students.filter(s => (s.docLabel === 'CIN' || s.status === 'Aprovar Retificação') && inRange(s) && inTurma(s) && inTipoEnsino(s) && inEscopo(s)).map(s => {
+        const r = [s.nome, s.ra + '-' + s.dig, s.status === 'Aprovar Retificação' ? 'Nota / Dado pessoal' : 'Documento de identificação (RG → CIN)', s.dataEmissao || '-', s.status, s.publicacao];
+        if (showEscolaCol) r.splice(2, 0, s.escola); return r;
+      }) };
     }
     if (t === 'semefeito') {
-      return { cols: ['Nome do Aluno','RA','Nº de Publicação','Justificativa','Status'],
-        rows: st.students.filter(s => s.status === 'Sem Efeito').map(s => [s.nome, s.ra + '-' + s.dig, s.publicacao, 'Parecer sobre dados incorretos', s.status]) };
+      const cols = ['Nome do Aluno','RA','Nº de Publicação','Data de Emissão','Justificativa','Status'];
+      if (showEscolaCol) cols.splice(2, 0, 'Escola');
+      return { cols, rows: st.students.filter(s => s.status === 'Sem Efeito' && inRange(s) && inTurma(s) && inTipoEnsino(s) && inEscopo(s)).map(s => {
+        const r = [s.nome, s.ra + '-' + s.dig, s.publicacao, s.dataEmissao || '-', 'Parecer sobre dados incorretos', s.status];
+        if (showEscolaCol) r.splice(2, 0, s.escola); return r;
+      }) };
     }
     if (t === 'publicacoes') {
-      return { cols: ['Aluno / RA','Ano','Tipo de Ensino','Nº de Publicação','Vínculo'],
-        rows: st.students.filter(s => s.publicacao).map(s => [s.nome + ' - ' + s.ra, '2022', s.tipoEnsino, s.publicacao, 'Vinculada ao Histórico Escolar']) };
+      const cols = ['Aluno / RA','Ano','Tipo de Ensino','Nº de Publicação','Data de Emissão','Vínculo'];
+      if (showEscolaCol) cols.splice(2, 0, 'Escola');
+      return { cols, rows: st.students.filter(s => s.publicacao && inRange(s) && inTurma(s) && inTipoEnsino(s) && inEscopo(s)).map(s => {
+        const r = [s.nome + ' - ' + s.ra, '2022', s.tipoEnsino, s.publicacao, s.dataEmissao || '-', 'Vinculada ao Histórico Escolar'];
+        if (showEscolaCol) r.splice(2, 0, s.escola); return r;
+      }) };
     }
     if (t === 'acoes') {
       return { cols: ['Ação','Usuário','Perfil','Data e hora','Justificativa'],
@@ -1780,15 +2249,29 @@ class Component extends DCLogic {
 
     v.sPor = st.sPor; v.onSPor = e => this.setState({ sPor: e.target.value, searched: false, batch: false, selected: [] });
     v.isRA = st.sPor === 'RA'; v.isFiltros = st.sPor === 'Filtros';
-    v.turmaOptions = st.tipoEnsino === 'ENSINO MÉDIO' ? ['3ª SÉRIE A','3ª SÉRIE B','3ª SÉRIE C','3ª SÉRIE D'] : ['9º ANO A','9º ANO B','9º ANO C','9º ANO D','9º ANO E'];
+    v.turmaOptions = [...new Set(st.students.filter(s => s.escola === st.escola && (!st.tipoEnsino || s.tipoEnsino === st.tipoEnsino)).map(s => s.turma))].sort();
     ['ano','tipoDoc','ra','dig','ufRa','rede','ure','escola','filtro'].forEach(k => {
       v[k] = st[k];
       v['on' + k.charAt(0).toUpperCase() + k.slice(1)] = this.fld(k);
     });
+    const sedEscolasTop = window.SED_ESCOLAS || this.ESCOLAS;
+    const nivelEscolaTop = st.perfil === 'GOE' || st.perfil === 'DIRETOR' || st.perfil === 'SUPERVISOR';
+    const meuUreTop = this.ESCOLAS[0].ure, meuEscolaTop = this.ESCOLAS[0].escola;
+    v.ureOptions = (st.perfil === 'SUPLAN_DIMAV_COVESC' ? [...new Set(sedEscolasTop.map(e => e.ure))].sort() : [meuUreTop]).map(u => ({ v: u }));
+    v.escolaOptions = (nivelEscolaTop ? [meuEscolaTop] : sedEscolasTop.filter(e => e.ure === (st.ure || meuUreTop)).map(e => e.escola)).map(e => ({ v: e }));
     v.tipoEnsino = st.tipoEnsino;
     v.onTipoEnsino = e => this.setState({ tipoEnsino: e.target.value, turma: '' });
     v.turma = st.turma; v.onTurma = this.fld('turma');
     v.statusF = st.statusF; v.onStatusF = e => this.setState({ statusF: e.target.value, batch: false, selected: [] });
+    const sortBy = (key) => () => this.setState({ colSortKey: key, colSortDir: st.colSortKey === key ? -st.colSortDir : 1 });
+    const sortArrow = key => st.colSortKey === key ? (st.colSortDir === 1 ? '↑' : '↓') : '⇅';
+    const sortOpacity = key => st.colSortKey === key ? '1' : '.65';
+    v.onColSortNome = sortBy('nome'); v.colSortNomeArrow = sortArrow('nome'); v.colSortNomeOpacity = sortOpacity('nome');
+    v.onColSortRa = sortBy('ra'); v.colSortRaArrow = sortArrow('ra'); v.colSortRaOpacity = sortOpacity('ra');
+    v.onColSortTipo = sortBy('tipoEnsino'); v.colSortTipoArrow = sortArrow('tipoEnsino'); v.colSortTipoOpacity = sortOpacity('tipoEnsino');
+    v.onColSortStatus = sortBy('status'); v.colSortStatusArrow = sortArrow('status'); v.colSortStatusOpacity = sortOpacity('status');
+    v.onColSortNasc = sortBy('nascSort'); v.colSortNascArrow = sortArrow('nascSort'); v.colSortNascOpacity = sortOpacity('nascSort');
+
     v.doSearch = () => this.setState({ searched: true, batch: false, selected: [] });
     v.doClear = () => this.setState({ searched: false, filtro: '', ra: '', dig: '', statusF: 'Todos' });
     v.onImprimir = () => this.toast('Documento enviado para impressão.');
@@ -1796,11 +2279,12 @@ class Component extends DCLogic {
     v.onPdfGrid = () => this.toast('PDF gerado com sucesso conforme modelo oficial da etapa de ensino.');
     v.searched = st.searched;
 
-    const isGOE = st.perfil === 'GOE', isDir = st.perfil === 'DIRETOR', isSup = st.perfil === 'SUPERVISOR';
+    const isFull = st.perfil === 'SUPLAN_DIMAV_COVESC';
+    const isGOE = st.perfil === 'GOE' || isFull, isDir = st.perfil === 'DIRETOR' || isFull, isSup = st.perfil === 'SUPERVISOR' || isFull;
     v.colEmissao = isGOE;
-    v.colConsultaLabel = isSup ? 'Consultar' : 'Consulta';
+    v.colConsultaLabel = (isSup || isFull) ? 'Consultar' : 'Consulta';
     v.colAprovar = isDir; v.colValidar = isSup;
-    v.colUltima = isSup; v.colTornar = isSup; v.colAprovarRet = isSup;
+    v.colTornar = isSup; v.colAprovarRet = isSup;
     v.colRetificar = isGOE;
     v.colSel = st.batch;
 
@@ -1851,8 +2335,8 @@ class Component extends DCLogic {
         sel: st.selected.indexOf(s.id) >= 0, onSel: () => this.toggleSel(s.id),
         onConsulta: () => this.openDoc(s, 'consulta')
       };
-      act(r, 'emissao', s.status !== 'Sem Efeito' && this.can('Emitir/Iniciar Elaboração'),
-        'Emissão', s.status === 'Sem Efeito' ? 'documento sem efeito' : 'ação não parametrizada para o seu perfil',
+      act(r, 'emissao', s.status !== 'Emitido' && this.can('Emitir/Iniciar Elaboração'),
+        'Emissão', s.status === 'Emitido' ? 'documento emitido — use Retificar para alterar' : 'ação não parametrizada para o seu perfil',
         () => this.openEmissao(s));
       act(r, 'aprovar', isDir && s.status === 'Aguardando Aprovação' && this.can('Aprovar Emissão'),
         'Aprovar Emissão', s.status === 'Emitido' ? 'documento já emitido' : 'status atual é ' + s.status,
@@ -1865,9 +2349,9 @@ class Component extends DCLogic {
         () => this.setState({ se: { id: s.id, just: '', arq: 'Nenhum arquivo escolhido' } }), '#d9534f');
       act(r, 'aprovarRet', isSup && s.status === 'Aprovar Retificação' && this.can('Aprovar Retificação'),
         'Aprovar Retificação', 'não há retificação pendente', () => this.openDoc(s, 'retificacao'));
-      act(r, 'retificar', isGOE && s.status === 'Emitido' && s.retElegivel && this.can('Retificar Histórico'),
-        'Retificar', s.status === 'Emitido' ? 'não há alteração elegível em dados pessoais ou notas' : 'disponível apenas para documento Emitido',
-        () => this.setState({ ret: { id: s.id } }));
+      act(r, 'retificar', isGOE && s.status === 'Emitido' && this.can('Retificar Histórico'),
+        'Retificar', 'disponível apenas para documento Emitido',
+        () => this.setState({ ret: { id: s.id, tipo: 'nota', comp: '', ano: 0, novaNota: '', just: '', arq: 'Nenhum arquivo escolhido', arqFile: null } }));
       return r;
     });
     v.pageRows = v.rows.slice((curPage - 1) * pageSize, (curPage - 1) * pageSize + pageSize);
@@ -1888,17 +2372,18 @@ class Component extends DCLogic {
       const s = st.students.find(x => x.id === st.em.id), d = this.getDoc(st.em.id);
       v.emNome = s.nome; v.emNomeSocial = ''; v.emRa = s.ra + ' -' + s.dig + ' SP';
       v.emNasc = s.nasc; v.emDocLabel = s.docLabel; v.emDoc = s.doc;
+      v.tabEstDone = !!d.estSaved; v.tabNotasDone = !!d.notasSaved; v.tabObsDone = !!d.obsSaved;
       v.closeEm = () => this.closeEmissao();
       v.onFichaAluno = e => { e.preventDefault(); this.toast('Redirecionando para a Ficha do Aluno para correção dos dados pessoais.'); };
       v.tabEst = st.em.tab === 'est'; v.tabNotas = st.em.tab === 'notas'; v.tabObs = st.em.tab === 'obs';
       v.tabEstBg = v.tabEst ? '#dceaf7' : '#ffffff';
       v.tabNotasBg = v.tabNotas ? '#dceaf7' : '#ffffff';
       v.tabObsBg = v.tabObs ? '#dceaf7' : '#ffffff';
-      v.onTabEst = () => this.setState({ em: Object.assign({}, st.em, { tab: 'est' }) });
-      v.onTabNotas = () => this.setState({ em: Object.assign({}, st.em, { tab: 'notas' }) });
-      v.onTabObs = () => this.setState({ em: Object.assign({}, st.em, { tab: 'obs' }) });
+      v.onTabEst = () => this.changeTab('est');
+      v.onTabNotas = () => this.changeTab('notas');
+      v.onTabObs = () => this.changeTab('obs');
       v.showReclass = !!s.reclass && v.tabEst;
-      v.reclassMsg = 'O aluno foi reclassificado do 5º ANO para o 7º ANO. Caso a reclassificação esteja correta,';
+      v.reclassMsg = 'O aluno foi reclassificado do ' + s.reclassDe + ' para o ' + s.reclassPara + ' em ' + s.reclassAno + '. Caso a reclassificação esteja correta,';
       v.showBloqueio = !s.rendimento && !this.can('Enviar sem rendimento aprovado');
       v.showAddEstudos = v.tabEst && s.reclass && this.can('Adicionar Estudos Realizados');
       v.onAddEstudos = e => { if (e && e.preventDefault) e.preventDefault(); this.setState({ ae: { uf: 'SP', mun: '', ano: '', serie: '', rede: '', estab: '', bncc: '', pd: '', ch: '', just: '', arq: 'Nenhum arquivo escolhido' } }); };
@@ -1925,7 +2410,7 @@ class Component extends DCLogic {
       v.estJust = d.estJust; v.estSaved = d.estSaved;
       v.onEstJust = ev => { d.estJust = ev.target.value; this.forceUpdate(); };
       v.estArq = d.estArq;
-      v.onEstArq = ev => { d.estArq = (ev.target.files && ev.target.files[0]) ? ev.target.files[0].name : 'anexo.pdf'; this.forceUpdate(); };
+      v.onEstArq = ev => { const f = ev.target.files && ev.target.files[0]; d.estArq = f ? f.name : 'anexo.pdf'; d.estArqFile = f || null; this.forceUpdate(); };
       v.showEstVoltar = d.estDirty && !d.estSaved;
       v.onEstVoltar = () => { d.estDirty = false; d.estJust = ''; d.estArq = 'Nenhum arquivo escolhido'; this.setState({ em: Object.assign({}, st.em, { editRow: -1 }) }); };
       v.showEstPrimary = d.estDirty && !d.estSaved;
@@ -1936,7 +2421,7 @@ class Component extends DCLogic {
         onDelete: () => { d.notas.splice(r, 1); this.audit('Exclusão de disciplina', { justificativa: 'Exige justificativa e anexo conforme parâmetro' }); this.forceUpdate(); },
         cells: n.vals.map((val, c) => ({
           v: val, locked: st.em.yearOpen !== c,
-          onChange: ev => { if (d.notasSaved) { d.notasDirty = true; d.notasSaved = false; } st.em._notasYearDirty = true; n.vals[c] = ev.target.value; this.forceUpdate(); }
+          onChange: ev => { const val = ev.target.value; if (d.notasSaved) { d.notasDirty = true; d.notasSaved = false; } st.em._notasYearDirty = true; n.vals[c] = val; this.forceUpdate(); }
         }))
       }));
       v.showNotasJust = !!d.notasSavedOnce && d.notasDirty;
@@ -1948,7 +2433,8 @@ class Component extends DCLogic {
       v.obs = d.obs;
       v.onObs = ev => { d.obs = ev.target.value; d.obsSaved = false; this.forceUpdate(); };
       v.showObsLimpar = !!(d.obs && d.obs.trim());
-      v.onObsSalvar = () => { d.obsSaved = true; this.audit('Salvar observação (Em Elaboração)'); this.toast('Observação salva com sucesso. Documento em status Em elaboração.'); };
+      v.showObsSalvar = !!(d.obs && d.obs.trim()) && !d.obsSaved;
+      v.onObsSalvar = () => { d.obsSaved = true; this.marcarEmElaboracao(st.em.id); this.audit('Salvar observação (Em Elaboração)'); this.toast('Observação salva com sucesso. Documento em status Em elaboração.'); };
       v.onObsLimpar = () => { d.obs = ''; d.obsSaved = false; this.forceUpdate(); };
       v.showEnviar = s.status !== 'Emitido' && s.status !== 'Sem Efeito' && this.can('Enviar para Aprovação') && (s.rendimento || this.can('Enviar sem rendimento aprovado'));
       v.enviarDisabled = !!(d.obs && d.obs.trim()) && !d.obsSaved;
@@ -1976,7 +2462,7 @@ class Component extends DCLogic {
       v.aePd = a.pd; v.onAePd = e => set('pd', e.target.value);
       v.aeCh = a.ch; v.onAeCh = e => set('ch', e.target.value);
       v.aeJust = a.just; v.onAeJust = e => set('just', e.target.value);
-      v.aeArq = a.arq; v.onAeArq = e => set('arq', (e.target.files && e.target.files[0]) ? e.target.files[0].name : 'anexo.pdf');
+      v.aeArq = a.arq; v.onAeArq = e => { const f = e.target.files && e.target.files[0]; a.arqFile = f || null; set('arq', f ? f.name : 'anexo.pdf'); };
       v.closeAe = () => this.setState({ ae: null });
       v.onAeSalvar = () => {
         if (!a.mun || !a.ano || !a.serie || !a.rede || !a.estab || !a.bncc || !a.pd || !a.ch || !a.just || a.arq === 'Nenhum arquivo escolhido') {
@@ -1986,7 +2472,7 @@ class Component extends DCLogic {
           if (d.estudos.some(x => x.ano === a.ano)) { this.toast('Não é permitido incluir ano já existente na grid.'); return; }
           d.estudos.push({ serie: a.serie, ano: a.ano, estab: a.estab, rede: a.rede, municipio: a.mun, uf: a.uf, bncc: a.bncc, pd: a.pd, ch: a.ch });
           d.estudos.sort((x, y) => Number(x.ano) - Number(y.ano));
-          d.mods.push({ secao: 'Estudos Realizados', descricao: 'Inclusão manual do estudo realizado ' + a.serie + ' (' + a.ano + ').', justificativa: a.just, usuario: 'Maria Aparecida Santos', login: 'rg520356586sp', perfil: this.perfilNome(), data: this.now() });
+          d.mods.push({ secao: 'Estudos Realizados', descricao: 'Inclusão manual do estudo realizado ' + a.serie + ' (' + a.ano + ').', justificativa: a.just, arq: a.arq, arqFile: a.arqFile, usuario: 'Maria Aparecida Santos', login: 'rg520356586sp', perfil: this.perfilNome(), data: this.now() });
         }
         this.audit('Adicionar estudos realizados', { justificativa: a.just });
         this.toast('Informações de estudos realizados salvas com sucesso.');
@@ -2006,14 +2492,17 @@ class Component extends DCLogic {
         'CIÊNCIAS HUMANAS': ['História','Geografia','Filosofia','Sociologia'],
         'PARTE DIVERSIFICADA': ['Projeto de Vida','Tecnologia e Inovação','Projeto de Convivência','Eletiva']
       };
+      const dExist = this.getDoc(st.em.id);
+      const existentes = dExist.notas.map(n => n.comp);
       v.adArea = a.area; v.onAdArea = e => { a.comp = ''; set('area', e.target.value); };
-      v.adComps = (byArea[a.area] || []).map(c => ({ v: c }));
+      v.adComps = (byArea[a.area] || []).filter(c => existentes.indexOf(c) < 0).map(c => ({ v: c }));
       v.adComp = a.comp; v.onAdComp = e => set('comp', e.target.value);
       v.adClass = a.classif; v.onAdClass = e => set('classif', e.target.value);
       v.closeAd = () => this.setState({ ad: null });
       v.onAdSalvar = () => {
         if (!a.area || !a.comp || !a.classif) { this.toast('Área de conhecimento, componente curricular e classificação são obrigatórios.'); return; }
         const d = this.getDoc(st.em.id);
+        if (d.notas.some(n => n.comp === a.comp)) { this.toast('Esta disciplina já consta no percurso do estudante.'); return; }
         d.notas.push({ area: a.area, comp: a.comp, classif: a.classif, vals: this.ANOS.map(() => '') });
         this.audit('Adicionar disciplina', { componente: a.comp });
         this.toast('Componente curricular incluído na aba Notas e registrado em auditoria.');
@@ -2031,15 +2520,20 @@ class Component extends DCLogic {
       v.docDocLabel = s.docLabel; v.docDoc = s.doc;
       v.docPublicacao = s.publicacao || '____________';
       v.docObs = d.obs;
-      v.docWatermark = s.status === 'Sem Efeito';
-      v.docEstudos = d.estudos.map(e => ({ serie: e.serie, ano: e.ano, estab: e.estab, municipio: e.municipio, uf: e.uf }));
+      v.docWatermark = s.status !== 'Emitido';
+      v.docAssinado = s.status === 'Emitido' && !!d.assinaturaFinal;
+      v.docNaoAssinado = !v.docAssinado;
+      v.docAssinaturaId = d.assinaturaFinal ? d.assinaturaFinal.id : '';
+      v.docAssinaturaData = d.assinaturaFinal ? d.assinaturaFinal.data : '';
+      v.docWatermarkText = s.status === 'Sem Efeito' ? 'Histórico tornado sem efeito' : 'Documento não emitido';
+      v.onDocBaixarPdf = () => { this.toast(s.status === 'Emitido' ? 'PDF gerado com sucesso.' : 'PDF gerado com a marca d\'água "' + v.docWatermarkText + '".'); setTimeout(() => window.print(), 200); };
+      v.docEstudos = d.estudos.map((e, i) => ({ serie: e.serie, ano: e.ano, estab: e.estab, municipio: e.municipio, uf: e.uf, showLabel: i === 0, labelRowspan: d.estudos.length }));
       const showAlteracao = st.doc.mode !== 'consulta';
-      v.docNotas = d.notas.map(n => ({ area: n.area, comp: n.comp, cells: n.vals.map(x => ({ v: x || '-', bg: (x && showAlteracao) ? '#fff9c4' : 'transparent' })) }));
-      v.docTotBncc = this.ANOS.map((a, i) => ({ v: (d.estudos[i] && d.estudos[i].bncc) || '-' }));
-      v.docTotPd = this.ANOS.map((a, i) => ({ v: (d.estudos[i] && d.estudos[i].pd) || '-' }));
-      v.docTotCh = this.ANOS.map((a, i) => ({ v: (d.estudos[i] && d.estudos[i].ch) || '-' }));
-      v.docHasMods = d.mods.length > 0 && st.doc.mode !== 'consulta' && this.can('Consultar Modificações');
+      v.docGrid = this.buildDocGrid(d, showAlteracao);
+      v.docHasMods = d.mods.length > 0 && st.doc.mode !== 'consulta' && (this.can('Consultar Modificações') || st.doc.mode === 'retificacao');
       v.onShowMods = () => this.setState({ mods: true });
+      v.docVersoes = d.versoes.slice(0, -1).slice().reverse().map(vs => ({ publicacao: vs.publicacao || '-', status: vs.status, data: vs.data, bg: this.STATUS[vs.status], fg: this.STATUS_FG[vs.status] }));
+      v.docHasVersoes = v.docVersoes.length > 0;
       v.docShowDecision = st.doc.mode !== 'consulta';
       v.docDevol = st.doc.devol;
       v.onDocDevol = e => this.setState({ doc: Object.assign({}, st.doc, { devol: e.target.value }) });
@@ -2049,7 +2543,7 @@ class Component extends DCLogic {
       v.onDocAprovar = () => { if (!st.doc.devol.trim()) this.docDecision(); };
       v.onDocDevolver = () => this.devolver();
       v.closeDoc = () => this.setState({ doc: null, mods: false });
-      v.mods = d.mods.map(m => ({ secao: m.secao, usuario: m.usuario, login: m.login, perfil: m.perfil, descricao: m.descricao, justificativa: m.justificativa, data: m.data }));
+      v.mods = d.mods.map(m => ({ secao: m.secao, usuario: m.usuario, login: m.login, perfil: m.perfil, descricao: m.descricao, justificativa: m.justificativa, data: m.data, arq: m.arq, hasArq: !!(m.arq && m.arq !== 'Nenhum arquivo escolhido'), onDownload: e => { e.preventDefault(); this.downloadArq(m); } }));
       v.modsEmpty = d.mods.length === 0;
     }
     v.modsOpen = !!st.mods;
@@ -2066,11 +2560,53 @@ class Component extends DCLogic {
     // retificar
     v.retOpen = !!st.ret;
     if (st.ret) {
-      const s = st.students.find(x => x.id === st.ret.id);
-      v.retNome = s.nome; v.retNasc = s.nasc; v.retRg = s.doc; v.retRa = s.ra + '-' + s.dig; v.retCin = s.cin || '';
+      const s = st.students.find(x => x.id === st.ret.id), d = this.getDoc(st.ret.id);
+      const ret = st.ret;
+      v.retNome = s.nome; v.retNasc = s.nasc; v.retRa = s.ra + '-' + s.dig;
       v.closeRet = () => this.setState({ ret: null });
-      v.onRetConfirmar = () => this.setState({ term: { kind: 'retificar', id: s.id, title: 'Retificar Histórico Escolar',
-        text: 'Esta ação registrará a alteração no histórico do aluno e enviará para aprovação do Supervisor. A versão anterior será preservada para consulta e auditoria. Deseja continuar?' } });
+      const set = patch => this.setState({ ret: Object.assign({}, ret, patch) });
+      v.retIsNota = ret.tipo === 'nota'; v.retIsPessoal = ret.tipo === 'pessoal';
+      v.retTipoNotaBg = v.retIsNota ? '#459ad6' : '#fff'; v.retTipoNotaFg = v.retIsNota ? '#fff' : '#333';
+      v.retTipoPessoalBg = v.retIsPessoal ? '#459ad6' : '#fff'; v.retTipoPessoalFg = v.retIsPessoal ? '#fff' : '#333';
+      v.onRetTipoNota = () => set({ tipo: 'nota' });
+      v.onRetTipoPessoal = () => set({ tipo: 'pessoal' });
+      if (!d.personalSnapshot) d.personalSnapshot = { nome: s.nome, doc: s.doc, cin: s.cin };
+      const PF = [{ key: 'nome', label: 'Nome' }, { key: 'doc', label: 'RG' }, { key: 'cin', label: 'CIN' }];
+      v.retDiffPessoal = PF.filter(f => (d.personalSnapshot[f.key] || '') !== (s[f.key] || '')).map(f => ({ label: f.label, de: d.personalSnapshot[f.key] || '(vazio)', para: s[f.key] || '(vazio)' }));
+      v.retTemDiffPessoal = v.retDiffPessoal.length > 0;
+      v.retSemDiffPessoal = !v.retTemDiffPessoal;
+      v.onRetIrFicha = e => {
+        e.preventDefault();
+        const novoCin = s.cin ? (s.cin.slice(0, -1) + String((Number(s.cin.slice(-1)) + 1) % 10)) : '55896399999';
+        this.setStudent(s.id, { cin: novoCin });
+        this.audit('Correção de dado pessoal (Ficha do Aluno)', { aluno: s.nome, campo: 'CIN' });
+        this.toast('Dado pessoal corrigido na Ficha do Aluno. A alteração já aparece aqui para retificação.');
+      };
+      v.retComps = d.notas.map(n => ({ v: n.comp }));
+      v.retComp = ret.comp; v.onRetComp = e => set({ comp: e.target.value });
+      v.retAnos = this.ANOS.map(([ano], i) => ({ v: i, ano }));
+      v.retAno = ret.ano; v.onRetAno = e => set({ ano: Number(e.target.value) });
+      const notaSel = d.notas.find(x => x.comp === ret.comp);
+      v.retNotaAtual = notaSel ? (notaSel.vals[ret.ano] || '-') : '-';
+      v.retNovaNota = ret.novaNota; v.onRetNovaNota = e => set({ novaNota: e.target.value });
+      v.retJust = ret.just; v.onRetJust = e => set({ just: e.target.value });
+      v.retArq = ret.arq; v.onRetArq = e => set({ arq: (e.target.files && e.target.files[0]) ? e.target.files[0].name : 'anexo.pdf', arqFile: null });
+      const valido = ret.tipo === 'nota'
+        ? !!(ret.comp && ret.ano !== '' && this.isNotaValida(ret.novaNota) && ret.just && ret.arq !== 'Nenhum arquivo escolhido')
+        : !!v.retTemDiffPessoal;
+      v.retShowPreview = ret.tipo === 'nota' ? !!(ret.comp && ret.novaNota !== '') : false;
+      v.retPreviewDe = v.retNotaAtual;
+      v.retPreviewPara = ret.novaNota;
+      v.retEnviarDisabled = !valido;
+      v.retEnviarOpacity = valido ? 1 : 0.55;
+      v.onRetEnviar = () => {
+        if (!valido) { this.toast('Preencha todos os campos obrigatórios para enviar a retificação.'); return; }
+        const payload = ret.tipo === 'nota'
+          ? { tipo: 'nota', comp: ret.comp, ano: ret.ano, novaNota: ret.novaNota, just: ret.just, arq: ret.arq, arqFile: ret.arqFile }
+          : { tipo: 'pessoal', diffs: v.retDiffPessoal };
+        this.setState({ term: { kind: 'retificar', id: s.id, title: 'Retificar Histórico Escolar', payload,
+          text: 'Esta ação registrará a retificação no histórico do aluno e enviará para aprovação do Supervisor. A versão anterior será preservada para consulta e auditoria. Deseja continuar?' } });
+      };
     }
 
     // tornar sem efeito
@@ -2090,20 +2626,98 @@ class Component extends DCLogic {
     }
 
     // parâmetro
-    v.paramRows = this.PARAM_KEYS.map(([k], i) => ({
-      key: k, bg: bg(i),
-      goe: st.params[k].GOE, dir: st.params[k].DIRETOR, sup: st.params[k].SUPERVISOR,
-      onGoe: () => { st.params[k].GOE = !st.params[k].GOE; this.forceUpdate(); },
-      onDir: () => { st.params[k].DIRETOR = !st.params[k].DIRETOR; this.forceUpdate(); },
-      onSup: () => { st.params[k].SUPERVISOR = !st.params[k].SUPERVISOR; this.forceUpdate(); }
+    const perfilAtivo = st.paramPerfilAtivo || 'GOE';
+    v.paramProfiles = st.paramProfiles.map(pf => ({
+      key: pf.key, label: pf.label, custom: pf.key.indexOf('PERFIL_') === 0,
+      tabBg: pf.key === perfilAtivo ? '#459ad6' : '#fff', tabFg: pf.key === perfilAtivo ? '#fff' : '#333', tabBorder: pf.key === perfilAtivo ? '#2e6da4' : '#ccc',
+      onSelect: () => this.setState({ paramPerfilAtivo: pf.key }),
+      onRemove: () => this.setState({ paramProfiles: st.paramProfiles.filter(x => x.key !== pf.key), paramPerfilAtivo: perfilAtivo === pf.key ? 'GOE' : perfilAtivo })
     }));
+    v.paramPerfilLabel = (st.paramProfiles.find(pf => pf.key === perfilAtivo) || {}).label || perfilAtivo;
+    const rowFor = k => {
+      const perm = st.params[k][perfilAtivo] || (st.params[k][perfilAtivo] = { view: false, edit: false, del: false });
+      const toggle = level => () => { perm[level] = !perm[level]; this.forceUpdate(); };
+      return { key: k, view: perm.view, edit: perm.edit, del: perm.del, onView: toggle('view'), onEdit: toggle('edit'), onDel: toggle('del') };
+    };
+    v.paramSections = this.PARAM_SECTIONS.map(([nome, keys]) => ({ nome, rows: keys.map(rowFor) }));
+    v.sedPerfisOptions = (window.SED_PERFIS || []).map(n => ({ v: n }));
+    v.novoPerfilNome = st.novoPerfilNome;
+    v.onNovoPerfilNome = e => this.setState({ novoPerfilNome: e.target.value });
+    v.onAddPerfil = () => {
+      const nome = st.novoPerfilNome.trim();
+      if (!nome) { this.toast('Informe o nome do perfil.'); return; }
+      const key = 'PERFIL_' + Math.random().toString(36).slice(2, 8).toUpperCase();
+      this.PARAM_KEYS.forEach(([k]) => { st.params[k][key] = { view: false, edit: false, del: false }; });
+      this.setState({ paramProfiles: st.paramProfiles.concat([{ key, label: nome }]), novoPerfilNome: '' });
+      this.toast('Perfil "' + nome + '" adicionado. Configure as permissões na tabela.');
+    };
+
 
     // relatório
-    v.relTipo = st.relTipo; v.onRelTipo = e => this.setState({ relTipo: e.target.value });
-    const rel = this.relatorio();
-    v.relCols = rel.cols.map(c => ({ v: c }));
+    v.relTipo = st.relTipo; v.onRelTipo = e => this.setState({ relTipo: e.target.value, relSortCol: -1 });
+    v.relDe = st.relDe; v.onRelDe = e => this.setState({ relDe: e.target.value });
+    v.relAte = st.relAte; v.onRelAte = e => this.setState({ relAte: e.target.value });
+    v.relShowUre = true;
+    v.relShowEscola = true;
+    const sedEscolas = window.SED_ESCOLAS || this.ESCOLAS;
+    const meuUre = this.ESCOLAS[0].ure, meuEscola = this.ESCOLAS[0].escola;
+    const nivelEscola = st.perfil === 'GOE' || st.perfil === 'DIRETOR' || st.perfil === 'SUPERVISOR';
+    const allUres = st.perfil === 'SUPLAN_DIMAV_COVESC' ? [...new Set(sedEscolas.map(e => e.ure))].sort() : [meuUre];
+    v.relUresCount = allUres.length;
+    v.relUreLabel = st.relUre || (allUres.length === 1 ? allUres[0] : 'SELECIONE...');
+    v.onRelUreToggle = () => { if (allUres.length > 1) this.setState({ relUreOpen: !st.relUreOpen, relEscolaOpen: false }); };
+    v.relUreOpen = st.relUreOpen;
+    v.relUreSearch = st.relUreSearch;
+    v.onRelUreSearch = e => this.setState({ relUreSearch: e.target.value });
+    v.relUreOptions = allUres.filter(u => u.toLowerCase().indexOf((st.relUreSearch || '').toLowerCase()) >= 0)
+      .map(u => ({ v: u, onPick: () => this.setState({ relUre: u, relEscola: '', relUreOpen: false, relUreSearch: '' }) }));
+    v.onRelUreClear = () => this.setState({ relUre: '', relEscola: '', relUreOpen: false, relUreSearch: '' });
+
+    const ureScope = st.perfil === 'URE' ? meuUre : (allUres.length === 1 ? allUres[0] : st.relUre);
+    const escolasNaUre = nivelEscola ? [{ escola: meuEscola, ure: meuUre }] : (ureScope ? sedEscolas.filter(e => e.ure === ureScope) : []);
+    v.relEscolasPlaceholder = escolasNaUre.length ? 'Buscar entre ' + escolasNaUre.length + ' escolas...' : 'Selecione a Diretoria (URE) primeiro';
+    v.relEscolaLabel = st.relEscola || (escolasNaUre.length === 1 ? escolasNaUre[0].escola : 'SELECIONE...');
+    v.onRelEscolaToggle = () => { if (escolasNaUre.length > 1) this.setState({ relEscolaOpen: !st.relEscolaOpen, relUreOpen: false }); else if (!escolasNaUre.length) this.toast('Selecione a Diretoria (URE) primeiro.'); };
+    v.relEscolaOpen = st.relEscolaOpen;
+    v.relEscolaSearch = st.relEscolaSearch;
+    v.onRelEscolaSearch = e => this.setState({ relEscolaSearch: e.target.value });
+    v.relEscolaOptions = escolasNaUre.filter(e => e.escola.toLowerCase().indexOf((st.relEscolaSearch || '').toLowerCase()) >= 0).slice(0, 200)
+      .map(e => ({ v: e.escola, onPick: () => this.setState({ relEscola: e.escola, relEscolaOpen: false, relEscolaSearch: '' }) }));
+    v.onRelEscolaClear = () => this.setState({ relEscola: '', relEscolaOpen: false, relEscolaSearch: '' });
+    v.relNivelLabel = st.perfil === 'SUPLAN_DIMAV_COVESC' ? 'Órgão Central — toda a rede estadual'
+      : st.perfil === 'URE' ? 'Unidade Regional de Ensino — todas as escolas sob a URE ' + this.ESCOLAS[0].ure
+      : 'Escola — ' + this.ESCOLAS[0].escola;
+    v.relTipoEnsino = st.relTipoEnsino; v.onRelTipoEnsino = e => this.setState({ relTipoEnsino: e.target.value, relTurma: '' });
+    v.relTurma = st.relTurma; v.onRelTurma = e => this.setState({ relTurma: e.target.value });
+    v.relTurmas = [...new Set(st.students.filter(s => s.escola === (v.relEscola || (st.perfil === 'GOE' || st.perfil === 'DIRETOR' || st.perfil === 'SUPERVISOR' ? this.ESCOLAS[0].escola : s.escola)) && (!st.relTipoEnsino || s.tipoEnsino === st.relTipoEnsino)).map(s => s.turma).filter(Boolean))].sort().map(t => ({ v: t }));
+    v.onRelLimpar = () => this.setState({ relDe: '', relAte: '', relTurma: '', relTipoEnsino: '', relUre: '', relEscola: '', relSortCol: -1, relSearched: false });
+    v.onRelPesquisar = () => this.setState({ relSearched: true });
+    v.relSearched = st.relSearched;
+    v.onRelExportar = () => this.toast('Exportação gerada — o arquivo (.xlsx) será enviado para download.');
+    let rel = this.relatorio();
+    if (st.relSortCol >= 0) {
+      const ci = st.relSortCol, dir = st.relSortDir;
+      rel = { cols: rel.cols, rows: rel.rows.slice().sort((a, b) => String(a[ci]).localeCompare(String(b[ci]), 'pt', { numeric: true }) * dir) };
+    }
+    v.relCols = rel.cols.map((c, i) => ({
+      v: c, arrow: st.relSortCol === i ? (st.relSortDir === 1 ? '↑' : '↓') : '⇅', opacity: st.relSortCol === i ? '1' : '.65',
+      onSort: () => this.setState({ relSortCol: i, relSortDir: st.relSortCol === i ? -st.relSortDir : 1 })
+    }));
     v.relRows = rel.rows.map((r, i) => ({ bg: bg(i), cells: r.map(c => ({ v: c })) }));
     v.relEmpty = rel.rows.length === 0;
+    v.relCount = rel.rows.length;
+    v.relUsuario = this.perfilNome();
+    v.relGeradoEm = '27/08/2026 às ' + new Date().toTimeString().slice(0, 5);
+    const emitidosCount = st.students.filter(s => s.status === 'Emitido').length;
+    const retCount = st.students.filter(s => s.status === 'Aprovar Retificação' || s.docLabel === 'CIN').length;
+    const semEfeitoCount = st.students.filter(s => s.status === 'Sem Efeito').length;
+    const pendCount = st.students.filter(s => ['Aguardando Aprovação', 'Aguardando Validação'].indexOf(s.status) >= 0).length;
+    v.relCards = [
+      { label: 'Emitidos', value: emitidosCount, color: '#2e8b47' },
+      { label: 'Retificados', value: retCount, color: '#c98a1e' },
+      { label: 'Sem Efeito', value: semEfeitoCount, color: '#c0392b' },
+      { label: 'Pendentes de aprovação/validação', value: pendCount, color: '#2e6da4' }
+    ];
 
     // consulta pública
     const cp = st.cp;
@@ -2111,6 +2725,7 @@ class Component extends DCLogic {
     v.cpBuscar = cp.buscar; v.onCpBuscar = e => { cp.buscar = e.target.value; this.forceUpdate(); };
     v.cpIsRG = cp.buscar === 'RG'; v.cpIsCin = cp.buscar === 'CIN'; v.cpIsRA = cp.buscar === 'RA';
     v.cpDoc = cp.doc; v.onCpDoc = e => { cp.doc = e.target.value; this.forceUpdate(); };
+    v.cpDocDig = cp.docDig || ''; v.onCpDocDig = e => { cp.docDig = e.target.value.replace(/\D/g, '').slice(0, 1); this.forceUpdate(); };
     v.cpDocUf = cp.docUf; v.onCpDocUf = e => { cp.docUf = e.target.value; this.forceUpdate(); };
     v.cpCin = cp.cin; v.onCpCin = e => { cp.cin = e.target.value.replace(/\D/g, ''); this.forceUpdate(); };
     v.cpRa = cp.ra; v.onCpRa = e => { cp.ra = e.target.value.replace(/\D/g, ''); this.forceUpdate(); };
@@ -2118,18 +2733,18 @@ class Component extends DCLogic {
     v.cpTipoEnsino = cp.tipoEnsino; v.onCpTipoEnsino = e => { cp.tipoEnsino = e.target.value; this.forceUpdate(); };
     v.cpCod = cp.cod; v.onCpCod = e => { cp.cod = e.target.value; this.forceUpdate(); };
     v.onCpSearch = () => {
-      if (cp.buscar === 'RG' && !cp.doc.trim()) { this.toast('Informe o número do RG.'); return; }
+      if (cp.buscar === 'RG' && (!cp.doc.trim() || !(cp.docDig || '').trim())) { this.toast('Informe o número e o dígito do RG.'); return; }
       if (cp.buscar === 'CIN' && !cp.cin.trim()) { this.toast('Informe o número do CIN.'); return; }
       if (cp.buscar === 'RA' && !cp.ra.trim()) { this.toast('Informe o número do RA.'); return; }
       if (!cp.cod.trim()) { this.toast('Digite o código da imagem para consultar.'); return; }
       cp.searched = true; this.forceUpdate();
     };
-    v.onCpClear = () => { cp.doc = ''; cp.docUf = 'SP'; cp.cin = ''; cp.ra = ''; cp.nasc = ''; cp.tipoEnsino = ''; cp.cod = ''; cp.searched = false; this.forceUpdate(); };
+    v.onCpClear = () => { cp.doc = ''; cp.docDig = ''; cp.docUf = 'SP'; cp.cin = ''; cp.ra = ''; cp.nasc = ''; cp.tipoEnsino = ''; cp.cod = ''; cp.searched = false; this.forceUpdate(); };
     v.cpSearched = cp.searched;
     const pubList = st.students.filter(s => {
       if (s.status !== 'Emitido' && s.status !== 'Sem Efeito') return false;
       if (!cp.searched) return false;
-      if (cp.buscar === 'RG') return s.docLabel === 'RG' && s.doc === cp.doc.trim();
+      if (cp.buscar === 'RG') return s.docLabel === 'RG' && s.doc === (cp.doc.trim() + '-' + (cp.docDig || '').trim());
       if (cp.buscar === 'CIN') return s.docLabel === 'CIN' && s.doc.replace(/\D/g, '') === cp.cin.trim();
       if (cp.buscar === 'RA') return (s.ra + s.dig) === cp.ra.trim();
       return false;

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+
+<helmet>
+  <script src="./doc-page.js"></script>
+  <style>doc-page:not(:defined){visibility:hidden}
+  body{margin:0}
+  h1,h2,h3{font-family:Arial,Helvetica,sans-serif;color:#1c2a38}
+  h1{font-size:26px;border-bottom:3px solid #3f8ecb;padding-bottom:10px}
+  h2{font-size:18px;margin-top:34px;color:#2e6da4}
+  h3{font-size:14.5px;margin-top:20px}
+  p,li{font-family:Verdana,Arial,sans-serif;font-size:13px;line-height:1.65;color:#222}
+  table{width:100%;border-collapse:collapse;margin:10px 0 18px;font-family:Verdana,Arial,sans-serif;font-size:12px}
+  th{background:#eef4fa;text-align:left;padding:6px 8px;border:1px solid #cfd8e0;font-size:11.5px}
+  td{padding:6px 8px;border:1px solid #e2e8ee;vertical-align:top}
+  .tag{display:inline-block;padding:2px 8px;border-radius:10px;background:#eef4fa;color:#2e6da4;font:700 10.5px Verdana,Arial,sans-serif;margin-right:6px}
+  .rn{background:#fcf8e3;border:1px solid #f0e2a0;border-radius:3px;padding:8px 12px;margin:6px 0;font-family:Verdana,Arial,sans-serif;font-size:12.5px}
+  code{background:#f0f3f6;padding:1px 5px;border-radius:2px;font-size:12px}
+  </style>
+</helmet>
+
+<doc-page margin="0.85in">
+
+<h1>PRD — Histórico Escolar Digital</h1>
+<p><strong>Sistema:</strong> Secretaria Escolar Digital (SED) — módulo de emissão, aprovação, validação e retificação de Histórico Escolar.<br/><strong>Versão do documento:</strong> consolidação do protótipo funcional.</p>
+
+<h2>1. Visão Geral</h2>
+<p>O módulo digitaliza a emissão do Histórico Escolar do estudante, cobrindo todo o ciclo: elaboração (dados de estudos realizados, notas e observações), aprovação pela Direção, validação pela Supervisão de Ensino, publicação com assinatura digital via gov.br, consulta pública do documento e retificação pós-emissão com rastreabilidade completa.</p>
+
+<h2>2. Perfis de Usuário</h2>
+<table>
+<tr><th>Perfil</th><th>Responsabilidade principal</th></tr>
+<tr><td><strong>GOE</strong> — Gerente de Organização Escolar</td><td>Elabora o histórico (Estudos Realizados, Notas, Observação), envia para aprovação, envia retificações.</td></tr>
+<tr><td><strong>Diretor de Escola</strong></td><td>Aprova a emissão elaborada pelo GOE (ou devolve para correção).</td></tr>
+<tr><td><strong>Supervisor de Ensino</strong></td><td>Valida a emissão aprovada (gera o número de publicação e emite o documento), aprova retificações, torna documentos sem efeito.</td></tr>
+</table>
+<p>O acesso a cada ação é controlado pela tela <strong>Parâmetro do Histórico Escolar</strong>, uma matriz Ação × Perfil configurável pelo administrador do sistema.</p>
+
+<h2>3. Fluxo de Status do Documento</h2>
+<table>
+<tr><th>Status</th><th>Descrição</th><th>Quem atua</th></tr>
+<tr><td>Não Emitido</td><td>Nenhuma elaboração iniciada.</td><td>GOE inicia</td></tr>
+<tr><td>Em elaboração</td><td>Ao menos uma aba (Estudos, Notas ou Observação) já foi salva.</td><td>GOE</td></tr>
+<tr><td>Devolvido</td><td>Diretor devolveu a emissão com justificativa.</td><td>GOE corrige</td></tr>
+<tr><td>Aguardando Aprovação</td><td>Enviado pelo GOE, aguardando decisão do Diretor.</td><td>Diretor</td></tr>
+<tr><td>Aguardando Validação</td><td>Aprovado pelo Diretor, aguardando validação final do Supervisor.</td><td>Supervisor</td></tr>
+<tr><td>Emitido</td><td>Validado — documento publicado com número de publicação e assinatura gov.br.</td><td>—</td></tr>
+<tr><td>Aprovar Retificação</td><td>GOE enviou uma retificação (nota ou dado pessoal) sobre um documento Emitido.</td><td>Supervisor</td></tr>
+<tr><td>Sem Efeito</td><td>Supervisor invalidou o documento e a publicação vinculada.</td><td>Pode ser reemitido</td></tr>
+</table>
+<p>Documentos <strong>Sem Efeito</strong> podem ser reabertos pela Emissão (retornam a "Em elaboração") e, ao serem validados novamente, recebem um <strong>novo número de publicação</strong> — o anterior nunca é reaproveitado.</p>
+
+<h2>4. Requisitos Funcionais</h2>
+
+<h3>RF01 — Pesquisa e grid de históricos</h3>
+<p>Busca por RA ou por filtros (status, turma, ano letivo). Resultados paginados, com contador "Registros X a Y de Z" e coluna "Nome do Aluno" fixa no scroll horizontal. Ações disponíveis por linha variam conforme perfil e status (Emissão, Consulta, Aprovar, Validar, Tornar Sem Efeito, Aprovar Retificação, Retificar), com ícone desabilitado e tooltip explicando o motivo quando indisponível.</p>
+
+<h3>RF02 — Emissão (elaboração)</h3>
+<p>Modal com três abas: <strong>Estudos Realizados</strong>, <strong>Notas</strong>, <strong>Observação</strong>. Cada aba salva de forma independente e exibe um ✓ verde no próprio rótulo da aba quando já foi salva. Disponível para qualquer status exceto Emitido (para Emitido, a alteração é feita exclusivamente via Retificar).</p>
+
+<h3>RF03 — Aba Estudos Realizados</h3>
+<p>Grid de anos/séries cursados com estabelecimento, rede, município, UF, base comum, parte diversificada e carga horária (CH). Alunos reclassificados podem incluir manualmente um ano anterior não migrado da base (com justificativa e anexo obrigatórios).</p>
+
+<h3>RF04 — Aba Notas</h3>
+<p>Grade de componentes curriculares × anos letivos. Permite adicionar disciplinas não cursadas ainda (bloqueando duplicidade) e editar notas ano a ano mediante desbloqueio (ícone de lápis).</p>
+
+<h3>RF05 — Aba Observação</h3>
+<p>Campo de texto livre. Alunos reclassificados têm o campo pré-preenchido automaticamente com o texto padrão de reclassificação.</p>
+
+<h3>RF06 — Envio para Aprovação</h3>
+<p>GOE envia o histórico elaborado para o Diretor. Ação assina digitalmente via gov.br.</p>
+
+<h3>RF07 — Aprovação (Diretor)</h3>
+<p>Diretor aprova (assinatura gov.br, avança para Aguardando Validação) ou devolve com justificativa obrigatória (retorna para Devolvido).</p>
+
+<h3>RF08 — Validação (Supervisor)</h3>
+<p>Supervisor valida (assinatura gov.br), sistema gera o número de publicação de concluinte e o status muda para Emitido. Suporta validação em lote (múltiplos alunos selecionados).</p>
+
+<h3>RF09 — Consulta do documento</h3>
+<p>Renderização do Histórico Escolar no layout oficial (dados pessoais, grade de notas com colunas laterais mescladas, estudos realizados, certificado). Documentos não Emitidos exibem marca d'água "Documento não emitido"; documentos Sem Efeito exibem "Histórico tornado sem efeito"; documentos Emitidos são renderizados limpos, com selo de assinatura gov.br.</p>
+
+<h3>RF10 — Download em PDF</h3>
+<p>Disponível na tela de consulta (interna e pública), abre o diálogo de impressão do navegador (Salvar como PDF) mostrando somente o documento.</p>
+
+<h3>RF11 — Tornar Sem Efeito</h3>
+<p>Supervisor invalida um documento Emitido (justificativa e anexo obrigatórios). Assinatura gov.br. Registra uma versão de publicação.</p>
+
+<h3>RF12 — Retificação</h3>
+<p>Único ponto de alteração de um documento Emitido. Modal "Retificar Histórico Escolar" com duas opções:</p>
+<ul>
+<li><strong>Nota:</strong> escolhe componente curricular e ano, vê a nota atual (campo bloqueado) e informa a nova nota, com justificativa e anexo obrigatórios.</li>
+<li><strong>Dado Pessoal:</strong> não editável nesta tela — o usuário corrige o dado na Ficha do Aluno; o sistema compara automaticamente o valor publicado com o valor atual e lista as diferenças ("Publicado" × "Atual"), sem exigir justificativa ou anexo adicionais.</li>
+</ul>
+<p>O envio assina digitalmente via gov.br, muda o status para Aprovar Retificação e registra a alteração no log de modificações do documento.</p>
+
+<h3>RF13 — Aprovação de Retificação (Supervisor)</h3>
+<p>Tela exibe o que foi alterado (notas e/ou dados pessoais) via log de modificações. Ao aprovar, o documento volta a Emitido mantendo o mesmo número de publicação; assinatura gov.br.</p>
+
+<h3>RF14 — Log de Modificações</h3>
+<p>Lista cronológica de alterações do documento (seção, descrição, justificativa, anexo para download, usuário, cargo, data). Acessível a partir da tela de documento sempre que houver modificações registradas.</p>
+
+<h3>RF15 — Versões Anteriores de Publicação</h3>
+<p>Seção na tela do documento que lista números de publicação anteriores ao vigente, com status e data — alimentada a cada "Tornar Sem Efeito" e a cada nova validação.</p>
+
+<h3>RF16 — Consulta Pública</h3>
+<p>Consulta externa por RG, CIN ou RA + código de imagem. Retorna documentos Emitidos e Sem Efeito, com download em PDF (marca d'água conforme status).</p>
+
+<h3>RF17 — Relatórios</h3>
+<p>Relatórios de: históricos emitidos, históricos retificados, históricos tornados sem efeito, publicações existentes vinculadas, ações por usuário e assinaturas gov.br.</p>
+
+<h3>RF18 — Auditoria</h3>
+<p>Toda ação assinada digitalmente (envio, aprovação, validação, retificação, tornar sem efeito) gera um registro de auditoria com ator, perfil, data/hora e identificador de assinatura gov.br.</p>
+
+<h3>RF19 — Parâmetro do Histórico Escolar</h3>
+<p>Matriz de configuração Ação × Perfil (GOE / Diretor / Supervisor) que habilita ou desabilita cada ação do sistema por perfil.</p>
+
+<h2>5. Regras de Negócio (RN)</h2>
+
+<div class="rn"><strong>RN01</strong> — Notas aceitam valores numéricos de 5 a 10, ou as siglas N/A (Não Avaliado), ET (Engajamento Total), ES (Engajamento Satisfatório), EP (Engajamento Parcial). Qualquer outro valor é rejeitado no momento de salvar.</div>
+<div class="rn"><strong>RN02</strong> — Não é permitido enviar o histórico para aprovação se houver qualquer disciplina sem nota lançada.</div>
+<div class="rn"><strong>RN03</strong> — Não é permitido enviar o histórico para aprovação se houver ano letivo sem Carga Horária (CH) preenchida.</div>
+<div class="rn"><strong>RN04</strong> — Disciplinas já existentes no percurso do estudante são filtradas do combo "Adicionar Disciplina" e bloqueadas na gravação em caso de duplicidade.</div>
+<div class="rn"><strong>RN05</strong> — Alterar uma nota já salva anteriormente exige justificativa e anexo obrigatórios.</div>
+<div class="rn"><strong>RN06</strong> — Status "Em elaboração" é assumido automaticamente assim que qualquer aba (Estudos, Notas ou Observação) é salva pela primeira vez a partir de "Não Emitido".</div>
+<div class="rn"><strong>RN07</strong> — Fechar o modal de Emissão, trocar de aba, ou sair da página com alterações não salvas exige confirmação do usuário.</div>
+<div class="rn"><strong>RN08</strong> — Envio para aprovação é bloqueado se o aluno não possui rendimento aprovado, salvo perfil com permissão específica ("Enviar sem rendimento aprovado").</div>
+<div class="rn"><strong>RN09</strong> — Um documento Emitido não pode ser editado pela tela de Emissão. Toda alteração pós-emissão passa exclusivamente pelo fluxo de Retificação.</div>
+<div class="rn"><strong>RN10</strong> — Retificação de nota exige justificativa e anexo obrigatórios; retificação de dado pessoal não exige, pois a correção já ocorreu na Ficha do Aluno (fonte da verdade dos dados cadastrais).</div>
+<div class="rn"><strong>RN11</strong> — Toda ação de fluxo (enviar, aprovar, devolver, validar, retificar, aprovar retificação, tornar sem efeito) é assinada digitalmente via gov.br e gera registro de auditoria.</div>
+<div class="rn"><strong>RN12</strong> — Aprovação de retificação mantém o mesmo número de publicação do documento original.</div>
+<div class="rn"><strong>RN13</strong> — Reemissão de um documento Sem Efeito gera um novo número de publicação; o número anterior permanece registrado no histórico de versões e nunca é reutilizado.</div>
+<div class="rn"><strong>RN14</strong> — Tornar Sem Efeito exige justificativa e anexo obrigatórios e invalida a publicação vinculada.</div>
+<div class="rn"><strong>RN15</strong> — Documentos não Emitidos (e Sem Efeito) exibem marca d'água na visualização e no PDF; documentos Emitidos são renderizados limpos, com selo de assinatura gov.br.</div>
+<div class="rn"><strong>RN16</strong> — Toda ação da grid respeita a matriz de Parâmetro (Ação × Perfil); ações não parametrizadas para o perfil do usuário aparecem desabilitadas com tooltip explicativo.</div>
+<div class="rn"><strong>RN17</strong> — Alunos reclassificados têm o campo Observação pré-preenchido com texto padrão ("O(a) aluno(a) foi reclassificado(a) do [série origem] para [série destino] em [ano]") e podem incluir manualmente estudos realizados de anos anteriores à reclassificação.</div>
+
+<h2>6. Fora de Escopo (neste protótipo)</h2>
+<ul>
+<li>Tela completa de Ficha do Aluno (a correção de dados pessoais é referenciada, mas a tela em si pertence a outro módulo da SED).</li>
+<li>Assinatura eletrônica real via integração gov.br (simulada no protótipo com identificador gerado).</li>
+<li>Consolidação de versões anteriores completas do documento (o sistema rastreia números de publicação e status, não o conteúdo integral de cada versão anterior).</li>
+</ul>
+
+</doc-page>
+
+</x-dc>
+</body>
+</html>
