@@ -1,0 +1,129 @@
+08/09/2026
+Perfil responsável pela conferência e aprovação/devolução da emissão, bem como pela aprovação ou reprovação da retificação antes da validação do Supervisor.
+Perfil responsável pela validação final da emissão, validação ou reprovação da retificação e ação de tornar sem efeito.
+Status aplicado quando o Diretor ou o Supervisor reprova uma solicitação de retificação. A versão emitida anterior permanece vigente e o GOE/AOE/Secretário pode iniciar nova retificação.
+Fluxo de aprovação - Diretor de Escola
+Fluxo de validação - Supervisor de Ensino
+Retificação do Histórico Escolar
+Consulta interna e consultas públicas
+Mensagens padronizadas
+Regras de negócio consolidadas
+Critérios de aceite consolidados
+Features para derivação de histórias de usuário
+Pontos de decisão
+Garantir que o Diretor de Escola aprove ou devolva a emissão e aprove ou reprove solicitações de retificação, com justificativa registrada quando aplicável.
+Garantir que o Supervisor de Ensino valide a emissão, valide ou reprove retificações e torne documentos sem efeito quando necessário.
+Dados pessoais, matrícula, escola, turma, tipo de ensino, percurso escolar, reclassificação e publicações existentes na SED. Não inclui migração automática de notas, menções ou frequência no MVP.
+4.1 Fluxo:
+Consultar, aprovar/devolver emissão, aprovar em lote, aprovar/reprovar retificação e visualizar modificações.
+Validar/devolver emissão, validar em lote, validar/reprovar retificação, tornar sem efeito e consultar modificações.
+Aguardando Aprovação da Retificação
+Retificação enviada pela escola e aguardando decisão do Diretor de Escola.
+Aprovar ou reprovar retificação. A versão publicada anterior permanece vigente enquanto a solicitação estiver em análise.
+Aguardando Validação da Retificação
+Retificação aprovada pelo Diretor e aguardando validação do Supervisor de Ensino.
+Validar ou reprovar retificação. A versão publicada anterior permanece vigente até a validação.
+Solicitação de retificação reprovada pelo Diretor ou pelo Supervisor. A versão emitida anterior permanece vigente.
+Diretor de Escola assina digitalmente via GOV.BR ao aprovar a emissão e ao aprovar a retificação.
+Supervisor de Ensino assina digitalmente via GOV.BR ao validar a emissão, validar a retificação ou tornar sem efeito quando a ação exigir assinatura.
+O Histórico Escolar emitido ou retificado apresenta visualmente as assinaturas do GOE/AOE/Secretário e do Diretor de Escola correspondentes à versão vigente.
+A assinatura do Supervisor, inclusive na validação da retificação, permanece registrada no fluxo e no Log de Auditoria, sem aparecer visualmente no documento final.
+Existência de divergência/alteração válida; não existir retificação em análise; GOV.BR concluído
+Aguardando Aprovação da Retificação
+Gera versão submetida da retificação e mantém a versão emitida anterior como vigente.
+Aguardando Aprovação da Retificação
+Aguardando Validação da Retificação
+Registra assinatura do Diretor; nenhuma alteração é publicada nesta etapa.
+Aguardando Aprovação da Retificação
+Mantém a versão emitida anterior vigente; nova retificação pode ser iniciada.
+Aguardando Validação da Retificação
+Validar Retificação
+Aguardando Validação da Retificação
+Enquanto o documento estiver em Aguardando Aprovação, Aguardando Validação, Aguardando Aprovação da Retificação ou Aguardando Validação da Retificação, o conteúdo submetido deve permanecer somente leitura para os perfis que não executam a decisão da etapa.
+Retificar Histórico; aprovar retificação; validar retificação; reprovar retificação.
+No fluxo de retificação, a sequência funcional deve ser preservada: aprovação pelo Diretor e validação pelo Supervisor. Outros perfis somente poderão executar essas ações quando houver parametrização expressa para a etapa correspondente, sem eliminar ou inverter os status do fluxo.
+Nome, RA, Díg. RA, Data de Nascimento, Tipo de Ensino, Consultar, Aprovar Emissão, Aprovar Retificação, Status.
+Aprovar/devolver emissão quando Aguardando Aprovação; aprovar/reprovar retificação quando Aguardando Aprovação da Retificação.
+Nome, RA, Díg. RA, Data de Nascimento, Tipo de Ensino, Consultar, Validar Emissão, Validar Retificação, Status, Tornar Sem Efeito.
+Validar/devolver emissão, tornar sem efeito e validar/reprovar retificação conforme status.
+Grid ampla com Emitir, Liberar Emissão, Consultar, Aprovar Emissão, Validar Emissão, Status, Tornar Sem Efeito, Aprovar Retificação, Validar Retificação e Retificar.
+Figura 10 - Grid do Supervisor de Ensino com validação, tornar sem efeito e validar retificação.
+Figura 31 – Filtro de status Aguardando Aprovação
+Figura 34 - Grid do Supervisor de Ensino com ações de validação, tornar sem efeito e validar retificação.
+A retificação mantém o número de publicação, preservando a versão anteriormente emitida para fins de consulta e auditoria. As alterações somente passam a compor a versão vigente do Histórico Escolar após a aprovação do Diretor de Escola e a validação do Supervisor de Ensino.
+Todas as alterações de nota incluídas serão encaminhadas conjuntamente em uma única solicitação de retificação, submetida ao mesmo fluxo de aprovação do Diretor de Escola e validação do Supervisor de Ensino.
+“Esta ação registrará a solicitação de retificação do Histórico Escolar e a enviará para aprovação do Diretor de Escola. A versão vigente permanecerá inalterada até a conclusão do fluxo de aprovação e validação. Deseja continuar?”
+a solicitação deverá ser encaminhada para análise do Diretor de Escola; 
+o Histórico Escolar deverá assumir o status “Aguardando Aprovação da Retificação”. 
+“Retificação assinada digitalmente via GOV.BR e enviada para aprovação do Diretor de Escola com sucesso. As alterações somente serão publicadas após a aprovação do Diretor e a validação do Supervisor de Ensino.”
+Status após o envio: Aguardando Aprovação da Retificação.
+Nenhuma alteração deverá substituir a versão publicada antes da validação do Supervisor de Ensino. 
+Figura 43 - Confirmação de envio da retificação para aprovação do Diretor de Escola.
+Figura 44 - Sucesso do envio de retificação para aprovação do Diretor de Escola.
+Após o envio, a solicitação deve ficar congelada. O Diretor e, após sua aprovação, o Supervisor devem analisar exatamente os valores submetidos, ainda que os dados de origem sejam alterados posteriormente.
+A versão publicada anterior continua válida enquanto a retificação estiver em Aguardando Aprovação da Retificação ou Aguardando Validação da Retificação.
+14.2 Aprovação ou reprovação da retificação pelo Diretor de Escola
+A ação Aprovar Retificação fica disponível para o Diretor de Escola quando o status do documento for Aguardando Aprovação da Retificação.
+O modal apresenta prévia do PDF, Baixar PDF, informações modificadas e campo de justificativa de reprovação.
+A aprovação do Diretor registra assinatura GOV.BR e altera o status para Aguardando Validação da Retificação. A versão publicada anterior permanece vigente e nenhuma alteração é publicada nesta etapa.
+A reprovação pelo Diretor exige justificativa, mantém a versão emitida sem alteração publicada e altera o status para Retificação Reprovada.
+Texto da confirmação de aprovação da retificação pelo Diretor: “Declaro que conferi a retificação do Histórico Escolar do(a) aluno(a) {{nome_aluno}} e que as alterações submetidas estão em conformidade com os registros oficiais da unidade escolar. Estou ciente de que esta aprovação encaminhará a solicitação para validação do Supervisor de Ensino e não publicará as alterações neste momento.”
+14.3 Validação ou reprovação da retificação pelo Supervisor de Ensino
+A ação Validar Retificação fica disponível para o Supervisor de Ensino quando o status do documento for Aguardando Validação da Retificação.
+O modal apresenta prévia do PDF, Baixar PDF, informações modificadas e campo de justificativa de reprovação.
+A validação confirma a retificação, mantém o número de publicação, registra assinatura GOV.BR, torna a nova versão vigente e retorna o documento ao status Emitido.
+A reprovação exige justificativa, mantém a versão emitida anterior vigente e altera o status para Retificação Reprovada.
+Texto da confirmação de validação da retificação: “Declaro que conferi a retificação do Histórico Escolar do(a) aluno(a) {{nome_aluno}} e que as alterações estão em conformidade com os registros oficiais. A validação mantém o mesmo número de publicação de concluinte, torna a versão retificada vigente e preserva a versão anterior para auditoria.”
+Mensagem de sucesso: “Retificação validada e assinada digitalmente via GOV.BR com sucesso. A nova versão do Histórico Escolar está vigente e o número de publicação foi mantido.”
+Figura 45 - Referência visual do modal de validação da retificação pelo Supervisor de Ensino.
+Figura 46 - Confirmação de validação da retificação.
+Figura 47 - Sucesso da retificação validada, publicada e assinada via GOV.BR.
+14.3.1 Retificação Reprovada
+Quando o Diretor ou o Supervisor reprovar a solicitação, deverá informar justificativa obrigatória. A versão oficial anteriormente emitida permanece vigente e inalterada.
+Figura 48-A - Reprovação de retificação pelo Supervisor com alteração do status para Retificação Reprovada.
+Figura 48-B - Visão do GOE/AOE/Secretário após reprovação, com ação Retificar novamente disponível.
+Figura 48-C - Nova solicitação de retificação exibindo alerta com a reprovação anterior e respectiva justificativa.
+Figura 49 - Modal Tornar Sem Efeito com dados do aluno e do documento.
+Figura 50 - Lista de justificativas para tornar sem efeito.
+Figura 51 - Confirmação da ação Tornar Sem Efeito.
+Figura 52 - Sucesso ao tornar histórico e publicação vinculada sem efeito.
+Figura 53 - Consulta interna do Histórico Escolar emitido.
+Figura 54 - Consulta interna do Histórico Escolar tornado sem efeito com marca d’água.
+GOE/AOE/Secretário/Diretor/Supervisor
+Figura 55 - Relatório com filtros e escopo hierárquico.
+Figura 56 - Relatório com cards-resumo e grid de resultados.
+Figura 57 - Log de Auditoria com filtros, grid, paginação e exportação.
+Figura 58 - Drawer lateral com detalhes do registro auditado.
+Figura 59 - Linha do tempo do aluno/documento no Log de Auditoria.
+EXCLUIR_DISCIPLINA
+Exclusão de componente curricular por perfil autorizado.
+Envio da solicitação de retificação para aprovação do Diretor.
+APROVAR_RETIFICACAO_DIRETOR / REPROVAR_RETIFICACAO_DIRETOR
+Decisão do Diretor na retificação.
+VALIDAR_RETIFICACAO_SUPERVISOR / REPROVAR_RETIFICACAO_SUPERVISOR
+Retificação assinada digitalmente via GOV.BR e enviada para aprovação do Diretor de Escola. A versão vigente permanece inalterada.
+Retificação aprovada pelo Diretor
+Retificação aprovada e assinada digitalmente via GOV.BR pelo Diretor. Status alterado para Aguardando Validação da Retificação.
+Retificação validada
+Retificação validada e assinada digitalmente via GOV.BR. Nova versão vigente e número de publicação mantido.
+Retificação reprovada. A versão emitida anterior permanece vigente e o GOE/AOE/Secretário deverá iniciar uma nova retificação para corrigir o histórico.
+Retificação mantém o mesmo número de publicação e preserva a versão anterior para auditoria. A nova versão somente se torna vigente após aprovação do Diretor e validação do Supervisor.
+O documento emitido ou retificado apresenta visualmente as assinaturas do GOE/AOE/Secretário e do Diretor de Escola correspondentes à versão vigente.
+A assinatura do Supervisor, inclusive na validação da retificação, é registrada no fluxo e no Log de Auditoria, sem aparecer visualmente no documento final.
+Documento enviado para aprovação, validação ou retificação deve ser congelado como versão submetida imutável durante todas as etapas decisórias.
+Retificação reprovada pelo Diretor ou Supervisor assume status Retificação Reprovada; a versão publicada anterior permanece vigente e uma nova retificação pode ser iniciada.
+Não é permitido alterar uma retificação já submetida. O Diretor e o Supervisor devem analisar o mesmo snapshot enviado, em suas respectivas etapas.
+RN45
+A retificação segue obrigatoriamente o fluxo: envio pelo GOE/AOE/Secretário ou perfil autorizado → Aguardando Aprovação da Retificação → aprovação do Diretor → Aguardando Validação da Retificação → validação do Supervisor → Emitido.
+RN46
+A aprovação da retificação pelo Diretor não publica alterações. A versão retificada somente passa a ser vigente após a validação do Supervisor de Ensino.
+Ao aprovar a retificação pelo Diretor, o sistema deve assinar via GOV.BR, manter a versão publicada anterior vigente e alterar o status para Aguardando Validação da Retificação.
+Ao tentar alterar documento em Aguardando Aprovação, Aguardando Validação, Aguardando Aprovação da Retificação ou Aguardando Validação da Retificação por perfil sem ação decisória, o sistema deve manter a versão submetida somente leitura.
+Ao reprovar uma retificação pelo Diretor ou Supervisor, o sistema deve alterar o status para Retificação Reprovada, manter a versão emitida vigente e habilitar nova ação Retificar ao perfil autorizado.
+CA46
+Ao enviar uma retificação válida, o sistema deve assinar via GOV.BR e alterar o status para Aguardando Aprovação da Retificação, disponibilizando a decisão ao Diretor de Escola.
+CA47
+Ao validar a retificação pelo Supervisor, o sistema deve assinar via GOV.BR, manter o mesmo número de publicação, tornar a nova versão vigente e alterar o status para Emitido.
+CA48
+Enquanto a retificação estiver em Aguardando Aprovação da Retificação ou Aguardando Validação da Retificação, a versão anteriormente emitida deve permanecer vigente para consulta.
+Retificação de notas e dados pessoais, aprovação/reprovação pelo Diretor, validação/reprovação pelo Supervisor e preservação de versão.

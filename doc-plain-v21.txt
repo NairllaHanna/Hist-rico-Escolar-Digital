@@ -1,0 +1,1597 @@
+
+center23002311409410012100center818008227695
+nairlla.jesus@apoiofde.sp.gov.br
+941009200
+nairlla.jesus@apoiofde.sp.gov.br
+center700007040880Resumo
+Este PRD define os requisitos para implantação do Histórico Escolar Digital, contemplando emissão, aprovação, validação, retificação, reemissão, auditoria, publicação e assinatura digital via GOV.BR, com regras de negócio e sistema para garantir segurança, rastreabilidade e padronização do processo.
+9410010000Resumo
+Este PRD define os requisitos para implantação do Histórico Escolar Digital, contemplando emissão, aprovação, validação, retificação, reemissão, auditoria, publicação e assinatura digital via GOV.BR, com regras de negócio e sistema para garantir segurança, rastreabilidade e padronização do processo.
+
+center1522675DOCUMENTO DE REQUISITO DE produto e negócio.
+9410036300DOCUMENTO DE REQUISITO DE produto e negócio.
+
+DOCUMENTO DE REQUISITO DE NEGÓCIO E PRODUTO
+Histórico Escolar Digital
+MVP - Histórico Escolar de Conclusão para Ensino Fundamental e Ensino Médio Regular
+
+Campo
+Informação
+Produto
+Histórico Escolar Digital
+Sistema
+Secretaria Escolar Digital - SED
+Área de negócio
+Coordenadoria de Vida Escolar
+Rede
+Rede Estadual de Ensino de São Paulo
+Responsável pelo negócio
+SUPLAN – DIMAV – COVESC
+Data
+08/09/2026
+Product Owner
+Naírlla Hanna Carneiro de Jesus
+Stakeholders
+Michel Minerbo, Janaina Magro, Thiago Conti
+Lider de Torre
+Louise Leny de Oliveira dos Santos
+Versão
+2.0
+Controle do documento
+Versão
+Data
+Descrição
+Responsável
+2.0
+31/08/2026
+Documento consolidado com escopo, regras, fluxos, perfis, auditoria, relatórios, retificação, tornar sem efeito, assinatura GOV.BR e referências visuais do protótipo nas seções correspondentes.
+Produto / Negócio
+
+
+
+
+
+
+
+
+
+
+
+
+Sumário executivo
+Este documento descreve os requisitos de negócio e produto para implantação do Histórico Escolar Digital na Secretaria Escolar Digital. O produto centraliza a elaboração, emissão, aprovação, validação, retificação, consulta, auditoria e gestão de publicações vinculadas ao Histórico Escolar de Conclusão, com assinatura digital GOV.BR e parametrização de ações por perfil.
+O escopo do MVP contempla a emissão do Histórico Escolar de Conclusão para estudantes da Rede Estadual no Ensino Fundamental regular, no 9º ano, e no Ensino Médio regular, no ano/série de conclusão. O documento final deve refletir os modelos oficiais, o percurso escolar, as notas, cargas horárias, observações, publicação de concluinte e assinaturas aplicáveis ao fluxo.
+Glossário e definições
+Termo
+Definição
+Ano/série de conclusão
+Ano ou série em que o estudante conclui a etapa de ensino.
+GOE/AOE/Secretário
+Perfis da unidade escolar responsáveis pela elaboração e envio do Histórico Escolar para aprovação.
+Diretor de Escola
+Perfil responsável pela conferência e aprovação/devolução da emissão, bem como pela aprovação ou reprovação da retificação antes da validação do Supervisor.
+Supervisor de Ensino
+Perfil responsável pela validação final da emissão, validação ou reprovação da retificação e ação de tornar sem efeito.
+Órgão Central
+Perfil SUPLAN - DIMAV - COVESC com visão ampla da rede e ações administrativas parametrizadas.
+Publicação de concluinte
+Número oficial associado à conclusão da etapa/modalidade, utilizado também na Consulta Pública de Concluintes.
+Retificação
+Correção de dados pessoais ou notas após emissão, com preservação da versão anterior e manutenção do número de publicação.
+Tornar sem efeito
+Ação administrativa que invalida o Histórico Escolar e a publicação vinculada, com justificativa, anexo e registro de auditoria.
+Log de Auditoria
+Trilha imutável de ações realizadas no documento, incluindo usuário, perfil, data/hora, status, justificativa, assinatura e diffs de alterações.
+Versão vigente
+Versão do Histórico Escolar considerada oficial e válida para consulta. Durante uma retificação em análise, a versão emitida anterior permanece vigente.
+Versão submetida
+Snapshot imutável do conteúdo do Histórico Escolar no momento do envio para aprovação, validação ou retificação.
+Retificação Reprovada
+Status aplicado quando o Diretor ou o Supervisor reprova uma solicitação de retificação. A versão emitida anterior permanece vigente e o GOE/AOE/Secretário pode iniciar nova retificação.
+
+
+
+
+
+Sumário das seções
+Contexto e problema de negócio
+Objetivo do produto
+Escopo do MVP
+Modelos oficiais
+Perfis e abrangência
+Status e regras estruturantes
+Parametrização por perfil
+Integrações e origem dos dados
+Histórico Escolar - pesquisa e grid
+Emissão e elaboração
+Estudante sem rendimento aprovado e liberação excepcional
+Fluxo de aprovação - Diretor de Escola
+Fluxo de validação - Supervisor de Ensino
+Retificação do Histórico Escolar
+Tornar Sem Efeito
+Consulta interna e consultas públicas
+Relatório - Histórico Escolar
+Log de Auditoria
+Mensagens padronizadas
+Regras de negócio consolidadas
+Critérios de aceite consolidados
+Features para derivação de histórias de usuário
+Pontos de decisão
+
+1. Contexto e problema de negócio
+A emissão do Histórico Escolar é uma atividade oficial de vida escolar que exige conferência, rastreabilidade, segurança, padronização documental e coerência com os registros existentes na SED. O fluxo digital reduz retrabalho, evita divergências entre documento e publicação de concluinte e permite auditoria das ações executadas por cada perfil.
+O produto resolve a necessidade de elaboração controlada do Histórico Escolar de Conclusão, garantindo que as informações sejam revisadas pela escola, aprovadas pela direção, validadas pela supervisão, publicadas quando aplicável e preservadas para consulta pública e auditoria.
+Problemas de negócio tratados
+Preenchimento manual de estudos, notas e cargas horárias sem trilha estruturada de alterações.
+Ausência de fluxo único com etapas de elaboração, aprovação, validação, retificação e tornar sem efeito.
+Necessidade de vincular o documento emitido ao número de publicação de concluinte, preservando o comportamento da consulta pública.
+Necessidade de registrar justificativas, anexos, assinaturas GOV.BR, status anteriores e atuais e informações modificadas.
+Necessidade de parametrizar permissões por perfil, sem depender de regra fixa no código.
+2. Objetivo do produto
+Implantar na Secretaria Escolar Digital uma funcionalidade para elaboração, emissão, aprovação, validação, retificação, consulta e auditoria do Histórico Escolar Digital, com assinatura digital GOV.BR, controle por status, preservação de versões e vinculação à publicação de concluintes.
+Objetivos específicos
+Permitir que a escola inicie e elabore o Histórico Escolar do estudante no ano/série de conclusão.
+Permitir ajustes manuais de estudos realizados, notas, disciplinas e observações, com justificativa e anexo quando aplicável.
+Garantir que o Diretor de Escola aprove ou devolva a emissão e aprove ou reprove solicitações de retificação, com justificativa registrada quando aplicável.
+Garantir que o Supervisor de Ensino valide a emissão, valide ou reprove retificações e torne documentos sem efeito quando necessário.
+Controlar exceções de emissão para estudante sem rendimento aprovado por meio de liberação do Órgão Central.
+Registrar integralmente as ações em Log de Auditoria imutável.
+Disponibilizar relatórios gerenciais por escopo hierárquico e filtros operacionais.
+3. Escopo do MVP
+Item
+Descrição
+Etapas contempladas
+Ensino Fundamental regular - 9º ano; Ensino Médio regular - ano/série de conclusão.
+Tipo de documento
+Histórico de Conclusão.
+Rede emissora
+Rede Estadual de Ensino.
+Perfis principais
+GOE, AOE, Secretário de Escola, Diretor de Escola, Supervisor de Ensino, URE/Dirigente quando parametrizado e Órgão Central.
+Dados migrados
+Dados pessoais, matrícula, escola, turma, tipo de ensino, percurso escolar, reclassificação e publicações existentes na SED. Não inclui migração automática de notas, menções ou frequência no MVP.
+Dados editáveis
+Estudos realizados, carga horária, notas, disciplinas e observações, conforme permissões parametrizadas.
+
+Fora do escopo do MVP
+Histórico Escolar por transferência durante o ano letivo.
+Ensino Médio profissionalizante de oferta indireta, quando a formação técnica ocorre em outra unidade/instituição.
+Emissão de históricos de CEEJA, ENCCEJA, CESU, certificações por exames e demais modalidades não regulares.
+Migração automática de notas, menções e frequência do Diário de Classe/Sala do Futuro Professor no MVP.
+Integrações com bases externas de redes privadas ou municipais além dos dados já existentes na SED.
+4. Modelos oficiais do Histórico Escolar
+Cada documento emitido utiliza o modelo oficial da respectiva etapa de ensino. O sistema não emite modelo genérico; a composição do documento deve respeitar matriz, componentes curriculares, carga horária, estudos realizados, observações, certificação, publicação e assinaturas.
+Figura 1 - Modelo oficial do Histórico Escolar do Ensino Fundamental.
+
+Figura 2 - Modelo oficial do Histórico Escolar do Ensino Médio regular.
+
+Figura 3 - Modelo oficial do Histórico Escolar do Novo Ensino Médio - página 1.
+
+Figura 4 - Modelo oficial do Histórico Escolar do Novo Ensino Médio - página 2.
+
+4.1 Fluxo:
+
+
+5. Perfis e abrangência
+Perfil
+Abrangência
+Ações principais
+GOE/AOE/Secretário
+Unidade escolar
+Pesquisar aluno, iniciar elaboração, editar estudos realizados, editar notas, adicionar disciplina, preencher observação e enviar para aprovação.
+Diretor de Escola
+Unidade escolar
+Consultar, aprovar/devolver emissão, aprovar em lote, aprovar/reprovar retificação e visualizar modificações.
+Supervisor de Ensino
+Escolas sob supervisão/URE, conforme perfil
+Validar/devolver emissão, validar em lote, validar/reprovar retificação, tornar sem efeito e consultar modificações.
+URE - Dirigente de Ensino
+Escolas da própria URE
+Consulta e ações parametrizadas conforme necessidade da área.
+SUPLAN - DIMAV - COVESC / Órgão Central
+Toda a rede estadual
+Visão ampla, liberação de emissão sem rendimento aprovado, emissão, consulta, retificação, relatórios, auditoria e demais ações parametrizadas.
+
+A matriz de perfis apresenta o comportamento padrão do produto. A disponibilidade efetiva de cada ação deve resultar, cumulativamente, do perfil logado, da abrangência do usuário, da parametrização Funcionalidade x Perfil, do status do documento e das pré-condições da ação. Nenhuma ação deve ser liberada apenas por constar nesta matriz.
+6. Status e regras estruturantes
+Os status controlam as ações disponíveis na grid, os botões exibidos nos modais e os fluxos permitidos para cada perfil. O sistema deve impedir avanços indevidos e preservar a trilha de auditoria de cada movimentação.
+Status
+Descrição
+Ações esperadas
+Não Emitido
+Aluno localizado, sem documento em elaboração ou emitido.
+Emitir; Liberar Emissão quando aplicável ao Órgão Central.
+Em elaboração
+Documento iniciado e salvo pela escola.
+Editar dados permitidos, salvar e enviar para aprovação.
+Aguardando Aprovação
+Documento enviado pela escola ao Diretor.
+Aprovar ou devolver.
+Aguardando Validação
+Documento aprovado pelo Diretor e aguardando Supervisor.
+Validar ou devolver.
+Emitido
+Documento validado e com publicação vinculada/gerada.
+Consultar, retificar quando aplicável, tornar sem efeito quando permitido.
+Devolvido
+Documento devolvido pelo Diretor ou Supervisor para correção pela escola.
+GOE/AOE/Secretário corrige. Ao reenviar, o documento retorna para Aguardando Aprovação e deve passar novamente pelo Diretor.
+Aguardando Aprovação da Retificação
+Retificação enviada pela escola e aguardando decisão do Diretor de Escola.
+Aprovar ou reprovar retificação. A versão publicada anterior permanece vigente enquanto a solicitação estiver em análise.
+Aguardando Validação da Retificação
+Retificação aprovada pelo Diretor e aguardando validação do Supervisor de Ensino.
+Validar ou reprovar retificação. A versão publicada anterior permanece vigente até a validação.
+Sem Efeito
+Documento e publicação vinculada foram tornados sem efeito.
+Consulta somente leitura com marca d’água.
+Retificação Reprovada
+Solicitação de retificação reprovada pelo Diretor ou pelo Supervisor. A versão emitida anterior permanece vigente.
+Consultar o motivo da reprovação e iniciar nova retificação, quando permitido.
+
+6.1 Assinatura GOV.BR via API
+GOE/AOE/Secretário assina digitalmente via GOV.BR ao enviar o Histórico Escolar para aprovação.
+Diretor de Escola assina digitalmente via GOV.BR ao aprovar a emissão e ao aprovar a retificação.
+Supervisor de Ensino assina digitalmente via GOV.BR ao validar a emissão, validar a retificação ou tornar sem efeito quando a ação exigir assinatura.
+O Histórico Escolar emitido ou retificado apresenta visualmente as assinaturas do GOE/AOE/Secretário e do Diretor de Escola correspondentes à versão vigente.
+A assinatura do Supervisor, inclusive na validação da retificação, permanece registrada no fluxo e no Log de Auditoria, sem aparecer visualmente no documento final.
+Cada assinatura deve registrar identificador, usuário, perfil, data/hora e ação vinculada.
+6.2 Nome do aluno no documento escolar
+Enquanto não houver definição institucional sobre a utilização de nome social em documentos escolares oficiais, o Histórico Escolar é emitido com o nome de registro do estudante, conforme documentação civil oficial registrada na Ficha do Aluno, especialmente Certidão de Nascimento ou documento equivalente.
+O campo Nome Social, quando existir na ficha, pode aparecer para consulta interna no sistema, mas não compõe o documento escolar emitido até que exista orientação formal da área responsável.
+6.3 Bloqueio após emissão
+Após o status Emitido, a escola não visualiza botão Enviar para Aprovação para o mesmo documento.
+Ações de aprovação e validação ficam bloqueadas para evitar repetição indevida do fluxo.
+Retificação e tornar sem efeito são os mecanismos oficiais para correção ou invalidação do documento já emitido.
+A versão anterior do documento permanece preservada para consulta e auditoria quando houver retificação.
+6.4 Publicação de concluinte
+Quando existir publicação ativa compatível para o mesmo aluno, mesma etapa de ensino, mesma modalidade regular e mesma conclusão certificada, o sistema vincula o número existente ao Histórico Escolar.
+Quando não existir publicação ativa compatível, o sistema gera novo número de publicação no momento da validação final. O documento somente poderá assumir o status Emitido após a confirmação da vinculação ou geração da publicação.
+Quando a etapa for diferente, o sistema não bloqueia nem reaproveita a publicação, pois cada etapa possui numeração própria.
+Quando existir publicação para a mesma etapa emitida por outra modalidade, como ENCCEJA, CEEJA, CESU ou exames de certificação, o sistema alerta e gera novo número para o ensino regular.
+Retificação mantém o número de publicação; Tornar Sem Efeito invalida o documento e a publicação vinculada. Uma publicação Sem Efeito nunca poderá ser reutilizada em nova emissão.
+6.5 Matriz de transição de status
+Toda alteração de status deve ser transacional, registrada no Log de Auditoria e condicionada ao sucesso das validações e integrações obrigatórias. A tabela abaixo define as transições funcionais do MVP.
+Status atual
+Ação
+Perfil
+Pré-condição
+Novo status
+Efeito
+Não Emitido
+Emitir/Iniciar elaboração
+Perfil autorizado
+Aluno elegível ou previamente liberado
+Em elaboração
+Cria versão de trabalho.
+Em elaboração / Devolvido
+Enviar para Aprovação
+GOE/AOE/Secretário ou perfil autorizado
+Dados válidos e salvos; assinatura GOV.BR concluída
+Aguardando Aprovação
+Gera versão submetida e bloqueia edição.
+Aguardando Aprovação
+Aprovar
+Diretor
+Documento sem alteração após envio; GOV.BR concluído
+Aguardando Validação
+Registra assinatura do Diretor.
+Aguardando Aprovação
+Devolver
+Diretor
+Justificativa obrigatória
+Devolvido
+Retorna à escola para correção.
+Aguardando Validação
+Validar
+Supervisor
+GOV.BR e publicação concluídos
+Emitido
+Versão passa a ser oficial.
+Aguardando Validação
+Devolver
+Supervisor
+Justificativa obrigatória
+Devolvido
+Retorna ao GOE/AOE/Secretário; novo envio passa novamente pelo Diretor.
+Emitido / Retificação Reprovada
+Solicitar Retificação
+GOE/AOE/Secretário ou perfil autorizado
+Existência de divergência/alteração válida; não existir retificação em análise; GOV.BR concluído
+Aguardando Aprovação da Retificação
+Gera versão submetida da retificação e mantém a versão emitida anterior como vigente.
+Aguardando Aprovação da Retificação
+Aprovar Retificação
+Diretor
+Documento sem alteração após envio; GOV.BR concluído
+Aguardando Validação da Retificação
+Registra assinatura do Diretor; nenhuma alteração é publicada nesta etapa.
+Aguardando Aprovação da Retificação
+Reprovar Retificação
+Diretor
+Justificativa obrigatória
+Retificação Reprovada
+Mantém a versão emitida anterior vigente; nova retificação pode ser iniciada.
+Aguardando Validação da Retificação
+Validar Retificação
+Supervisor
+GOV.BR concluído
+Emitido
+Nova versão passa a ser vigente; número de publicação é mantido.
+Aguardando Validação da Retificação
+Reprovar Retificação
+Supervisor
+Justificativa obrigatória
+Retificação Reprovada
+Versão emitida anterior permanece vigente; nova retificação pode ser iniciada.
+Emitido
+Tornar Sem Efeito
+Supervisor
+Justificativa, anexo, confirmação e GOV.BR
+Sem Efeito
+Invalida documento e publicação vinculada.
+Sem Efeito
+Reemitir
+Perfil autorizado
+Necessidade de nova emissão e permissão
+Em elaboração
+Inicia novo fluxo; ao validar, gera novo número de publicação.
+6.6 Versionamento, bloqueio de edição e concorrência
+O Histórico Escolar deve ser tratado como documento versionado. O salvamento em elaboração atualiza a versão de trabalho; o envio para aprovação gera um snapshot imutável da versão submetida.
+Enquanto o documento estiver em Aguardando Aprovação, Aguardando Validação, Aguardando Aprovação da Retificação ou Aguardando Validação da Retificação, o conteúdo submetido deve permanecer somente leitura para os perfis que não executam a decisão da etapa.
+Quando houver devolução, a versão submetida permanece preservada para auditoria e a escola recebe uma nova versão de trabalho. Qualquer alteração realizada após aprovação do Diretor exige novo envio para Aguardando Aprovação e nova assinatura do Diretor.
+Antes de salvar ou alterar status, o sistema deve verificar se a versão e o status ainda correspondem ao conteúdo carregado pelo usuário. Havendo alteração concorrente, a ação deve ser interrompida e o usuário orientado a atualizar a consulta.
+Assinaturas, justificativas, anexos e informações modificadas devem permanecer vinculados à versão sobre a qual foram produzidos.
+6.7 Falhas de assinatura e integrações críticas
+A alteração de status que dependa de assinatura GOV.BR somente deverá ser concluída após confirmação de sucesso da assinatura.
+Em caso de cancelamento pelo usuário, expiração da sessão, indisponibilidade do GOV.BR, erro de API ou falha de armazenamento da assinatura, o documento deve permanecer no status anterior e a ação funcional não deve ser considerada concluída.
+Quando a validação depender de geração ou vinculação de publicação, falha no SED Concluintes deve impedir a transição para Emitido. O sistema não deve assumir número vazio, provisório ou estimado.
+Quando uma origem obrigatória de dados estiver indisponível, o sistema deve interromper a ação dependente e apresentar mensagem de indisponibilidade, sem substituir informação ausente por valor padrão.
+Sempre que tecnicamente possível, tentativas malsucedidas devem ser registradas em log técnico/auditoria sem representar uma ação funcional concluída.
+
+
+7. Parametrização por perfil
+As ações do Histórico Escolar são controladas por parametrização em Gestão do Sistema > Configurações & Parâmetros > Parâmetros de Sistema - SCA > Configuração de Funcionalidade x Perfil. A permissão não deve ficar fixa no código; o sistema deve consultar a chave de funcionalidade e o perfil logado para habilitar, desabilitar ou ocultar ações.
+Grupo
+Funcionalidades parametrizáveis
+Geral
+Consultar Histórico Escolar; gerar PDF; imprimir; gerar Excel; escolher colunas.
+Elaboração
+Emitir/Iniciar Elaboração; editar Estudos Realizados; adicionar Estudos Realizados; excluir Estudos Realizados; editar Notas; adicionar Disciplina; excluir Disciplina; enviar para aprovação; liberar emissão sem rendimento aprovado.
+Aprovação
+Aprovar Emissão; aprovar em lote; devolver.
+Validação
+Validar Emissão; validar em lote; devolver.
+Retificação
+Retificar Histórico; aprovar retificação; validar retificação; reprovar retificação.
+Encerramento e auditoria
+Tornar Sem Efeito; consultar modificações; consultar Log de Auditoria; exportar Log de Auditoria.
+
+Figura 5 - Parametrização das ações do Histórico Escolar por perfil.
+
+Figura 6 - Inclusão de perfis e controle de permissões por funcionalidade.
+
+7.1 Regra de disponibilidade das ações
+Quando o perfil não possuir a funcionalidade parametrizada, a ação deve ficar oculta.
+Quando o perfil possuir a funcionalidade, mas o status ou uma pré-condição impedir sua execução, a ação poderá permanecer visível e inibida, com tooltip informando o motivo da indisponibilidade.
+A parametrização nunca deve permitir transição incompatível com a máquina de estados; ela controla quem pode executar uma ação válida, mas não elimina validações de negócio.
+Alterações de parametrização devem produzir efeito sem necessidade de alteração de código e devem respeitar a abrangência do usuário logado.
+No fluxo de retificação, a sequência funcional deve ser preservada: aprovação pelo Diretor e validação pelo Supervisor. Outros perfis somente poderão executar essas ações quando houver parametrização expressa para a etapa correspondente, sem eliminar ou inverter os status do fluxo.
+8. Integrações e origem dos dados
+Origem
+Dados utilizados
+Comportamento
+Ficha do Aluno
+Nome de registro, nome social, RA, RG/CIN, data de nascimento, município, UF, país e demais dados pessoais.
+Dados pessoais devem ser corrigidos na Ficha do Aluno. Alterações após emissão podem disparar retificação de dado pessoal.
+Matrícula/Coleta/SED
+Vigência da matrícula, escola, turma, tipo de ensino, rede, percurso escolar e classe.
+Alunos listados conforme ano/série de conclusão e escopo do perfil.
+Rendimento Escolar
+Situação final de aprovação, conclusão e registros de rendimento.
+Sem rendimento aprovado, a emissão pela escola é bloqueada até liberação do Órgão Central.
+Reclassificação
+Ano/série de origem, destino e ano da reclassificação.
+Permite emissão com lacuna e observação automática. Inclusão manual de estudo ocorre somente se necessário.
+SCE/Matriz
+Escola, rede, componentes, área de conhecimento, carga horária e matriz.
+Estudos de outras redes registrados na SED podem ser migrados; matriz ausente exige ajuste manual.
+SED Concluintes
+Publicação ativa, número de publicação e status público.
+Histórico vincula ou gera publicação conforme regra de etapa e modalidade.
+GOV.BR
+Assinaturas digitais das etapas do fluxo.
+Registra assinatura no documento quando aplicável e no Log de Auditoria.
+
+8.1 Regras de consistência entre integrações
+Dados pessoais exibidos no Histórico devem refletir a Ficha do Aluno no momento da criação da versão de trabalho. Alterações posteriores à emissão somente compõem o documento por retificação aprovada.
+Componentes, classificação, áreas de conhecimento e referências de matriz devem ser obtidos das fontes oficiais disponíveis para o tipo de ensino. Dados ausentes que impeçam a composição do documento devem bloquear o avanço e ser tratados na origem ou por ação manual expressamente permitida.
+Mais de uma publicação ativa compatível para o mesmo aluno/etapa/modalidade constitui inconsistência e deve bloquear a emissão automática até tratamento, sem escolha arbitrária pelo sistema.
+Publicações de outra modalidade (ENCCEJA, CEEJA, CESU ou certificações por exame) não são reaproveitadas para o Histórico Escolar regular.
+Uma publicação tornada Sem Efeito não pode ser reativada ou reutilizada. A reemissão gera novo número após nova validação.
+9. Histórico Escolar - pesquisa e grid
+A funcionalidade Histórico Escolar permite localizar estudantes no ano/série de conclusão, visualizar o status do documento e executar ações conforme perfil, status e parametrização. A tela apresenta dois modos de pesquisa: RA e Filtros.
+9.1 Pesquisa por RA
+Campo
+Tipo
+Obrigatório
+Regra
+Pesquisar Por
+Dropdown
+Sim
+Permite selecionar RA ou Filtros.
+Ano Letivo
+Texto/numérico
+Sim
+Ano de referência da pesquisa. Deve iniciar com o ano letivo corrente e permitir alteração conforme disponibilidade de dados.
+Tipo de Documento
+Dropdown
+Sim
+No MVP, Histórico de Conclusão.
+RA
+Texto numérico com máscara
+Sim quando pesquisa por RA
+Preserva zeros à esquerda e não deve ser convertido para tipo numérico. Deve validar o formato do RA sem remover posições significativas.
+Díg. RA
+Alfanumérico (1 posição)
+Sim quando pesquisa por RA
+Aceita dígito numérico ou letra X, maiúscula ou minúscula; o sistema deve normalizar X/x para comparação.
+UF
+Dropdown
+Sim quando pesquisa por RA
+UF vinculada ao RA.
+Pesquisar
+Botão
+Sim
+Executa a consulta.
+Limpar
+Botão
+Não
+Limpa os campos e resultados.
+
+Figura 7 - Pesquisa por RA no perfil da escola.
+
+9.2 Pesquisa por filtros
+Campo
+Tipo
+Obrigatório
+Regra
+Rede de Ensino
+Dropdown
+Sim
+No MVP, considera Rede Estadual. Quando o perfil não puder alterar a rede, o campo deve ser apresentado preenchido e inibido.
+Unidade Regional de Ensino
+Dropdown
+Conforme perfil
+Exibida conforme escopo do perfil. Ao alterar a URE, o sistema deve limpar Escola e Turma e recarregar as opções dependentes.
+Escola
+Dropdown
+Conforme perfil
+Lista somente escolas do escopo do perfil e da URE selecionada. Ao alterar a Escola, o sistema deve limpar Turma.
+Tipo de Ensino
+Dropdown
+Sim
+Lista apenas tipos de ensino contemplados pelo MVP. Ao alterar, deve recarregar Turma e limpar seleção incompatível.
+Turma
+Dropdown
+Não
+Lista turmas compatíveis com Escola e Tipo de Ensino. A opção Todas deve representar ausência de restrição por turma.
+Status
+Dropdown
+Não
+Permite filtrar pelos status válidos do produto, inclusive Retificação Reprovada.
+Filtro da grid
+Texto
+Não
+Filtra somente os resultados já carregados, sem executar nova consulta ao servidor.
+
+Figura 8 - Pesquisa por filtros com escola, tipo de ensino, turma e status.
+9.3 Grid e ações por perfil
+Perfil
+Colunas principais
+Ações
+GOE/AOE/Secretário
+Nome do Aluno, RA, Díg. RA, Data de Nascimento, Tipo de Ensino, Emitir, Consultar, Status, Retificar.
+Emitir e consultar conforme status; retificar quando habilitado.
+Diretor de Escola
+Nome, RA, Díg. RA, Data de Nascimento, Tipo de Ensino, Consultar, Aprovar Emissão, Aprovar Retificação, Status.
+Aprovar/devolver emissão quando Aguardando Aprovação; aprovar/reprovar retificação quando Aguardando Aprovação da Retificação.
+Supervisor de Ensino
+Nome, RA, Díg. RA, Data de Nascimento, Tipo de Ensino, Consultar, Validar Emissão, Validar Retificação, Status, Tornar Sem Efeito.
+Validar/devolver emissão, tornar sem efeito e validar/reprovar retificação conforme status.
+Órgão Central
+Grid ampla com Emitir, Liberar Emissão, Consultar, Aprovar Emissão, Validar Emissão, Status, Tornar Sem Efeito, Aprovar Retificação, Validar Retificação e Retificar.
+Ações administrativas conforme parametrização e status.
+
+Todos os ícones de ação devem possuir tooltip. Quando a ação estiver indisponível, o tooltip informa o motivo, por exemplo: “Aprovar Emissão indisponível: status atual é Aguardando Validação”.
+Figura 9 - Grid do Diretor de Escola com ação de aprovação conforme status.
+
+Figura 10 - Grid do Supervisor de Ensino com validação, tornar sem efeito e validar retificação.
+
+Figura 11 - Grid do Órgão Central com ações administrativas e Liberar Emissão.
+
+9.4 Regras de comportamento da pesquisa e da grid
+O botão Pesquisar deve validar os campos obrigatórios do modo selecionado antes de executar a consulta.
+Quando nenhum registro for encontrado, a grid deve permanecer vazia e o sistema deve apresentar mensagem informativa, sem tratar a ausência de resultado como erro.
+Quando o RA existir, mas estiver fora do escopo do perfil logado, o sistema não deve disponibilizar ações indevidas nem ampliar a abrangência do usuário.
+O botão Limpar deve remover resultados e restaurar os filtros ao estado inicial do perfil, preservando campos fixos/inibidos decorrentes da abrangência.
+A ordenação padrão da grid deve ser por Nome do Aluno em ordem crescente, salvo definição específica do relatório/tela. Ordenação por cabeçalho deve alternar crescente/decrescente.
+A paginação e a quantidade de registros por página devem atuar sobre o conjunto pesquisado. O filtro textual da grid não altera os filtros de consulta.
+A ação Escolher Colunas deve afetar somente a apresentação da grid, sem alterar dados, permissões ou conteúdo exportado quando a exportação possuir layout próprio.
+Todos os ícones de ação por aluno devem possuir tooltip; ações inibidas devem explicar a condição impeditiva.
+10. Emissão e elaboração do Histórico Escolar
+A emissão é iniciada pelo perfil autorizado quando o estudante está no ano/série de conclusão, no escopo do MVP e com condições de elegibilidade atendidas. O modal de emissão organiza as informações em Dados Pessoais, Estudos Realizados, Notas e Observação.
+10.1 Dados pessoais
+Campo
+Origem
+Editável no modal
+Regra
+Nome do Aluno
+Ficha do Aluno
+Não
+Exibe nome de registro/certidão no documento emitido.
+Nome Social
+Ficha do Aluno
+Não
+Exibido apenas para consulta interna enquanto não houver definição institucional.
+RA
+SED
+Não
+Número, dígito e UF.
+Data de Nascimento
+Ficha do Aluno
+Não
+Correção deve ocorrer na Ficha do Aluno.
+RG/CIN
+Ficha do Aluno
+Não
+Transição RG/CIN não altera a publicação existente quando a publicação já estiver ativa.
+Município/Estado/País
+Ficha do Aluno
+Não
+Correção deve ocorrer na Ficha do Aluno.
+
+O quadro “Informação Importante” orienta que divergências de dados pessoais devem ser corrigidas na Ficha do Aluno. Após alteração em documento já emitido, o fluxo de retificação trata a atualização para o Histórico Escolar.
+10.2 Aba Estudos Realizados
+A aba Estudos Realizados apresenta o percurso escolar com ano/série, ano letivo, estabelecimento de ensino, rede, município, UF, total de aulas da Base Nacional Comum Curricular, total de aulas da Parte Diversificada e total de carga horária. A edição, inclusão e exclusão dependem de parametrização por perfil.
+Campo/ação
+Tipo
+Obrigatório
+Comportamento
+Ano/Série
+Grid/dropdown
+Sim
+Representa o ano/série cursado ou incluído manualmente.
+Ano
+Numérico
+Sim
+Ano letivo do estudo realizado.
+Estabelecimento de Ensino
+Texto/dropdown
+Sim
+Para SP e redes cadastradas, lista dados do SCE/SED; para fora de SP, permite informação textual conforme regra.
+Rede de Ensino
+Dropdown
+Sim
+Privada, Estadual, Estadual - outras, Federal, Municipal ou conforme cadastro.
+Município/UF
+Dropdown/texto
+Sim
+Conforme unidade do estudo realizado.
+Totais de aulas/carga horária
+Inteiro não negativo
+Sim
+Aceita somente números inteiros e não negativos. Alteração de valor já salvo exige justificativa e anexo(s).
+Editar
+Botão/ícone
+Conforme permissão
+Permite alteração linha a linha.
+Excluir
+Botão/ícone
+Conforme permissão
+Disponível conforme parametrização para registros migrados ou incluídos manualmente. A exclusão exige justificativa, pelo menos um anexo e confirmação; o registro original permanece no Log de Auditoria.
+
+Figura 12 - Modal de emissão na aba Estudos Realizados.
+
+10.3 Inclusão e alteração de Estudos Realizados
+A inclusão ou alteração manual de Estudos Realizados que implique modificação no percurso escolar do estudante ou na carga horária deverá exigir, obrigatoriamente, o preenchimento de justificativa e a inclusão de anexo comprobatório. O sistema não deverá permitir o salvamento enquanto essas informações não forem preenchidas.
+O botão “Adicionar Estudos Realizados” deverá ser disponibilizado somente quando o percurso escolar do estudante apresentar lacuna em algum ano/série obrigatório para a conclusão.
+Caso o percurso escolar esteja completo, contemplando todos os anos/séries obrigatórios para a conclusão, o botão “Adicionar Estudos Realizados” não deverá ser exibido.
+
+Campo
+Tipo
+Obrigatório
+Regra
+UF
+Dropdown
+Sim
+Inicia sem seleção. Ao selecionar ou alterar a UF, o sistema deve carregar os municípios correspondentes e limpar Município e Estabelecimento de Ensino que tenham se tornado incompatíveis.
+Município
+Dropdown
+Sim
+Habilitado após a seleção da UF. Lista somente municípios da UF selecionada. Ao alterar o município, o sistema deve limpar o Estabelecimento de Ensino previamente selecionado.
+Ano
+Inteiro (4 dígitos)
+Sim
+Ano letivo correspondente ao estudo realizado. Não aceita letras, casas decimais ou valor vazio.
+Ano/Série
+Dropdown
+Sim
+Lista somente os anos/séries compatíveis com a etapa do Histórico e elegíveis para preenchimento da lacuna identificada. Não deve permitir duplicidade do mesmo ano/série no percurso, salvo regra específica de reclassificação já prevista.
+Rede de Ensino
+Dropdown
+Sim
+Seleciona a rede responsável pelo estudo. Ao alterar a Rede de Ensino, o sistema deve limpar o Estabelecimento de Ensino selecionado e recarregar as opções compatíveis.
+Estabelecimento de Ensino
+Dropdown/texto
+Sim
+Para UF = SP, deve ser apresentado como dropdown e listar estabelecimentos do SCE/SED compatíveis com Município e Rede de Ensino selecionados. Para UF diferente de SP, deve permitir preenchimento textual do estabelecimento.
+Total de Aula da BNCC
+Inteiro não negativo
+Sim
+Quantidade total de aulas da Base Nacional Comum Curricular. Não aceita valor negativo nem casas decimais.
+Total de Aulas da Parte Diversificada
+Inteiro não negativo
+Sim
+Quantidade total de aulas da Parte Diversificada. Não aceita valor negativo nem casas decimais.
+Total de Carga Horária
+Inteiro não negativo
+Sim
+Carga horária total do estudo realizado. Não aceita valor negativo nem casas decimais. O sistema não deve calcular ou substituir automaticamente esse valor a partir dos campos de total de aulas.
+Justificativa
+Dropdown
+Sim
+Motivo obrigatório da inclusão/alteração. Uma única justificativa fundamenta todos os campos modificados na mesma operação de salvamento.
+Anexo
+Upload múltiplo
+Sim
+Exige pelo menos um documento comprobatório e permite múltiplos anexos vinculados à mesma operação.
+Salvar
+Botão
+Sim para concluir
+Somente deve concluir a inclusão quando todos os campos obrigatórios estiverem válidos e houver pelo menos um anexo. Ao salvar, atualiza a aba Estudos Realizados e registra a inclusão e seus dados no Log de Auditoria.
+Cancelar
+Botão
+Não
+Fecha o modal sem persistir a inclusão. Se houver informação preenchida não salva, deve solicitar confirmação antes de descartar.
+
+
+Figura 13 - Modal Adicionar Estudos Realizados com campos obrigatórios.
+
+Figura 14 - Validação de justificativa e anexo obrigatórios para alteração de Estudos Realizados.
+
+10.3.1 Regras de edição, exclusão, justificativa e anexos
+O primeiro salvamento de um valor ainda não persistido não é tratado como alteração do valor anterior. Após o salvamento, qualquer mudança em campo auditável deve registrar o valor anterior e o novo valor.
+Quando o usuário alterar mais de um campo antes de um mesmo salvamento, deverá informar apenas uma justificativa para a operação. A justificativa será vinculada ao conjunto de campos modificados.
+A operação deve permitir múltiplos anexos. Quando anexo for obrigatório, o sistema deve exigir pelo menos um arquivo; todos os arquivos devem permanecer vinculados ao mesmo evento de alteração no Log de Auditoria.
+Se o usuário salvar uma alteração e posteriormente realizar nova alteração em outro momento, trata-se de novo evento e nova justificativa deve ser informada.
+A exclusão de Estudo Realizado pode ocorrer tanto para registro migrado quanto para registro incluído manualmente, desde que o perfil esteja parametrizado. O dado não deve ser apagado fisicamente da auditoria.
+A exclusão ou edição deve provocar recálculo imediato da existência de lacunas no percurso e da disponibilidade do botão Adicionar Estudos Realizados.
+Os campos Total de Aula da BNCC, Total de Aulas da Parte Diversificada e Total de Carga Horária devem aceitar somente números inteiros iguais ou superiores a zero. Cada campo representa informação própria do estudo realizado e deve ser persistido de forma independente; o sistema não deverá recalcular ou substituir automaticamente a carga horária a partir dos totais de aulas.
+10.4 Reclassificação no percurso escolar
+Quando o estudante possui registro de reclassificação, o sistema permite a emissão do Histórico Escolar mesmo que exista lacuna. O documento mantém a lacuna no percurso e registra automaticamente a informação da reclassificação no campo Observações.
+Observação automática: “O(a) aluno(a) foi reclassificado(a) do {{ano_serie_origem}} para o {{ano_serie_destino}} em {{ano}}.”
+Caso a escola identifique que a reclassificação foi realizada de forma irregular e não exista possibilidade de correção no módulo de reclassificação, a escola pode inserir manualmente o estudo realizado correspondente à lacuna, com justificativa e anexo obrigatórios. A inclusão fica registrada na auditoria e é apresentada aos perfis de aprovação e validação.
+Figura 15 - Aba Estudos Realizados com mensagem informativa de reclassificação.
+
+Figura 16 - Observação automática gerada a partir da reclassificação.
+
+10.5 Aba Notas
+A aba Notas permite registrar componentes curriculares, classificação, áreas de conhecimento e notas por ano/série. No MVP, os campos de nota permanecem abertos para preenchimento manual. Edições posteriores dependem de perfil e parametrização.
+Campo/ação
+Tipo
+Obrigatório
+Comportamento
+Área de Conhecimento
+Texto derivado da matriz
+Sim
+Agrupa componentes por área conforme a matriz aplicável e não deve permitir alteração arbitrária pelo usuário.
+Componentes Curriculares
+Texto/dropdown
+Sim
+Exibe componentes da matriz e componentes adicionados manualmente. Cada componente deve manter sua classificação oficial.
+Classificação
+Texto automático
+Não se aplica
+Preenchida automaticamente conforme o componente curricular (Base Comum Curricular, Parte Diversificada ou outra classificação aplicável) e inibida para edição manual.
+Colunas de ano/série
+Nota inteira ou código permitido
+Conforme componente
+Aceita nota inteira de 0 a 10, sem casa decimal, ou os códigos N/A, ET, EP e ES. A obrigatoriedade depende da existência do componente no respectivo ano/série.
+Eletivas
+Componente/tema
+Quando existir
+Quando houver temática cadastrada, deve aparecer o nome da temática estudada, não apenas “Eletivas”.
+Salvar
+Botão
+Sim para prosseguir
+Persiste os valores. Alteração posterior de informação já salva exige justificativa; a mesma operação pode reunir múltiplos campos alterados e múltiplos anexos.
+
+Figura 17 - Aba Notas com componentes curriculares e campos de notas por ano/série.
+
+10.5.1 Regras de preenchimento e alteração de notas
+Valor aceito
+Significado/Regra
+0 a 10
+Notas numéricas inteiras. Não são permitidas casas decimais.
+N/A
+Não Avaliado.
+ET
+Engajamento Total.
+EP
+Engajamento Parcial.
+ES
+Engajamento Satisfatório.
+O sistema deve aceitar apenas os valores previstos na tabela. Valores decimais, números fora do intervalo de 0 a 10 ou siglas diferentes das permitidas devem ser rejeitados.
+Nota 0 é valor válido e não pode ser interpretada como ausência de lançamento. Campo sem informação deve ser mantido como nulo/vazio.
+O primeiro preenchimento antes do salvamento não exige justificativa. Após um valor ter sido salvo, qualquer alteração posterior desse valor exige justificativa.
+Quando o usuário alterar duas ou mais notas/campos já salvos antes de um mesmo salvamento, deverá informar uma única justificativa para a operação. O sistema deve registrar individualmente os valores anteriores e novos, vinculando-os à justificativa comum.
+A alteração deve permitir múltiplos anexos. Quando o fluxo exigir comprovação, pelo menos um anexo deve ser informado; anexos adicionais podem ser incluídos na mesma operação.
+As justificativas de alterações salvas devem ser inseridas automaticamente na aba Observação no momento da persistência da alteração. O usuário poderá editar ou remover o texto visível enquanto o documento estiver em Em elaboração ou Devolvido, sem apagar o evento original do Log de Auditoria.
+10.6 Adicionar disciplina
+A ação Adicionar Disciplina permite complementar a grade exibida no Histórico Escolar. A funcionalidade deve estar sujeita à parametrização por perfil, assim como a ação de excluir disciplina.
+Campo
+Tipo
+Obrigatório
+Regra
+Área de Conhecimento
+Dropdown
+Sim
+Lista áreas disponíveis para o tipo de ensino/matriz.
+Componente Curricular
+Dropdown
+Sim
+Lista componentes compatíveis com a área selecionada.
+Classificação
+Texto automático
+Não se aplica
+Preenchida automaticamente pelo sistema conforme o Componente Curricular selecionado, indicando sua classificação oficial. Campo inibido para edição manual.
+Salvar
+Botão
+Sim
+Inclui a disciplina na aba Notas.
+Fechar
+Botão
+Não
+Fecha o modal sem gravar quando não houver salvamento.
+
+Figura 18 - Modal Adicionar Disciplina.
+
+10.7 Aba Observação e envio para aprovação
+A aba Observação permite o registro de informações complementares ao Histórico Escolar e apresenta, automaticamente, as informações provenientes de reclassificações e as justificativas de alterações realizadas nas abas anteriores.
+Enquanto o documento estiver em Em elaboração ou Devolvido, o perfil autorizado poderá editar integralmente o texto exibido no campo Observação, inclusive remover trechos inseridos automaticamente por reclassificação ou por justificativas de alterações. A edição ou exclusão do texto visível afeta somente a composição da Observação que será exibida no documento; não exclui nem altera os registros de origem, justificativas, valores anterior/novo ou eventos preservados no Log de Auditoria. Nos demais status, a Observação deverá permanecer somente leitura.
+
+O campo Observação não é obrigatório para o salvamento do documento.
+As justificativas relacionadas às alterações realizadas nas abas Estudos Realizados e Notas são inseridas automaticamente na Observação e permanecem registradas no Log de Auditoria, independentemente de eventual edição ou exclusão do texto exibido nesta aba.
+O botão Enviar para Aprovação ficará disponível somente após o salvamento e a validação de todas as informações obrigatórias do Histórico Escolar.
+Caso o usuário tente enviar para aprovação um Histórico Escolar sem o preenchimento das notas, o sistema deverá apresentar um alerta informando a ausência dessas informações antes de prosseguir com o envio.
+Ao realizar o envio para aprovação, o documento deverá ser assinado digitalmente via GOV.BR pelo perfil responsável pela ação.
+Após a conclusão do envio, o sistema deverá apresentar a mensagem: “Histórico assinado digitalmente via GOV.BR e enviado para aprovação com sucesso.”
+
+
+Figura 19 - Aba Observação com campo editável e ação Enviar para Aprovação.
+
+
+
+
+Figura 20 - Mensagem de sucesso do envio para aprovação com assinatura GOV.BR.
+
+10.7.1 Validações finais antes do envio
+O botão Enviar para Aprovação deve permanecer disponível somente para perfil autorizado e status Em elaboração ou Devolvido. Quando a própria tela identificar pendência obrigatória, a ação deve ficar inibida.
+No acionamento do envio, o servidor deve executar novamente todas as validações de integridade, independentemente do estado visual do botão. Havendo nota obrigatória ausente, campo inválido, alteração sem justificativa/anexo exigido ou inconsistência de percurso, o envio deve ser bloqueado e o motivo informado ao usuário.
+A assinatura GOV.BR deve ocorrer sobre a versão exata que será submetida. Após sucesso, a versão é congelada, o status passa para Aguardando Aprovação e a edição fica bloqueada.
+Se a assinatura falhar ou for cancelada, o documento permanece no status anterior e continua editável, sem gerar versão submetida concluída.
+11. Estudante sem rendimento aprovado e liberação excepcional
+Antes de abrir o modal de emissão, o sistema verifica se o estudante possui rendimento final aprovado no ano/série de conclusão. Quando não possui rendimento aprovado, a emissão pela escola é bloqueada e o modal de emissão não é aberto.
+Mensagem exibida ao perfil da escola: “Aluno não possui rendimento aprovado.”
+A exceção de regularização de vida escolar ou convalidação é tratada pelo Órgão Central.
+A ação Liberar Emissão fica disponível apenas para o Órgão Central e apenas para alunos sem rendimento aprovado e com status compatível com início de emissão.
+A liberação não emite o documento automaticamente; ela habilita a escola a iniciar a emissão.
+A ação gera registro no Log de Auditoria com usuário, perfil, data/hora, aluno, RA, escola, URE, tipo de ensino e indicação de liberação excepcional.
+Figura 21 - Bloqueio de emissão para aluno sem rendimento aprovado.
+
+
+Figura 22 - Ação Liberar Emissão disponível para o Órgão Central.
+
+Figura 23 - Mensagem de sucesso após liberação da emissão pelo Órgão Central.
+
+11.1 Campos e regras da liberação excepcional
+Campo
+Tipo
+Obrigatório
+Comportamento
+Justificativa
+Dropdown
+Sim
+Opções: Regularização de Vida Escolar; Convalidação; Pedido Judicial.
+Anexo
+Upload múltiplo
+Sim
+Exige pelo menos um documento comprobatório e permite anexos adicionais.
+Confirmar Liberação
+Botão
+Sim
+Somente habilitado após preenchimento da justificativa e inclusão de anexo.
+A liberação excepcional não altera nem regulariza o rendimento original do estudante; apenas autoriza o início do fluxo de emissão para o caso específico.
+A liberação deve ficar registrada com aluno, RA, escola, URE, tipo de ensino, justificativa, anexos, usuário, perfil e data/hora.
+Após a liberação, a escola deve visualizar a ação Emitir conforme sua parametrização e iniciar o fluxo normal de elaboração, aprovação e validação.
+Caso o documento já esteja em elaboração ou em etapa posterior, nova liberação não deve ser aplicada ao mesmo ciclo.
+12. Fluxo de aprovação - Diretor de Escola
+O Diretor de Escola atua sobre documentos em status Aguardando Aprovação. A aprovação confirma a conferência da escrituração escolar e envia o documento para validação do Supervisor. A devolução exige justificativa e retorna o documento para correção pela escola.
+Figura 24 - Grid do Diretor de Escola com documentos aguardando aprovação.
+
+12.1 Aprovação individual
+A ação Aprovar Emissão fica habilitada somente para status Aguardando Aprovação.
+O modal de aprovação apresenta prévia do PDF, botão Baixar PDF, indicação de informações modificadas e campo de justificativa de devolução.
+Quando houver justificativa de devolução preenchida, a ação Aprovar fica desabilitada.
+Ao aprovar, o Diretor assina digitalmente via GOV.BR e o status passa para Aguardando Validação.
+Figura 25 - Modal de aprovação do Histórico Escolar pelo Diretor de Escola.
+
+Figura 26 - Visualização de informações modificadas antes da aprovação.
+
+Texto da confirmação de aprovação
+“Declaro que conferi a escrituração escolar do(a) aluno(a) {{nome_aluno}} {{RA}} e que os dados constantes neste Histórico Escolar estão em conformidade com os registros oficiais da unidade escolar. Estou ciente de que a aprovação deste documento representa a validação das informações nele contidas, assumindo a responsabilidade pela sua veracidade e autenticidade, para todos os efeitos legais e administrativos.”
+Figura 27 - Confirmação de aprovação do Histórico Escolar.
+
+Figura 28 - Sucesso da aprovação com assinatura GOV.BR.
+
+12.2 Devolução para correção
+A devolução exige preenchimento obrigatório da justificativa.
+Se o Diretor clicar em Devolver sem justificativa, o sistema exibe: “Informe a justificativa para devolver o documento.”
+A justificativa fica registrada em auditoria e visível na correção do fluxo.
+Mensagem de sucesso: “Histórico devolvido para correção com sucesso. Justificativa registrada em auditoria.”
+Figura 29 - Validação de justificativa obrigatória para devolução.
+
+Figura 30 - Sucesso da devolução para correção.
+
+12.3 Aprovação em lote
+A ação Aprovar em Lote aparece quando a tela está filtrada por status Aguardando Aprovação e o perfil possui permissão.
+A coluna de checkbox é exibida após acionar Aprovar em Lote.
+O botão Salvar Aprovação aparece quando pelo menos um estudante está selecionado.
+Cada estudante aprovado em lote gera registro individual de auditoria.
+Texto da confirmação em lote: “Declaro que realizei a conferência dos registros escolares dos alunos selecionados para aprovação em lote e que, com base nas informações constantes nos sistemas oficiais e nos critérios estabelecidos pela Secretaria da Educação do Estado de São Paulo, considero aptos os respectivos Históricos Escolares para validação. Estou ciente de que esta ação será aplicada a todos os alunos selecionados e assumo a responsabilidade pela validação das informações, para os fins legais e administrativos cabíveis.”
+
+Figura 31 – Filtro de status Aguardando Aprovação
+
+Figura 32 – Após clicar em aprovar em lote
+
+Figura 33 – Ao selecionar pelo menos um aluno para aprovação em lote
+
+
+12.4 Regras adicionais de devolução e processamento em lote
+A devolução do Diretor coloca o documento em status Devolvido e devolve a edição ao GOE/AOE/Secretário. Após correção e novo envio, o status retorna para Aguardando Aprovação.
+Cada novo envio gera nova versão submetida. Assinaturas de versões anteriores permanecem na auditoria, mas não substituem a assinatura necessária para a nova versão.
+No processamento em lote, cada Histórico Escolar deve ser tratado como unidade transacional independente. A falha de um item não deve desfazer os itens concluídos com sucesso nem avançar indevidamente o item com falha.
+Ao final do lote, o sistema deve apresentar resumo com quantidade de sucessos e falhas e disponibilizar o motivo dos itens não processados.
+Itens com falha devem permanecer no status anterior à tentativa. Cada sucesso e cada falha tecnicamente registrável deve manter referência individual ao documento.
+A seleção geral deve informar claramente se contempla somente a página atual ou todos os resultados da pesquisa; no MVP, a seleção deve operar somente sobre os registros explicitamente marcados pelo usuário.
+13. Fluxo de validação - Supervisor de Ensino
+O Supervisor de Ensino atua sobre documentos em status Aguardando Validação. A validação final emite o documento, vincula ou gera o número de publicação e registra assinatura GOV.BR no fluxo e no Log de Auditoria.
+Figura 34 - Grid do Supervisor de Ensino com ações de validação, tornar sem efeito e validar retificação.
+
+13.1 Validação individual
+A ação Validar Emissão fica habilitada somente para status Aguardando Validação.
+O modal apresenta prévia do PDF, Baixar PDF, informações modificadas e campo de justificativa de devolução.
+A devolução exige justificativa obrigatória.
+Ao validar, o status passa para Emitido e o sistema exibe o número de publicação.
+Mensagem de sucesso: “Histórico assinado digitalmente via GOV.BR e validado com sucesso. Status alterado para Emitido. Nº de publicação: {{numero_publicacao}}.”
+Figura 35 - Modal de validação final do Histórico Escolar.
+
+Texto da confirmação de validação
+“Declaro que conferi a escrituração escolar do(a) aluno(a) {{nome_aluno}} {{RA}} e que os dados constantes neste Histórico Escolar estão em conformidade com os registros oficiais da unidade escolar. Estou ciente de que a validação deste documento representa a validação das informações nele contidas, assumindo a responsabilidade pela sua veracidade e autenticidade, para todos os efeitos legais e administrativos.”
+Figura 36 - Confirmação da validação final.
+
+Figura 37 - Sucesso da validação final com emissão e número de publicação.
+
+13.2 Validação em lote
+A ação Validar em Lote aparece quando a tela está filtrada por status Aguardando Validação e o perfil possui permissão.
+A seleção por checkbox fica disponível após acionar Validar em Lote.
+O botão Salvar Validação aparece após seleção de pelo menos um estudante.
+Cada validação em lote gera registro individual de auditoria e número de publicação individual quando necessário.
+Texto da confirmação em lote: “Declaro que realizei a conferência dos registros escolares dos alunos selecionados para validação em lote e que, com base nas informações constantes nos sistemas oficiais e nos critérios estabelecidos pela Secretaria da Educação do Estado de São Paulo, considero aptos os respectivos Históricos Escolares para emissão. Estou ciente de que esta ação será aplicada a todos os alunos selecionados e assumo a responsabilidade pela validação das informações, para os fins legais e administrativos cabíveis.”
+
+Figura 38 – Validação em lote
+
+Figura 39 – Ao acionar o validar em lote
+
+Figura 40 – Ao selecionar os alunos para validação em lote.
+
+13.3 Regras adicionais da validação
+Quando o Supervisor devolver um documento em Aguardando Validação, o status passa para Devolvido e o documento retorna ao fluxo da escola. Após a correção, o GOE/AOE/Secretário deverá enviar novamente para Aguardando Aprovação, passando novamente pelo Diretor antes de retornar ao Supervisor.
+A validação somente poderá concluir o status Emitido após sucesso da assinatura GOV.BR e da geração/vinculação do número de publicação.
+Em caso de falha de publicação, o documento deve permanecer em Aguardando Validação e o usuário deve ser informado de que a emissão não foi concluída.
+Na validação em lote, o número de publicação e o resultado de cada aluno devem ser processados individualmente. Falha em um aluno não deve impedir o processamento dos demais, salvo indisponibilidade sistêmica que inviabilize toda a operação.
+Ao final do lote, o sistema deve exibir resumo de itens emitidos e não emitidos, com motivo dos itens não concluídos.
+14. Retificação do Histórico Escolar
+
+A funcionalidade de Retificação do Histórico Escolar permite corrigir dados pessoais ou notas após a emissão do documento.
+A retificação mantém o número de publicação, preservando a versão anteriormente emitida para fins de consulta e auditoria. As alterações somente passam a compor a versão vigente do Histórico Escolar após a aprovação do Diretor de Escola e a validação do Supervisor de Ensino.
+Ao acionar a opção Retificar, o sistema apresenta o modal “Retificar Histórico Escolar”, contendo inicialmente os dados de identificação do documento publicado:
+Nome do aluno; 
+Data de nascimento; 
+RA. 
+Na seção “O que deseja retificar?”, o usuário deve selecionar uma das opções disponíveis:
+Nota; 
+Dado Pessoal. 
+A seleção determina os campos e informações que serão apresentados para composição da solicitação de retificação.
+
+14.1 Solicitação de retificação
+Tipo
+Comportamento
+Nota
+O sistema permite selecionar o Componente Curricular e o Ano, apresentando automaticamente a Nota Atual registrada no Histórico Escolar emitido. O usuário deve informar a Nova Nota, a Justificativa e anexar o documento comprobatório.
+Dado pessoal
+A correção do dado deve ser realizada previamente na Ficha do Aluno. Ao selecionar esta opção, o sistema apresenta o dado constante no documento publicado e o dado atualizado na Ficha do Aluno, permitindo ao usuário identificar a divergência antes do envio da solicitação.
+
+
+14.1.1 Retificação de Nota
+
+Ao selecionar a opção Nota, o sistema deverá disponibilizar os seguintes campos:
+Componente Curricular – permite selecionar o componente cuja nota será retificada; 
+Ano – permite selecionar o ano correspondente à nota; 
+Nota Atual – preenchida automaticamente pelo sistema, de acordo com o componente e o ano selecionados, e não editável; 
+Nova Nota – preenchimento obrigatório pelo usuário; 
+Indicador da alteração – apresenta visualmente a alteração realizada, comparando o valor atual e o novo valor, por exemplo: “De 6 para 10”; 
+Justificativa – preenchimento obrigatório; 
+Anexo – obrigatório para comprovação da alteração. 
+
+Inclusão de múltiplas notas
+A mesma solicitação de retificação poderá contemplar a alteração de uma ou mais notas.
+Para isso, o sistema deverá disponibilizar a opção “+ Adicionar outra nota”, permitindo que o usuário inclua novas alterações antes do envio para aprovação.
+Para cada nota adicionada, deverão ser apresentados ou informados:
+Componente Curricular; 
+Ano; 
+Nota Atual; 
+Nova Nota. 
+Cada inclusão deverá representar uma alteração específica de componente curricular e ano.
+Todas as alterações de nota incluídas serão encaminhadas conjuntamente em uma única solicitação de retificação, submetida ao mesmo fluxo de aprovação do Diretor de Escola e validação do Supervisor de Ensino.
+A inclusão de uma nova nota não deverá gerar uma solicitação de retificação independente.
+A Justificativa e o Anexo deverão permanecer vinculados à solicitação de retificação, contemplando o conjunto de alterações encaminhadas.
+Regra de Negócio: o usuário poderá retificar uma ou mais notas do Histórico Escolar dentro da mesma solicitação, utilizando a opção “+ Adicionar outra nota” antes de acionar o botão “Enviar para Aprovação”.
+
+14.1.2 Retificação de Dado Pessoal
+
+A correção de dado pessoal não deverá ser realizada diretamente no Histórico Escolar.
+O dado deverá ser corrigido previamente na Ficha do Aluno, sistema de origem das informações pessoais utilizadas na emissão do documento.
+Ao selecionar a opção Dado Pessoal, o sistema deverá verificar se existem diferenças entre os dados registrados no Histórico Escolar publicado e os dados atuais da Ficha do Aluno.
+Quando houver divergência, a tela deverá apresentar de forma comparativa:
+Dado publicado – informação constante na versão atualmente publicada do Histórico Escolar; 
+Dado atualizado – informação vigente na Ficha do Aluno. 
+A apresentação comparativa deverá permitir que o usuário identifique claramente a informação que será alterada antes do envio da solicitação.
+A retificação de dado pessoal somente poderá ser encaminhada quando houver diferença entre o dado publicado e o dado atualizado na Ficha do Aluno.
+
+14.1.3 Envio para Aprovação
+
+O botão “Enviar para Aprovação” deverá ficar disponível somente após o preenchimento e a validação das informações obrigatórias correspondentes ao tipo de retificação selecionado.
+Ao acionar o botão, o sistema deverá apresentar a mensagem de confirmação:
+“Esta ação registrará a solicitação de retificação do Histórico Escolar e a enviará para aprovação do Diretor de Escola. A versão vigente permanecerá inalterada até a conclusão do fluxo de aprovação e validação. Deseja continuar?”
+Após a confirmação:
+a solicitação de retificação deverá ser assinada digitalmente via GOV.BR pelo perfil responsável pelo envio; 
+a versão anteriormente publicada deverá permanecer preservada para consulta e auditoria; 
+as alterações não deverão ser publicadas neste momento; 
+a solicitação deverá ser encaminhada para análise do Diretor de Escola; 
+o Histórico Escolar deverá assumir o status “Aguardando Aprovação da Retificação”. 
+
+Mensagem de sucesso:
+“Retificação assinada digitalmente via GOV.BR e enviada para aprovação do Diretor de Escola com sucesso. As alterações somente serão publicadas após a aprovação do Diretor e a validação do Supervisor de Ensino.”
+Status após o envio: Aguardando Aprovação da Retificação.
+
+
+14.1.4 Regras gerais da retificação
+A retificação poderá ser iniciada para Histórico Escolar com status Emitido ou Retificação Reprovada, desde que não exista outra solicitação de retificação em análise.
+A retificação deverá manter o mesmo número de publicação do documento originalmente emitido. 
+A versão anterior deverá permanecer armazenada e disponível para consulta e auditoria. 
+Nenhuma alteração deverá substituir a versão publicada antes da validação do Supervisor de Ensino. 
+A retificação poderá contemplar dado pessoal ou uma ou mais notas, conforme a opção selecionada. Uma mesma solicitação não deve misturar retificação de Nota e Dado Pessoal.
+As alterações realizadas deverão ser registradas no Log de Auditoria, contendo, no mínimo, o dado anterior, o dado novo, usuário responsável e data da ação.
+
+Figura 41 - Retificação de nota com justificativa e anexo.
+
+Figura 42 - Retificação de dado pessoal com orientação para correção na Ficha do Aluno.
+
+Figura 43 - Confirmação de envio da retificação para aprovação do Diretor de Escola.
+
+Figura 44 - Sucesso do envio de retificação para aprovação do Diretor de Escola.
+
+ .
+
+14.1.5 Regras complementares da retificação de nota
+O Componente Curricular deve ser selecionado entre os componentes existentes na versão publicada do Histórico Escolar. O Ano deve ser compatível com o componente selecionado.
+Na mesma solicitação, não é permitido repetir a combinação Componente Curricular + Ano. Ao tentar incluir combinação já utilizada, o sistema deve bloquear a inclusão e informar o motivo.
+A Nova Nota deve respeitar os mesmos valores aceitos na emissão: inteiro de 0 a 10, N/A, ET, EP ou ES. Não são permitidas casas decimais.
+A Nova Nota não pode ser igual à Nota Atual. Quando não houver alteração efetiva, o sistema deve impedir o envio da linha.
+O usuário pode adicionar e remover linhas de nota enquanto a solicitação ainda não tiver sido enviada.
+A Justificativa é única para a solicitação e fundamenta todas as notas incluídas. O campo de anexos deve aceitar múltiplos arquivos e exigir pelo menos um documento comprobatório.
+Após o envio, a solicitação deve ficar congelada. O Diretor e, após sua aprovação, o Supervisor devem analisar exatamente os valores submetidos, ainda que os dados de origem sejam alterados posteriormente.
+14.1.6 Regras complementares da retificação de dado pessoal
+Ao selecionar Dado Pessoal, o sistema deve comparar a versão publicada com a Ficha do Aluno e incluir automaticamente, em uma única solicitação, todas as divergências identificadas entre os campos elegíveis à retificação.
+O usuário não escolhe individualmente quais divergências serão encaminhadas: todas as diferenças elegíveis identificadas no momento da solicitação devem compor o conjunto submetido.
+Quando não existir divergência entre a versão publicada e a Ficha do Aluno, o envio deve ficar indisponível e o sistema deve informar que não há dado pessoal divergente para retificar.
+Os valores publicados e atualizados devem ser congelados no momento do envio. Alteração posterior na Ficha do Aluno não pode modificar silenciosamente a solicitação já submetida.
+A versão publicada anterior continua válida enquanto a retificação estiver em Aguardando Aprovação da Retificação ou Aguardando Validação da Retificação.
+14.2 Aprovação ou reprovação da retificação pelo Diretor de Escola
+A ação Aprovar Retificação fica disponível para o Diretor de Escola quando o status do documento for Aguardando Aprovação da Retificação.
+O modal apresenta prévia do PDF, Baixar PDF, informações modificadas e campo de justificativa de reprovação.
+A aprovação do Diretor registra assinatura GOV.BR e altera o status para Aguardando Validação da Retificação. A versão publicada anterior permanece vigente e nenhuma alteração é publicada nesta etapa.
+A reprovação pelo Diretor exige justificativa, mantém a versão emitida sem alteração publicada e altera o status para Retificação Reprovada.
+Texto da confirmação de aprovação da retificação pelo Diretor: “Declaro que conferi a retificação do Histórico Escolar do(a) aluno(a) {{nome_aluno}} e que as alterações submetidas estão em conformidade com os registros oficiais da unidade escolar. Estou ciente de que esta aprovação encaminhará a solicitação para validação do Supervisor de Ensino e não publicará as alterações neste momento.”
+14.3 Validação ou reprovação da retificação pelo Supervisor de Ensino
+A ação Validar Retificação fica disponível para o Supervisor de Ensino quando o status do documento for Aguardando Validação da Retificação.
+O modal apresenta prévia do PDF, Baixar PDF, informações modificadas e campo de justificativa de reprovação.
+A validação confirma a retificação, mantém o número de publicação, registra assinatura GOV.BR, torna a nova versão vigente e retorna o documento ao status Emitido.
+A reprovação exige justificativa, mantém a versão emitida anterior vigente e altera o status para Retificação Reprovada.
+Texto da confirmação de validação da retificação: “Declaro que conferi a retificação do Histórico Escolar do(a) aluno(a) {{nome_aluno}} e que as alterações estão em conformidade com os registros oficiais. A validação mantém o mesmo número de publicação de concluinte, torna a versão retificada vigente e preserva a versão anterior para auditoria.”
+Mensagem de sucesso: “Retificação validada e assinada digitalmente via GOV.BR com sucesso. A nova versão do Histórico Escolar está vigente e o número de publicação foi mantido.”
+
+Figura 45 - Referência visual do modal de validação da retificação pelo Supervisor de Ensino.
+
+Figura 46 - Confirmação de validação da retificação.
+
+Figura 47 - Sucesso da retificação validada, publicada e assinada via GOV.BR.
+
+14.3.1 Retificação Reprovada
+Quando o Diretor ou o Supervisor reprovar a solicitação, deverá informar justificativa obrigatória. A versão oficial anteriormente emitida permanece vigente e inalterada.
+O status do documento passa para Retificação Reprovada. Na visão do GOE/AOE/Secretário, a ação Retificar volta a ficar disponível conforme parametrização.
+A reprovação não reabre a solicitação anterior para edição. Para corrigir o Histórico, o GOE/AOE/Secretário deverá iniciar uma nova solicitação de retificação.
+Ao abrir uma nova retificação, o modal deverá exibir alerta com a informação de que a solicitação anterior foi reprovada, identificando o perfil responsável, data/hora da reprovação e a justificativa registrada.
+A nova solicitação deve iniciar com campos próprios para novo preenchimento, sem alterar ou sobrescrever o registro da solicitação reprovada. Todo o histórico de tentativas permanece disponível na auditoria.
+
+Figura 48-A - Reprovação de retificação pelo Supervisor com alteração do status para Retificação Reprovada.
+
+Figura 48-B - Visão do GOE/AOE/Secretário após reprovação, com ação Retificar novamente disponível.
+
+Figura 48-C - Nova solicitação de retificação exibindo alerta com a reprovação anterior e respectiva justificativa.
+15. Tornar Sem Efeito
+A ação Tornar Sem Efeito é executada pelo Supervisor quando o Histórico Escolar está emitido e existe necessidade formal de invalidar o documento e a publicação vinculada. A ação exige justificativa e anexo, assinatura GOV.BR e registro no Log de Auditoria. A ação não pode ser desfeita.
+Campo
+Tipo
+Obrigatório
+Regra
+Dados do aluno
+Somente leitura
+Sim
+Nome, data de nascimento, RG/CIN, RA, nacionalidade, local e UF de nascimento.
+Dados escolares
+Somente leitura
+Sim
+URE, escola, tipo de ensino, classe, chamada, ano de conclusão e número de publicação.
+Justificativa
+Dropdown
+Sim
+Motivo formal para tornar sem efeito.
+Anexo
+Upload
+Sim
+Documento comprobatório obrigatório.
+Salvar
+Botão
+Sim
+Executa a ação após confirmação.
+Fechar
+Botão
+Não
+Fecha o modal sem gravar.
+
+Justificativas disponíveis
+Parecer sobre dados incorretos.
+Parecer de publicação sem conclusão de curso/curso incompleto.
+Parecer processo de cassação.
+Parecer erro ano conclusão.
+Parecer técnico do Supervisor de Ensino.
+Parecer técnico do Chefe do SEGRE/SEVESC.
+Decisão judicial.
+Parecer sobre duplicidade.
+Mensagem de confirmação: “Tem certeza que deseja tornar sem efeito o Histórico Escolar do(a) aluno(a) {{nome_aluno}}, RA {{RA}}, vinculado ao número de publicação {{numero_publicacao}}? Ao confirmar, o documento e a publicação vinculada serão tornados sem efeito. Esta ação não poderá ser desfeita.”
+Figura 49 - Modal Tornar Sem Efeito com dados do aluno e do documento.
+
+Figura 50 - Lista de justificativas para tornar sem efeito.
+
+Figura 51 - Confirmação da ação Tornar Sem Efeito.
+
+Figura 52 - Sucesso ao tornar histórico e publicação vinculada sem efeito.
+
+15.1 Reemissão após Tornar Sem Efeito
+O status Sem Efeito é definitivo para a versão invalidada e não pode ser revertido.
+Quando houver necessidade de emissão de novo Histórico Escolar após Tornar Sem Efeito, o perfil autorizado deverá iniciar um novo ciclo de elaboração, aprovação e validação.
+O Histórico e a publicação anteriores permanecem preservados como Sem Efeito para consulta e auditoria.
+A nova emissão deve gerar novo número de publicação. O número associado ao documento tornado sem efeito não pode ser reutilizado.
+A nova versão somente se torna Emitida após passar novamente pelas assinaturas e validações previstas no fluxo normal.
+16. Consulta interna e consultas públicas
+A consulta interna apresenta a versão do Histórico Escolar conforme seu status, sem permitir edição quando o documento está emitido ou sem efeito. Os documentos emitidos permanecem disponíveis para validação pública por meio dos canais oficiais.
+Documento Emitido: consulta interna somente leitura, com PDF válido e número de publicação.
+Documento Sem Efeito: consulta interna somente leitura, com marca d’água “Histórico tornado sem efeito”.
+Consulta Pública de Documentos Escolares: apresenta documento válido ou sem efeito conforme status do Histórico Escolar.
+Consulta Pública de Concluintes: reflete a situação da publicação vinculada ao documento.
+Retificação mantém número de publicação; tornar sem efeito altera a condição do documento e da publicação vinculada.
+Figura 53 - Consulta interna do Histórico Escolar emitido.
+
+Figura 54 - Consulta interna do Histórico Escolar tornado sem efeito com marca d’água.
+
+17. Relatório - Histórico Escolar
+O Relatório - Histórico Escolar permite acompanhamento operacional dos documentos emitidos, retificados, tornados sem efeito, publicações vinculadas, ações por usuário e assinaturas GOV.BR. A visão respeita a hierarquia do perfil logado.
+Perfil
+Escopo de visualização
+GOE/AOE/Secretário/Diretor/Supervisor
+Escola de vínculo ou escolas vinculadas ao perfil.
+URE - Dirigente de Ensino
+Todas as escolas da própria URE.
+SUPLAN - DIMAV - COVESC / Órgão Central
+Toda a rede estadual, com filtros de URE e Escola.
+
+Filtro/campo
+Tipo
+Obrigatório
+Regra
+Relatório
+Dropdown
+Sim
+Históricos emitidos, retificados, tornados sem efeito, publicações existentes vinculadas, ações por usuário ou assinaturas GOV.BR.
+Emissão de/até
+Data
+Sim
+Período obrigatório por data de emissão ou data da ação conforme relatório selecionado.
+URE
+Dropdown
+Sim quando perfil possuir visão regional/estadual
+Lista UREs do escopo do perfil.
+Escola
+Dropdown
+Conforme perfil
+Lista escolas conforme URE e escopo.
+Tipo de Ensino
+Dropdown
+Não
+Filtra por tipo de ensino.
+Turma
+Dropdown
+Não
+Carregada a partir da escola e tipo de ensino.
+Pesquisar
+Botão
+Sim
+Executa a consulta.
+Limpar
+Botão
+Não
+Limpa filtros e resultados.
+Exportar
+Botão
+Não
+Exporta os resultados conforme relatório, escopo, filtros e ordenação aplicados. A exportação deve refletir os dados efetivamente retornados pela consulta.
+
+Cards-resumo: Emitidos, Retificados, Sem Efeito e Pendentes de aprovação/validação.
+Os cards sempre respeitam o escopo hierárquico do perfil, independentemente do relatório selecionado.
+A grid possui colunas ordenáveis; clique no cabeçalho alterna ascendente/descendente.
+A exportação considera escopo do perfil, filtros e ordenação aplicada.
+Figura 55 - Relatório com filtros e escopo hierárquico.
+
+Figura 56 - Relatório com cards-resumo e grid de resultados.
+
+17.1 Regras de resultado dos relatórios
+Relatório
+Unidade de registro
+Data de referência
+Históricos emitidos
+Uma linha por documento emitido/versão vigente
+Data da emissão/validação final.
+Retificados
+Uma linha por retificação aprovada
+Data da aprovação da retificação.
+Tornados sem efeito
+Uma linha por ação de Tornar Sem Efeito
+Data da invalidação.
+Publicações vinculadas
+Uma linha por documento/publicação, exibindo situação atual
+Data de emissão e situação da publicação.
+Ações por usuário
+Uma linha por evento auditável, com possibilidade de agregação na apresentação
+Data/hora da ação.
+Assinaturas GOV.BR
+Uma linha por assinatura realizada em documento/versão
+Data/hora da assinatura.
+Os relatórios devem diferenciar documento vigente, versão anterior preservada e documento Sem Efeito quando aplicável.
+A exportação deve manter os mesmos critérios de escopo e filtros da tela e não pode incluir registros fora da abrangência do usuário.
+18. Log de Auditoria
+O Log de Auditoria permite consultar o histórico de ações realizadas nos documentos de Histórico Escolar. A funcionalidade é somente leitura, imutável e gerada automaticamente pelo fluxo de elaboração, aprovação, validação, devolução, retificação, tornar sem efeito, consulta de modificações, assinatura GOV.BR e demais ações auditáveis.
+O menu Log de Auditoria é exibido inicialmente para o perfil SUPLAN - DIMAV - COVESC / Órgão Central e permanece preparado para liberação futura a outros perfis por parametrização.
+Elemento
+Comportamento
+Natureza do registro
+Somente leitura; nenhuma ação de edição, exclusão ou alteração manual.
+Geração automática
+Cada ação relevante do fluxo gera registro. Aprovação e validação em lote geram um registro por aluno/documento.
+Campos do registro
+LogId, data/hora, ação, usuário, login, perfil, escola, URE, tipo de ensino, RA, nome do aluno, publicação, status anterior, status atual, justificativa, assinatura GOV.BR e informações modificadas.
+Filtros
+Período, RA, nome do aluno, nº de publicação, URE, escola, tipo de ensino, status, tipo de ação, usuário e perfil.
+Dropdowns
+Escola, URE, status, ação e perfil são populados dinamicamente a partir dos valores existentes no log.
+Grid
+Data/Hora, RA, Nome, Escola, URE, Nº Publicação, Ação, Usuário, Perfil, Status Anterior, Status Atual e Ações.
+Detalhe
+Drawer lateral com identificação do aluno, documento, ação, assinatura digital, justificativa e informações modificadas.
+Linha do tempo
+Lista cronológica decrescente das ações do mesmo aluno/documento.
+Destaque visual
+Ações de Tornar Sem Efeito recebem borda ou marcação de destaque na linha da grid.
+Exportar
+Exporta os registros conforme escopo e filtros aplicados, preservando os campos auditáveis disponíveis para o perfil.
+
+Figura 57 - Log de Auditoria com filtros, grid, paginação e exportação.
+
+Figura 58 - Drawer lateral com detalhes do registro auditado.
+
+Figura 59 - Linha do tempo do aluno/documento no Log de Auditoria.
+
+18.1 Catálogo mínimo de eventos auditáveis
+Evento
+Quando registrar
+INICIAR_ELABORACAO
+Criação da primeira versão de trabalho.
+SALVAR_ESTUDOS
+Salvamento/alteração de Estudos Realizados.
+EXCLUIR_ESTUDO
+Exclusão lógica de estudo migrado ou manual.
+SALVAR_NOTAS
+Primeiro salvamento ou alteração de notas.
+ADICIONAR_DISCIPLINA
+Inclusão manual de componente curricular.
+EXCLUIR_DISCIPLINA
+Exclusão de componente curricular por perfil autorizado.
+ENVIAR_APROVACAO
+Envio da versão da escola para o Diretor.
+APROVAR_DIRETOR / DEVOLVER_DIRETOR
+Decisão do Diretor.
+VALIDAR_SUPERVISOR / DEVOLVER_SUPERVISOR
+Decisão do Supervisor na emissão.
+LIBERAR_EMISSAO
+Liberação excepcional pelo Órgão Central.
+SOLICITAR_RETIFICACAO
+Envio da solicitação de retificação para aprovação do Diretor.
+APROVAR_RETIFICACAO_DIRETOR / REPROVAR_RETIFICACAO_DIRETOR
+Decisão do Diretor na retificação.
+VALIDAR_RETIFICACAO_SUPERVISOR / REPROVAR_RETIFICACAO_SUPERVISOR
+Decisão do Supervisor na retificação.
+TORNAR_SEM_EFEITO
+Invalidação do documento/publicação.
+REEMITIR_APOS_SEM_EFEITO
+Início de novo ciclo após invalidação.
+Eventos que alterem dados devem registrar, para cada campo afetado, valor anterior e valor novo, além de justificativa e anexos vinculados quando aplicáveis.
+Uma justificativa comum a múltiplos campos na mesma operação deve ser armazenada uma única vez no evento, mantendo o detalhamento individual dos campos modificados.
+Anexos não devem ser fisicamente excluídos da trilha de auditoria após a conclusão da ação a que estão vinculados.
+19. Mensagens padronizadas
+Situação
+Mensagem
+Sem rendimento aprovado
+Aluno não possui rendimento aprovado.
+Liberação de emissão
+Aluno liberado excepcionalmente para emissão pela escola. A liberação foi registrada para auditoria e não altera o rendimento original do estudante.
+Envio para aprovação
+Histórico assinado digitalmente via GOV.BR e enviado para aprovação com sucesso.
+Aprovação pelo Diretor
+Histórico assinado digitalmente via GOV.BR e aprovado com sucesso. Status alterado para Aguardando Validação.
+Validação pelo Supervisor
+Histórico assinado digitalmente via GOV.BR e validado com sucesso. Status alterado para Emitido. Nº de publicação: {{numero_publicacao}}.
+Devolução sem justificativa
+Informe a justificativa para devolver o documento.
+Devolução realizada
+Histórico devolvido para correção com sucesso. Justificativa registrada em auditoria.
+Retificação enviada
+Retificação assinada digitalmente via GOV.BR e enviada para aprovação do Diretor de Escola. A versão vigente permanece inalterada.
+Retificação aprovada pelo Diretor
+Retificação aprovada e assinada digitalmente via GOV.BR pelo Diretor. Status alterado para Aguardando Validação da Retificação.
+Retificação validada
+Retificação validada e assinada digitalmente via GOV.BR. Nova versão vigente e número de publicação mantido.
+Tornar sem efeito sem campos obrigatórios
+Justificativa e anexo são obrigatórios para tornar sem efeito.
+Tornar sem efeito realizado
+Histórico e publicação vinculada assinados digitalmente via GOV.BR e tornados sem efeito com sucesso.
+Estudos realizados sem campos obrigatórios
+Justificativa e anexo são obrigatórios para alteração de estudos realizados.
+Envio sem salvar
+Salve para prosseguir.
+Fechar com alterações não salvas
+As informações não foram salvas, deseja fechar mesmo assim?
+Liberação sem justificativa/anexo
+Informe a justificativa e anexe pelo menos um documento comprobatório para liberar a emissão.
+Nenhum resultado encontrado
+Nenhum registro encontrado para os critérios informados.
+Alteração concorrente
+Este Histórico Escolar foi alterado por outro usuário ou processo. Atualize a consulta antes de continuar.
+Falha GOV.BR
+Não foi possível concluir a assinatura digital via GOV.BR. A ação não foi efetivada e o status do documento foi mantido.
+Falha na publicação
+Não foi possível concluir a geração ou vinculação da publicação. O Histórico Escolar não foi emitido e permanece aguardando validação.
+Nota inválida
+Informe uma nota inteira de 0 a 10 ou um dos códigos permitidos: N/A, ET, EP ou ES.
+Nova nota igual à atual
+A nova nota deve ser diferente da nota atual.
+Nota duplicada na retificação
+Já existe uma alteração para este Componente Curricular e Ano na solicitação.
+Sem divergência de dado pessoal
+Não foram identificadas divergências de dados pessoais entre o Histórico Escolar publicado e a Ficha do Aluno.
+Retificação reprovada
+Retificação reprovada. A versão emitida anterior permanece vigente e o GOE/AOE/Secretário deverá iniciar uma nova retificação para corrigir o histórico.
+Reemissão após Sem Efeito
+Novo fluxo de emissão iniciado. Após a validação, será gerado um novo número de publicação.
+Lote parcialmente processado
+Processamento concluído com {{sucessos}} sucesso(s) e {{falhas}} falha(s). Consulte o detalhamento dos itens não processados.
+
+20. Regras de negócio consolidadas
+Código
+Regra
+RN01
+O produto emite Histórico Escolar de Conclusão para o ano/série de conclusão no escopo do MVP.
+RN02
+A terminologia oficial do produto é ano/série de conclusão.
+RN03
+A pesquisa por RA aceita dígito verificador numérico e letra X em maiúsculo ou minúsculo.
+RN04
+Enquanto não houver definição institucional, o documento emitido utiliza o nome de registro/certidão do estudante.
+RN05
+Nome Social pode ser exibido para consulta interna, sem compor o documento final enquanto não houver orientação formal.
+RN06
+O estudante sem rendimento final aprovado tem a emissão bloqueada para perfis da escola.
+RN07
+O Órgão Central pode liberar emissão sem rendimento aprovado mediante justificativa obrigatória (Regularização de Vida Escolar, Convalidação ou Pedido Judicial) e pelo menos um anexo comprobatório.
+RN08
+A liberação de emissão não emite o histórico automaticamente; apenas habilita a escola a iniciar o fluxo.
+RN09
+Aluno reclassificado pode ter documento emitido com lacuna no percurso e observação automática da reclassificação.
+RN10
+Inclusão manual de estudo realizado exige justificativa e anexo.
+RN11
+Correção de dados pessoais deve ser realizada na Ficha do Aluno e tratada por retificação quando o documento estiver emitido.
+RN12
+Retificação de nota exige alteração efetiva, componente, ano, nova nota válida, justificativa única da solicitação e pelo menos um anexo; pode conter múltiplas notas sem repetir Componente + Ano.
+RN13
+Retificação mantém o mesmo número de publicação e preserva a versão anterior para auditoria. A nova versão somente se torna vigente após aprovação do Diretor e validação do Supervisor.
+RN14
+Correções de resolução, carga horária estrutural ou ato legal devem seguir o fluxo Tornar Sem Efeito e nova emissão, quando aplicável.
+RN15
+O documento emitido ou retificado apresenta visualmente as assinaturas do GOE/AOE/Secretário e do Diretor de Escola correspondentes à versão vigente.
+RN16
+A assinatura do Supervisor, inclusive na validação da retificação, é registrada no fluxo e no Log de Auditoria, sem aparecer visualmente no documento final.
+RN17
+Ações em lote geram um registro de auditoria por aluno/documento.
+RN18
+Tornar Sem Efeito exige justificativa, anexo, confirmação, assinatura GOV.BR e registro de auditoria.
+RN19
+Tornar Sem Efeito altera a condição do documento e da publicação vinculada.
+RN20
+Todas as ações devem ser parametrizadas por perfil na funcionalidade Funcionalidade x Perfil.
+RN21
+Relatórios, grids e filtros respeitam o escopo hierárquico do perfil logado.
+RN22
+O Log de Auditoria é imutável e somente leitura.
+RN23
+Ações dependem cumulativamente de perfil, abrangência, parametrização, status e pré-condições de negócio.
+RN24
+Documento enviado para aprovação, validação ou retificação deve ser congelado como versão submetida imutável durante todas as etapas decisórias.
+RN25
+Devolução do Supervisor retorna o documento ao GOE/AOE/Secretário; após correção, novo envio passa novamente pelo Diretor.
+RN26
+Alteração de informação já salva exige justificativa. Múltiplos campos alterados na mesma operação compartilham uma única justificativa.
+RN27
+Operações com anexo devem permitir múltiplos arquivos; quando obrigatório, pelo menos um arquivo deve ser informado.
+RN28
+Notas aceitas: inteiros de 0 a 10, N/A, ET, EP e ES. Não são permitidas casas decimais.
+RN29
+Nota zero é valor válido e deve ser distinta de campo sem lançamento.
+RN30
+Classificação do componente curricular é preenchida automaticamente conforme a matriz/componente e não pode ser editada manualmente.
+RN31
+Estudo Realizado migrado ou incluído manualmente pode ser excluído por perfil parametrizado, com justificativa, anexo e preservação integral no Log de Auditoria.
+RN32
+Retificação de dado pessoal reúne automaticamente, em uma única solicitação, todas as divergências elegíveis entre a versão publicada e a Ficha do Aluno.
+RN33
+Retificação reprovada pelo Diretor ou Supervisor assume status Retificação Reprovada; a versão publicada anterior permanece vigente e uma nova retificação pode ser iniciada.
+RN34
+Não é permitido alterar uma retificação já submetida. O Diretor e o Supervisor devem analisar o mesmo snapshot enviado, em suas respectivas etapas.
+RN35
+Uma retificação de nota não pode repetir Componente Curricular + Ano nem informar Nova Nota igual à Nota Atual.
+RN36
+Falha ou cancelamento da assinatura GOV.BR impede a transição de status correspondente.
+RN37
+O status Emitido somente pode ser atribuído após sucesso da assinatura do Supervisor e da geração/vinculação da publicação.
+RN38
+Processamento em lote é individual por documento; falha de um item não deve alterar indevidamente os demais e deve produzir resumo de sucessos/falhas.
+RN39
+Documento tornado Sem Efeito permanece definitivamente inválido. Reemissão segue novo ciclo e gera novo número de publicação.
+RN40
+O sistema deve impedir sobrescrita por concorrência, validando versão e status antes de salvar ou executar transição.
+RN41
+No modal Adicionar Estudos Realizados, Município depende da UF e Estabelecimento de Ensino depende de UF, Município e Rede de Ensino; alterações nos campos-pai devem limpar seleções filhas incompatíveis.
+RN42
+Para estudo realizado no Estado de São Paulo, Estabelecimento de Ensino deve ser selecionado a partir do cadastro SCE/SED; para UF diferente de SP, o estabelecimento pode ser informado textualmente.
+RN43
+A Observação é editável somente em Em elaboração ou Devolvido para perfil autorizado. Textos automáticos podem ser editados/removidos da versão visível, mas seus registros de origem permanecem integralmente no Log de Auditoria.
+RN44
+Ao persistir alteração em Estudos Realizados ou Notas que exija justificativa, o sistema deve inserir a justificativa na Observação e registrar o evento de forma independente na auditoria.
+RN45
+A retificação segue obrigatoriamente o fluxo: envio pelo GOE/AOE/Secretário ou perfil autorizado → Aguardando Aprovação da Retificação → aprovação do Diretor → Aguardando Validação da Retificação → validação do Supervisor → Emitido.
+RN46
+A aprovação da retificação pelo Diretor não publica alterações. A versão retificada somente passa a ser vigente após a validação do Supervisor de Ensino.
+
+21. Critérios de aceite consolidados
+ID
+Critério de aceite
+CA01
+Ao pesquisar por RA com dígito X ou x, o sistema deve localizar o estudante quando os demais dados estiverem corretos.
+CA02
+Ao pesquisar por filtros, o sistema deve listar somente estudantes do ano/série de conclusão e do escopo do perfil logado.
+CA03
+A grid deve exibir apenas ações compatíveis com perfil, status e parametrização.
+CA04
+Ao clicar em Emitir para aluno elegível, o sistema deve abrir o modal Histórico Escolar - Emissão.
+CA05
+Ao clicar em Emitir para aluno sem rendimento aprovado no perfil da escola, o sistema deve exibir “Aluno não possui rendimento aprovado.” e não abrir o modal.
+CA06
+Ao liberar emissão pelo Órgão Central, a escola deve conseguir iniciar o fluxo de emissão para o aluno liberado.
+CA07
+Ao alterar Estudos Realizados, o sistema deve exigir justificativa e anexo.
+CA08
+Ao identificar reclassificação, o sistema deve permitir emissão e incluir observação automática no histórico.
+CA09
+Ao adicionar estudo realizado para correção de lacuna, o sistema deve exigir todos os campos obrigatórios, justificativa e anexo.
+CA10
+Ao salvar notas, o sistema deve manter o documento em elaboração e permitir continuidade do fluxo.
+CA11
+Ao enviar para aprovação, o sistema deve assinar via GOV.BR e alterar o status para Aguardando Aprovação.
+CA12
+Ao aprovar pelo Diretor, o sistema deve assinar via GOV.BR e alterar o status para Aguardando Validação.
+CA13
+Ao devolver pelo Diretor ou Supervisor sem justificativa, o sistema deve impedir a ação e solicitar justificativa.
+CA14
+Ao validar pelo Supervisor, o sistema deve assinar via GOV.BR, emitir o documento e vincular/gerar número de publicação.
+CA15
+Ao retificar nota, o sistema deve exigir componente, ano, nova nota, justificativa e anexo.
+CA16
+Ao aprovar a retificação pelo Diretor, o sistema deve assinar via GOV.BR, manter a versão publicada anterior vigente e alterar o status para Aguardando Validação da Retificação.
+CA17
+Ao tornar sem efeito, o sistema deve exigir justificativa, anexo e confirmação da ação irreversível.
+CA18
+Ao consultar documento sem efeito, o sistema deve exibir marca d’água “Histórico tornado sem efeito”.
+CA19
+O relatório deve exigir período e URE quando aplicável ao perfil e deve respeitar o escopo hierárquico.
+CA20
+O Log de Auditoria deve permitir filtrar, visualizar detalhes e abrir linha do tempo do aluno/documento.
+CA21
+Ações em lote devem gerar registros individuais no Log de Auditoria por aluno/documento.
+CA22
+A exportação deve respeitar os filtros aplicados e o escopo do perfil logado.
+CA23
+Ao devolver documento em Aguardando Validação, o sistema deve permitir correção pelo GOE/AOE/Secretário e, no novo envio, retornar para Aguardando Aprovação.
+CA24
+Ao tentar alterar documento em Aguardando Aprovação, Aguardando Validação, Aguardando Aprovação da Retificação ou Aguardando Validação da Retificação por perfil sem ação decisória, o sistema deve manter a versão submetida somente leitura.
+CA25
+Ao alterar mais de um campo já salvo na mesma operação, o sistema deve exigir uma única justificativa e registrar individualmente todos os valores anteriores e novos.
+CA26
+Quando a operação exigir anexo, o sistema deve aceitar múltiplos arquivos e bloquear a conclusão se nenhum arquivo tiver sido anexado.
+CA27
+Ao informar nota decimal, fora de 0 a 10 ou sigla diferente de N/A, ET, EP ou ES, o sistema deve rejeitar o valor.
+CA28
+Ao alterar uma nota já salva, o sistema deve exigir justificativa; antes do primeiro salvamento, a digitação não deve exigir justificativa.
+CA29
+Ao excluir Estudo Realizado migrado ou manual, o sistema deve exigir justificativa e anexo e preservar o registro excluído no Log de Auditoria.
+CA30
+Ao liberar emissão sem rendimento aprovado, o sistema deve exigir justificativa entre Regularização de Vida Escolar, Convalidação ou Pedido Judicial e pelo menos um anexo.
+CA31
+Ao reprovar uma retificação pelo Diretor ou Supervisor, o sistema deve alterar o status para Retificação Reprovada, manter a versão emitida vigente e habilitar nova ação Retificar ao perfil autorizado.
+CA32
+Ao abrir nova retificação após reprovação, o sistema deve exibir o alerta com data/hora, perfil responsável e justificativa da reprovação anterior.
+CA33
+Ao retificar dado pessoal, o sistema deve incluir na mesma solicitação todas as divergências elegíveis identificadas na Ficha do Aluno.
+CA34
+Ao tentar adicionar a mesma combinação Componente + Ano duas vezes na retificação, o sistema deve impedir a duplicidade.
+CA35
+Ao informar Nova Nota igual à Nota Atual, o sistema deve impedir o envio da alteração.
+CA36
+Ao ocorrer falha ou cancelamento no GOV.BR, o sistema deve manter o status anterior e informar que a ação não foi concluída.
+CA37
+Ao falhar a geração/vinculação da publicação na validação, o sistema deve manter Aguardando Validação e não emitir o documento.
+CA38
+Ao processar ação em lote com falha parcial, o sistema deve manter o status anterior dos itens com falha e exibir resumo final de sucessos e falhas.
+CA39
+Ao reemitir Histórico tornado Sem Efeito e concluir a nova validação, o sistema deve gerar novo número de publicação, mantendo o documento anterior Sem Efeito.
+CA40
+Ao detectar que a versão foi alterada por outro usuário desde o carregamento, o sistema deve bloquear o salvamento/transição e solicitar atualização da consulta.
+CA41
+Ao alterar UF, Município ou Rede de Ensino no modal Adicionar Estudos Realizados, o sistema deve limpar valores dependentes incompatíveis e recarregar as opções correspondentes.
+CA42
+Ao selecionar UF = SP, o campo Estabelecimento de Ensino deve listar somente escolas compatíveis com o Município e a Rede selecionados; para UF diferente de SP, deve permitir preenchimento textual.
+CA43
+Ao acionar Salvar em Adicionar Estudos Realizados com campo obrigatório ausente ou sem anexo, o sistema deve impedir a inclusão; com dados válidos, deve persistir o registro, atualizar a grid e registrar o evento em auditoria.
+CA44
+Em Em elaboração ou Devolvido, o perfil autorizado deve conseguir editar/remover texto automático da Observação; após o envio, a aba deve ficar somente leitura.
+CA45
+Ao remover da Observação um texto originado de justificativa ou reclassificação, o sistema deve manter o registro original disponível no Log de Auditoria.
+CA46
+Ao enviar uma retificação válida, o sistema deve assinar via GOV.BR e alterar o status para Aguardando Aprovação da Retificação, disponibilizando a decisão ao Diretor de Escola.
+CA47
+Ao validar a retificação pelo Supervisor, o sistema deve assinar via GOV.BR, manter o mesmo número de publicação, tornar a nova versão vigente e alterar o status para Emitido.
+CA48
+Enquanto a retificação estiver em Aguardando Aprovação da Retificação ou Aguardando Validação da Retificação, a versão anteriormente emitida deve permanecer vigente para consulta.
+
+21.1 Regras gerais de campos, anexos e ações
+Tema
+Regra geral
+Obrigatoriedade
+Campos obrigatórios devem ser validados no front-end e novamente no servidor antes da persistência ou transição de status.
+Campos derivados
+Campos preenchidos a partir de matriz, cadastro ou integração devem permanecer não editáveis, salvo ação manual expressamente prevista.
+Dropdowns dependentes
+Alteração de um campo pai deve limpar valores incompatíveis dos campos filhos e recarregar suas opções.
+Anexos
+Permitir múltiplos anexos. Extensões e tamanho máximo devem seguir o padrão corporativo vigente da SED; falha de upload deve impedir ação quando o anexo for obrigatório.
+Cancelar/Fechar
+Fechar modal com alteração não salva deve solicitar confirmação. Cancelar não persiste mudanças.
+Salvar
+Salvar persiste a versão de trabalho sem avançar status, exceto quando o botão representar explicitamente uma ação de fluxo.
+Auditoria
+Toda alteração persistida deve registrar usuário, perfil, data/hora, versão e, quando aplicável, valores anterior/novo, justificativa e anexos.
+Mensagens
+Mensagens de erro devem informar a condição impeditiva sem afirmar que uma ação foi concluída quando houve falha.
+22. Features para derivação de histórias de usuário
+Feature
+Nome
+Descrição
+F01
+Pesquisa e consulta de Histórico Escolar
+Pesquisa por RA e filtros, grid por perfil, paginação, ordenação, consulta, exportações e tooltips.
+F02
+Emissão e elaboração
+Modal de emissão com Dados Pessoais, Estudos Realizados, Notas, Observação e envio para aprovação.
+F03
+Estudos Realizados
+Migração de percurso, edição, inclusão, exclusão parametrizada, justificativa e anexo.
+F04
+Notas e componentes curriculares
+Lançamento manual de notas, adição/exclusão de disciplina, componentes de Eletivas por temática.
+F05
+Reclassificação
+Emissão com lacuna, observação automática e inclusão manual de estudo quando necessário.
+F06
+Liberação de emissão sem rendimento aprovado
+Bloqueio para escola e ação de liberação pelo Órgão Central.
+F07
+Aprovação do Diretor
+Aprovação, devolução, aprovação em lote, assinatura GOV.BR e consulta de modificações.
+F08
+Validação do Supervisor
+Validação, devolução, validação em lote, publicação e assinatura GOV.BR.
+F09
+Retificação
+Retificação de notas e dados pessoais, aprovação/reprovação pelo Diretor, validação/reprovação pelo Supervisor e preservação de versão.
+F10
+Tornar Sem Efeito
+Invalidação do documento e publicação vinculada, justificativa, anexo, GOV.BR e auditoria.
+F11
+Consulta interna e pública
+Consulta do documento emitido, documento sem efeito e integração com consultas públicas.
+F12
+Parametrização por perfil
+Funcionalidade x Perfil para todas as ações do produto.
+F13
+Relatório - Histórico Escolar
+Relatórios por escopo, filtros, cards, grid e exportação.
+F14
+Log de Auditoria
+Registro imutável de ações, detalhes, linha do tempo, diffs e exportação.
+
+23. Pontos de decisão
+Tema
+Tratamento no MVP
+Decisão pendente
+Nome Social
+Documento emitido utiliza nome de registro/certidão. Nome social pode ser exibido internamente para consulta.
+Definição institucional sobre uso de nome social em documentos escolares oficiais.
+Migração automática de notas
+No MVP, notas são digitadas manualmente.
+Evolução futura para migração automatizada do Diário de Classe/Sala do Futuro Professor.
+Perfis adicionais no Log de Auditoria
+Menu inicialmente visível ao Órgão Central.
+Liberação futura por parametrização.
+
+Fim do documento
+Documento consolidado para orientar desenvolvimento, homologação, validação de protótipo e derivação de histórias de usuário do Histórico Escolar Digital. Esta versão incorpora regras sistêmicas, de negócio, exceções, transições de estado e critérios de aceite necessários para reduzir interpretações na implementação.

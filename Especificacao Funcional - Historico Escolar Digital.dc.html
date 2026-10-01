@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <script src="./doc-page.js"></script>
+  <style>doc-page:not(:defined){visibility:hidden}
+  body{margin:0}
+  h1,h2,h3{font-family:Arial,Helvetica,sans-serif;color:#1c2a38}
+  h1{font-size:26px;border-bottom:3px solid #3f8ecb;padding-bottom:10px}
+  h2{font-size:18px;margin-top:32px;color:#2e6da4;break-after:avoid}
+  h3{font-size:14.5px;margin-top:20px;break-after:avoid}
+  p,li{font-family:Verdana,Arial,sans-serif;font-size:12.5px;line-height:1.6;color:#222}
+  table{width:100%;border-collapse:collapse;margin:8px 0 16px;font-family:Verdana,Arial,sans-serif;font-size:11.5px}
+  th{background:#eef4fa;text-align:left;padding:6px 8px;border:1px solid #cfd8e0;font-size:11px}
+  td{padding:6px 8px;border:1px solid #e2e8ee;vertical-align:top}
+  tr{break-inside:avoid}
+  .rn{background:#fcf8e3;border:1px solid #f0e2a0;border-radius:3px;padding:7px 11px;margin:5px 0;font-family:Verdana,Arial,sans-serif;font-size:12px;break-inside:avoid}
+  .new{background:#eaf7ee;border:1px solid #b7dcc2;border-radius:3px;padding:7px 11px;margin:5px 0;font-family:Verdana,Arial,sans-serif;font-size:12px;break-inside:avoid}
+  code{background:#f0f3f6;padding:1px 5px;border-radius:2px;font-size:11.5px}
+  </style>
+</helmet>
+
+<doc-page margin="0.8in">
+
+<h1>Especificação Funcional — Histórico Escolar Digital</h1>
+<p><strong>Sistema:</strong> Secretaria Escolar Digital (SED) — módulo de emissão, aprovação, validação e retificação de Histórico Escolar.<br/><strong>Objetivo deste documento:</strong> consolidar toda regra de negócio e funcionalidade implementada no protótipo, para uso no desenvolvimento da versão final. Substitui e amplia o PRD original.</p>
+
+<h2>1. Visão Geral</h2>
+<p>O módulo digitaliza a emissão do Histórico Escolar do estudante, cobrindo: elaboração (Estudos Realizados, Notas, Observação), aprovação pela Direção, validação pela Supervisão de Ensino, publicação com assinatura digital via gov.br, consulta (interna e pública) do documento, retificação pós-emissão com aprovação e rastreabilidade completa, e relatórios segmentados por nível de gestão.</p>
+
+<h2>2. Perfis de Usuário</h2>
+<table>
+<tr><th>Perfil</th><th>Responsabilidade</th><th>Escopo de dados</th></tr>
+<tr><td><strong>GOE / AOE / Secretário</strong></td><td>Elabora o histórico (3 abas), envia para aprovação, envia retificações.</td><td>Alunos da própria escola.</td></tr>
+<tr><td><strong>Diretor de Escola</strong></td><td>Aprova a emissão elaborada pelo GOE, ou devolve com justificativa. Também pode ver relatórios da escola.</td><td>Própria escola.</td></tr>
+<tr><td><strong>Supervisor de Ensino</strong></td><td>Valida a emissão aprovada (gera publicação), aprova ou reprova retificações, torna documentos sem efeito.</td><td>Própria escola (mesma tela de trabalho do GOE/Diretor).</td></tr>
+<tr><td><strong>URE — Dirigente de Ensino</strong></td><td>Perfil de visão gerencial. Não elabora nem aprova; consulta relatórios de todas as escolas da sua Diretoria de Ensino (URE).</td><td>Todas as escolas da URE.</td></tr>
+<tr><td><strong>SUPLAN-DIMAV-COVESC (Órgão Central)</strong></td><td>Perfil de visão gerencial estadual. Consulta relatórios de qualquer URE/escola.</td><td>Rede estadual completa; pode filtrar por URE e/ou escola.</td></tr>
+</table>
+<p>O acesso a cada ação é controlado pela tela <strong>Parâmetro do Histórico Escolar</strong> — matriz Ação × Perfil configurável pelo administrador (ver seção 4.20).</p>
+
+<h2>3. Fluxo de Status do Documento</h2>
+<table>
+<tr><th>Status</th><th>Descrição</th><th>Próxima ação possível</th></tr>
+<tr><td>Não Emitido</td><td>Nenhuma elaboração iniciada.</td><td>GOE inicia Emissão.</td></tr>
+<tr><td>Em elaboração</td><td>Ao menos uma aba (Estudos, Notas ou Observação) já foi salva pela primeira vez.</td><td>GOE continua elaborando ou envia para aprovação.</td></tr>
+<tr><td>Devolvido</td><td>Diretor devolveu a emissão com justificativa antes da validação.</td><td>GOE reabre via Emissão, corrige as 3 abas e reenvia.</td></tr>
+<tr><td>Aguardando Aprovação</td><td>Enviado pelo GOE, aguardando decisão do Diretor.</td><td>Diretor aprova ou devolve.</td></tr>
+<tr><td>Aguardando Validação</td><td>Aprovado pelo Diretor, aguardando validação final do Supervisor.</td><td>Supervisor valida (individual ou em lote).</td></tr>
+<tr><td>Emitido</td><td>Validado — documento publicado, com número de publicação e assinatura gov.br. Não editável pela tela de Emissão.</td><td>Consulta / Retificar / Tornar Sem Efeito.</td></tr>
+<tr><td>Aprovar Retificação</td><td>GOE enviou uma retificação (nota ou dado pessoal) sobre um documento Emitido. O dado publicado <u>ainda não foi alterado</u> — a alteração está pendente de aprovação.</td><td>Supervisor aprova (publica a alteração) ou reprova.</td></tr>
+<tr><td>Retificação Reprovada</td><td>Supervisor reprovou a retificação, com justificativa. A alteração proposta é descartada; o documento permanece com os dados publicados anteriores (nada foi alterado). Status distinto de "Emitido" para dar visibilidade de que há uma pendência resolvida negativamente.</td><td>GOE inicia uma nova retificação (Retificar). "Emitir" continua bloqueado.</td></tr>
+<tr><td>Sem Efeito</td><td>Supervisor invalidou o documento e a publicação vinculada.</td><td>Pode ser reaberto pela Emissão (retorna a "Em elaboração") e reemitido com novo número de publicação.</td></tr>
+</table>
+
+<h2>4. Requisitos Funcionais</h2>
+
+<h3>RF01 — Pesquisa e grid de históricos</h3>
+<p>Busca por RA (RA + dígito + UF) ou por Filtros (rede de ensino, URE, escola, tipo de ensino, turma, status, ano letivo). O campo "Ano Letivo" filtra alunos cujo percurso de Estudos Realizados contém aquele ano civil (ver RN29). O campo "Filtro" (busca textual livre) filtra por nome ou RA sobre o resultado já pesquisado. Resultados paginados, com contador "Registros X a Y de Z" e coluna "Nome do Aluno" fixa no scroll horizontal (sticky). Colunas Nome, RA, Tipo de Ensino, Status e Data de Nascimento são ordenáveis (ícone ⇅ sempre visível). Ações disponíveis por linha variam conforme perfil e status (Emissão, Consulta, Aprovar, Validar, Tornar Sem Efeito, Aprovar Retificação, Retificar), com ícone desabilitado e tooltip explicando o motivo quando indisponível. O ícone de Retificar exibe um indicador vermelho + tooltip com motivo/data quando o documento está em "Retificação Reprovada" (ver RF12/RF13).</p>
+
+<h3>RF02 — Emissão (elaboração)</h3>
+<p>Modal com três abas: <strong>Estudos Realizados</strong>, <strong>Notas</strong>, <strong>Observação</strong>. Cada aba salva de forma independente e exibe um ✓ verde no próprio rótulo da aba quando já foi salva pelo menos uma vez. Disponível para qualquer status <em>exceto</em> Emitido, Aprovar Retificação, Retificação Reprovada, Aguardando Aprovação e Aguardando Validação — nesses casos o ícone "Emitir" aparece desabilitado com tooltip explicando o motivo. Para documento Emitido/Retificação Reprovada, toda alteração passa exclusivamente por Retificar (RF12).</p>
+
+<h3>RF03 — Aba Estudos Realizados</h3>
+<p>Grid de anos/séries cursados com estabelecimento, rede, município, UF, total de aulas da Base Nacional Comum Curricular, total de aulas da Parte Diversificada e Carga Horária (CH) total, editáveis mediante desbloqueio (ícone de lápis) por ano. O período coberto (quantidade de anos e o ano civil de cada linha) é calculado individualmente por aluno a partir do seu ano de conclusão real (RN29) — não é uma faixa fixa para todos os alunos.</p>
+<p>O botão "+ Adicionar Estudos Realizados" só aparece quando o percurso do aluno está incompleto (menos linhas que o esperado) <em>e</em> o aluno não é um caso de reclassificação (RN17/RN30) — nesse segundo caso a inclusão é acionada exclusivamente pelo link "clique aqui" do banner de aviso de reclassificação.</p>
+
+<h3>RF04 — Aba Notas</h3>
+<p>Grade de componentes curriculares × anos letivos. Permite adicionar disciplinas não cursadas ainda (bloqueando duplicidade) e editar notas ano a ano mediante desbloqueio (ícone de lápis).</p>
+
+<h3>RF05 — Aba Observação</h3>
+<p>Campo de texto livre. Alunos reclassificados têm o campo pré-preenchido automaticamente com o texto padrão de reclassificação (RN17).</p>
+
+<h3>RF06 — Banner de devolução</h3>
+<p>Ao reabrir (via Emissão) um documento com status Devolvido, um banner é exibido no topo do modal informando quem devolveu, quando, e a justificativa completa — visível ao GOE/AOE responsável pela correção.</p>
+
+<h3>RF07 — Banner de reclassificação</h3>
+<p>Na aba Estudos Realizados, alunos reclassificados exibem um banner: "O aluno foi reclassificado do [série origem] para o [série destino] em [ano]. Caso esteja incorreta, adicione os estudos realizados [clique aqui]. Caso esteja correta, siga com a em
+</x-dc>
+</body>
+</html>
